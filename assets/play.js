@@ -2,16 +2,17 @@ import {WORLD,OBJECTIVES,move,nearby,advanceQuest,scoreShot,arenaResult,clamp,no
 import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite,chooseRewrite,resolveEpilogue,scriptStatus,REWRITES} from "./story-core.mjs";
 import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,medalText} from "./battle-core.mjs";
 import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmark,inventory,experience,rankFor,passportStatus,journalEntries,LANDMARK_SOUVENIRS} from "./progression-core.mjs";
+import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,nearestResident,npcReply} from "./residents-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),wins:[],visited:[],battle:null,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,nearResidentId:null,battle:null,overlay:null,returnFocus:null,
  saveReady:false,lastAutoSave:0,lastSavedPos:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
- gamepadActionHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
+ gamepadActionHeld:false,gamepadTalkHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
 };
 const questLines=[
  "Your shift is starting. Get a coffee at CoffeeChucks. It cannot possibly become a sports career.",
@@ -38,7 +39,7 @@ const dialogues={
 function snapshot(){
  return {version:SAVE_VERSION,player:{...state.player},quest:state.quest,
   medal:state.medal,story:state.story,wins:state.wins,visited:state.visited,
-  interactions:state.visits};
+  interactions:state.visits,tapeQuest:state.tapeQuest};
 }
 function refreshPassport(){
  const progress=snapshot();
@@ -92,7 +93,8 @@ function restoreProgress(){
    state.wins=restored.wins;
    state.visited=restored.visited;
    state.visits=restored.interactions;
-   state.nearId=null;
+   state.tapeQuest=restored.tapeQuest;
+   state.nearId=null;state.nearResidentId=null;
    state.lastSavedPos={...state.player};
    el("medal").textContent=state.medal?"SOUTHSIDE TGA MEDAL":"NO TGA MEDAL";
    el("save-status").textContent="WELCOME BACK. LOCAL ADVENTURE RECOVERED.";
@@ -107,11 +109,19 @@ function say(place,text){
  el("place-heading").textContent=place?place.name.toUpperCase():"CITY HALL ERROR";
  el("place-message").textContent=text;
 }
+function renderTapeQuest(){
+ el("tape-status").textContent=tapeStatus(state.tapeQuest);
+ el("resident-label").textContent=state.tapeQuest===4?"MARTY HAS HIS MOVIE BACK. THE FUTURE IS SOMEHOW EVEN MORE OVERDUE.":"CURRENT LEAD: "+TAPE_STEPS[state.tapeQuest].title;
+ for(const [i,item] of Array.from(el("tape-steps").children).entries()){
+  item.classList.toggle("done",i<state.tapeQuest);
+  item.classList.toggle("next",i===state.tapeQuest);
+ }
+}
 function questUI(){
  el("progress").textContent="THE COFFEE RUN · "+state.quest+"/3";
  el("quest-text").textContent=questLines[state.quest];
  el("quest-status").textContent=state.quest===3?"COMPLETED · COFFEE STILL PENDING":"MISSION ACTIVE";
- renderStoryUI();
+ renderStoryUI();renderTapeQuest();
  for(const [i,li] of Array.from(el("quest-list").children).entries()){
   li.classList.toggle("done",state.quest>i);
  }
@@ -166,6 +176,24 @@ function draw(){
     ctx.fillStyle="#c8ef73";ctx.fillText("E · INTERACT",x,y-54);
   }
  }
+
+ // Distinct original silicon residents create a living street with gentle, optional motion.
+ const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ for(const npc of RESIDENTS){
+   const p=residentPosition(npc,state.clock,reduced);
+   const near=state.nearResidentId===npc.id;
+   ctx.fillStyle="#101c25aa";
+   ctx.beginPath();ctx.ellipse(p.x,p.y+18,22,7,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle=npc.tone;ctx.strokeStyle=near?"#c7fa87":"#152e38";ctx.lineWidth=near?5:3;
+   ctx.beginPath();ctx.roundRect(p.x-17,p.y-22,34,38,9);ctx.fill();ctx.stroke();
+   ctx.fillStyle="#15313b";ctx.fillRect(p.x-12,p.y-10,24,9);
+   ctx.fillStyle="#ecf0bc";ctx.fillRect(p.x-7,p.y-8,5,4);ctx.fillRect(p.x+4,p.y-8,5,4);
+   ctx.fillStyle="#f0e7cb";ctx.textAlign="center";ctx.font="900 11px Trebuchet MS,Arial";
+   ctx.fillText(npc.label,p.x,p.y-34);
+   if(near){
+     ctx.fillStyle="#bbf2a1";ctx.fillText("T · TALK",p.x,p.y+34);
+   }
+ }
  // Player: original, simple silicon explorer avatar.
  const p=state.player;
  ctx.fillStyle="#061c2288";ctx.beginPath();ctx.ellipse(p.x,p.y+23,24,8,0,0,Math.PI*2);ctx.fill();
@@ -181,12 +209,17 @@ function draw(){
 function nearest(){return nearby(state.places,state.player.x,state.player.y)}
 function updateNearby(){
  const place=nearest(),id=place?.id||null;
- if(id===state.nearId)return;
- state.nearId=id;
+ const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const resident=nearestResident(state.player.x,state.player.y,state.clock,undefined,reduced);
+ const personId=resident?.id||null;
+ if(id===state.nearId&&personId===state.nearResidentId)return;
+ state.nearId=id;state.nearResidentId=personId;
  el("interact").disabled=!place;
  el("enter").disabled=!place||!canEnter(place.id);
  el("challenge").disabled=!place||!Object.hasOwn(ENCOUNTERS,place.id);
- el("nearby").textContent=place?"NEAR "+place.name.toUpperCase()+" · PRESS E / INTERACT":"MOVE TOWARD A GLOWING STOREFRONT";
+ el("talk-resident").disabled=!resident;
+ el("nearby").textContent=resident?"NEAR "+resident.name.toUpperCase()+" · T TO TALK":
+  place?"NEAR "+place.name.toUpperCase()+" · E TO INTERACT":"EXPLORE THE STREETS · RESIDENTS AND SHOPS AWAIT";
 }
 function openModal(name,focusId){
  state.overlay=name;state.returnFocus=document.activeElement;
@@ -319,6 +352,23 @@ function retryBattle(){
  renderBattle();
 }
 
+
+function talkResident(){
+ if(state.overlay)return;
+ const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const npc=nearestResident(state.player.x,state.player.y,state.clock,undefined,reduced);
+ if(!npc)return;
+ const old=state.tapeQuest;
+ const speech=npcReply(npc.id,old);
+ state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
+ say({name:npc.name},speech);
+ if(old!==state.tapeQuest){
+   questUI();refreshPassport();
+   saveProgress(state.tapeQuest===4?"MYSTERY SOLVED · FUTURE FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE RECORDED · SAVED LOCALLY");
+ }
+ el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
+}
+
 function interact(){
  if(state.overlay||!state.places.length)return;
  const place=nearest();if(!place)return;
@@ -326,9 +376,13 @@ function interact(){
  const newStamp=!state.visited.includes(place.id);
  state.visited=visitLandmark({visited:state.visited},place.id).visited;
  state.quest=advanceQuest(state.quest,place.id);
+ const oldTape=state.tapeQuest;
+ state.tapeQuest=advanceTapeQuest(state.tapeQuest,"place",place.id);
+ const tapeChanged=state.tapeQuest!==oldTape;
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
+ if(tapeChanged)el("resident-label").textContent="PRIZE MAIL RECOVERED. THE PACKAGE IS ADDRESSED TO YESTERDAY. TALK TO BUFFER BOB.";
  say(place,ending.completed?ending.message:(dialogues[place.id]||place.description));
  refreshPassport();
  saveProgress(newStamp?"PASSPORT STAMPED: "+LANDMARK_SOUVENIRS[place.id].name+" · SAVED LOCALLY":"STEMSIDE PROGRESS SAVED LOCALLY");
@@ -339,7 +393,7 @@ function reset(){
  if(!window.confirm("Reset the entire Stemside adventure, passport and local save on this browser? This cannot be undone."))return;
  const initial=initialProgress();
  state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
- state.wins=[];state.visited=[];state.battle=null;state.nearId=null;state.lastSavedPos=null;
+ state.wins=[];state.visited=[];state.tapeQuest=0;state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
  renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
@@ -401,12 +455,15 @@ function keysAxis(){
 function gamepad(){
  let pad=null;
  try{pad=Array.from(navigator.getGamepads?.()||[]).find(Boolean)||null}catch{return}
- if(!pad){state.gamepadAxes={x:0,y:0};state.gamepadActionHeld=false;return}
+ if(!pad){state.gamepadAxes={x:0,y:0};state.gamepadActionHeld=false;state.gamepadTalkHeld=false;return}
  const dx=pad.axes?.[0]||0,dy=pad.axes?.[1]||0;
  state.gamepadAxes={x:Math.abs(dx)<.2?0:dx,y:Math.abs(dy)<.2?0:dy};
  const a=!!pad.buttons?.[0]?.pressed;
  if(a&&!state.gamepadActionHeld&&!state.overlay)interact();
  state.gamepadActionHeld=a;
+ const b=!!pad.buttons?.[1]?.pressed;
+ if(b&&!state.gamepadTalkHeld&&!state.overlay)talkResident();
+ state.gamepadTalkHeld=b;
 }
 function loop(now){
  const dt=state.last?Math.min((now-state.last)/1000,.05):0;
@@ -436,6 +493,7 @@ document.addEventListener("keydown",ev=>{
    return;
  }
  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD"].includes(ev.code)){ev.preventDefault();state.keys.add(ev.code)}
+ if(ev.code==="KeyT"&&!ev.repeat&&!["INPUT","TEXTAREA","BUTTON"].includes(ev.target?.tagName)){ev.preventDefault();talkResident()}
  if(["KeyE","Enter"].includes(ev.code)&&!ev.repeat&&ev.target?.tagName!=="BUTTON"&&ev.target?.tagName!=="A"){ev.preventDefault();interact()}
 });
 document.addEventListener("keyup",ev=>{
@@ -451,6 +509,7 @@ window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();if(st
 document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear();saveProgress()}});
 window.addEventListener("pagehide",()=>saveProgress());
 el("interact").addEventListener("click",interact);
+el("talk-resident").addEventListener("click",talkResident);
 el("challenge").addEventListener("click",startEncounter);
 el("battle-close").addEventListener("click",()=>closeModal("battle"));
 el("battle-retry").addEventListener("click",retryBattle);

@@ -33,6 +33,10 @@ All effects, illustrations and dialogue are original. The experience is a compac
 
 [Welcome to Stemside](play.html) now includes a **13-souvenir collectible passport**, adventure journal, five fictional progress ranks, and **local browser saves**. Discover every unique business once to receive its original one-of-a-kind trinket. Quest stages, Page 42 choices, corporate victories, Tweedleball medal, location, and passport persist after a reload where browser storage is available. Saves never leave the browser, and gameplay remains playable if storage is unavailable. **RESET RUN + LOCAL SAVE** deliberately starts over (with a confirmation prompt). See [v0.6 documentation](docs/PLAYABLE_V06.md).
 
+### Streets with actual residents: v0.7
+
+**Stemside now has four original street residents** to approach and talk to: Marty, Buffer Bob, Chuck, and Lenny Smokins. They appear as animated original canvas characters. The game now includes an optional four-step side quest, **The Tape That Hasn't Happened Yet**: ask Marty about an unfilmed VHS, check Snublishers' prize mail, ask Buffer Bob to repair the paperwork, and return to Marty. Completion awards **Tomorrow's Film Credit** (a 14th *bonus* collectible, outside the 13-stamp passport) and 50 XP. Progress is included in the local browser save, with automatic migration of v0.6 saves and no loss of your existing coffee mission, Tweedleball medal, encounters, script rewrites, or collectibles. Read [v0.7 development notes](docs/PLAYABLE_V07.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
