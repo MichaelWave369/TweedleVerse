@@ -11,6 +11,10 @@ An original, absurdist silicon-comedy universe created by **Michael Wave / Backy
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
 
+### Explore the streets
+
+[Stemside Street Explorer](stemside.html) adds a clickable district map, 13 local landmarks, local information cards, surprise Tweedsie cameos, and a short three-stop Coffee Run story mission. This is an interactive map/story prototype, not an open-world game yet. See [Pages and Explorer guide](docs/PAGES_AND_EXPLORER.md) for the GitHub Pages setup and manual publish gate. The deployment workflow does not run unless the repository variable `ENABLE_TWEEDLEVERSE_PAGES=true` is set after enabling Pages.
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
