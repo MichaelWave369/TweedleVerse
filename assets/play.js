@@ -540,7 +540,9 @@ function loop(now){
  const dt=state.last?Math.min((now-state.last)/1000,.05):0;
  state.last=now;state.clock+=dt;
  gamepad();
- if(state.overlay==="arena"){
+ if(state.overlay==="gig"){
+   advanceGigFrame(dt);
+ }else if(state.overlay==="arena"){
    if(state.arena.charging)state.arena.charge=Math.min(1,state.arena.charge+dt*.54);
    syncArena();
  }else if(!state.overlay&&state.places.length){
@@ -559,6 +561,7 @@ document.addEventListener("keydown",ev=>{
  if(state.overlay){
    if(ev.code==="Escape"){ev.preventDefault();closeModal(state.overlay);return}
    if(ev.code==="Tab"){const modal=el(state.overlay+"-overlay");const nodes=Array.from(modal.querySelectorAll("button:not(:disabled),input:not(:disabled)"));if(nodes.length){const first=nodes[0],last=nodes[nodes.length-1];if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus()}else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus()}}return}
+   if(state.overlay==="gig"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();hitGig();return}
    if(state.overlay==="battle"&&/^Digit[1-4]$/.test(ev.code)&&ev.target?.tagName!=="INPUT"&&!ev.repeat){ev.preventDefault();battleMove(PARTY[Number(ev.code.slice(-1))-1].id);return}
    if(state.overlay==="arena"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="INPUT"&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();beginCharge()}
    return;
@@ -581,6 +584,10 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last
 window.addEventListener("pagehide",()=>saveProgress());
 el("interact").addEventListener("click",interact);
 el("talk-resident").addEventListener("click",talkResident);
+el("gig-open").addEventListener("click",showOpen);
+el("gig-close").addEventListener("click",()=>closeModal("gig"));
+el("gig-start").addEventListener("click",startGigShow);
+el("gig-hit").addEventListener("click",hitGig);
 el("challenge").addEventListener("click",startEncounter);
 el("battle-close").addEventListener("click",()=>closeModal("battle"));
 el("battle-retry").addEventListener("click",retryBattle);
@@ -606,5 +613,7 @@ el("easy-aim").addEventListener("change",syncArena);
   say(null,recovered?"Welcome back to Stemside. Your bureaucratic burdens have been remembered.":"City Hall approved your walking permit. Find CoffeeChucks to begin your perfectly ordinary errand.");
   state.saveReady=true;
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
+ for(let i=0;i<BEAT_COUNT;i++){const note=document.createElement("span");note.textContent=String(i+1);el("gig-notes").append(note)}
+ el("gig-easy").checked=matchMedia("(prefers-reduced-motion: reduce)").matches;
  questUI();renderBattleProgress();refreshPassport();resize();updateNearby();requestAnimationFrame(loop);
 })();
