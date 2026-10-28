@@ -38,7 +38,8 @@ export function playTurn(battle,action,wins=[]){
  next.tweedsieUsed=battle.tweedsieUsed||isTweedsie;
  const actionLog=isTweedsie?"Tweedsie pops out of the receipt printer and strikes out the entire invoice.":move.effect;
  // Self-defeating prototypes can exhaust the party before the invoice is defeated.
- if(next.composure===0){next.status="lost";next.shield=shield;next.last=actionLog;next.log="The prototype crashed the whole meeting. Try a more balanced plan.";return next;}\n // A winning turn ends the encounter before a foe retaliation.
+ if(next.composure===0){next.status="lost";next.shield=shield;next.last=actionLog;next.log="The prototype crashed the whole meeting. Try a more balanced plan.";return next;}
+ // A winning turn ends the encounter before a foe retaliation.
  if(next.pressure>=foe.target){
    next.status="won";next.shield=shield;next.last=actionLog;
    next.log=foe.victory;return next;
