@@ -41,6 +41,10 @@ All effects, illustrations and dialogue are original. The experience is a compac
 
 [Welcome to Stemside](play.html) now includes **The Gig That Almost Wasn't**, a five-step quest. Talk to Lenny, find his set list at Lackluster Video, recover the stage power adapter at Taco McBurger Bell, return to Lenny, and perform an **original eight-beat visual rhythm game** at the Southside Stems League arena. Score **9/16** to win Lenny's Gold-Plated Backstage Pass and a **one-time 60 XP** bonus. The challenge uses original visual cues with **no existing songs, melodies, sound samples, or remote music services**. A wider timing window improves accessibility. The same local save key now accepts **versions 1 and 2** and migrates them into v3 without losing earlier achievements. See [v0.8 design and QA](docs/PLAYABLE_V08.md).
 
+### Quest Compass, City Radar & Save Vault: v0.9
+
+[Welcome to Stemside](play.html) now includes a **live minimap**, a selectable quest compass to locate Coffee Run stops, Marty, Lenny, corporate disputes, Page 42 or missing passport stamps, and a privacy-first **Portable Save Vault**. You can download a fully validated game save as a JSON file and import it into another browser with a confirmation. Older raw v1/v2 saves still migrate through the existing decoder; invalid or oversized files are safely refused. All game and quest features from v0.8 remain available. No GPS, remote map or upload service is used. See the [v0.9 guide](docs/PLAYABLE_V09.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
