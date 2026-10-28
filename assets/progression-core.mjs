@@ -43,7 +43,7 @@ export function decodeSave(data){
  const wins=uniqueKnown(data.wins,new Set(Object.keys(ENCOUNTERS)),Object.keys(ENCOUNTERS).length);
  const heard=uniqueKnown(data.story?.heard,new Set(["coffeechucks","lackluster","tweedcorp"]),3);
  const rewrite=typeof data.story?.rewrite==="string"&&Object.hasOwn(REWRITES,data.story.rewrite)?data.story.rewrite:null;
- const points=Math.min(heard.length,int(data.story?.points,3));
+ const points=Math.min(heard.length,Number.isInteger(data.story?.points)?clamp(data.story.points,0,3):0);
  const player=isObj(data.player)?{
   x:clamp(Number.isFinite(data.player.x)?data.player.x:start.player.x,32,WORLD.width-32),
   y:clamp(Number.isFinite(data.player.y)?data.player.y:start.player.y,32,WORLD.height-32)
