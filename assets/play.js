@@ -111,6 +111,7 @@ function say(place,text){
 }
 function renderTapeQuest(){
  el("tape-status").textContent=tapeStatus(state.tapeQuest);
+ el("resident-label").textContent=state.tapeQuest===4?"MARTY HAS HIS MOVIE BACK. THE FUTURE IS SOMEHOW EVEN MORE OVERDUE.":"CURRENT LEAD: "+TAPE_STEPS[state.tapeQuest].title;
  for(const [i,item] of Array.from(el("tape-steps").children).entries()){
   item.classList.toggle("done",i<state.tapeQuest);
   item.classList.toggle("next",i===state.tapeQuest);
@@ -361,11 +362,11 @@ function talkResident(){
  const speech=npcReply(npc.id,old);
  state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
  say({name:npc.name},speech);
- el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
  if(old!==state.tapeQuest){
    questUI();refreshPassport();
    saveProgress(state.tapeQuest===4?"MYSTERY SOLVED · FUTURE FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE RECORDED · SAVED LOCALLY");
  }
+ el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
 }
 
 function interact(){
@@ -377,10 +378,11 @@ function interact(){
  state.quest=advanceQuest(state.quest,place.id);
  const oldTape=state.tapeQuest;
  state.tapeQuest=advanceTapeQuest(state.tapeQuest,"place",place.id);
- if(state.tapeQuest!==oldTape)el("resident-label").textContent="PRIZE MAIL RECOVERED. THE PACKAGE IS ADDRESSED TO YESTERDAY. TALK TO BUFFER BOB.";
+ const tapeChanged=state.tapeQuest!==oldTape;
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
+ if(tapeChanged)el("resident-label").textContent="PRIZE MAIL RECOVERED. THE PACKAGE IS ADDRESSED TO YESTERDAY. TALK TO BUFFER BOB.";
  say(place,ending.completed?ending.message:(dialogues[place.id]||place.description));
  refreshPassport();
  saveProgress(newStamp?"PASSPORT STAMPED: "+LANDMARK_SOUVENIRS[place.id].name+" · SAVED LOCALLY":"STEMSIDE PROGRESS SAVED LOCALLY");
