@@ -28,7 +28,6 @@
     renderMission();
     if(!state.places.length)return;
     select("tweedcorp",false);
-    byId("quest-card-placeholder");
   }
   function chooseFilter(next) {
     state.filter=next;
