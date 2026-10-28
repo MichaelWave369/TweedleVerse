@@ -10,6 +10,10 @@
 
 The game now includes three story interiors, dialogue options, Plot Points, and a deterministic two-choice rewrite system. Finishing the Coffee Run and talking to two distinct interior residents allows the player to edit Page 42, changing the next objective to CoffeeChucks or Spacealite Tower and triggering a distinct ending. See [v0.4 notes](PLAYABLE_V04.md). This is authored branching narrative, not unconstrained generative dialogue.
 
+## Original encounter system (v0.5)
+
+Three of the existing businesses have opt-in, turn-based **corporate dispute encounters**, with distinct nonviolent enemy meters, four party abilities, repeatable wins/losses, and a limited Tweedsie assist unlocked by two unique wins. This supplements rather than replacing the walkable world, Coffee Run, authored dialogue and Tweedleball. Details and mechanics: [PLAYABLE_V05](PLAYABLE_V05.md). This is an original satirical RPG experiment, not a reproduction of any existing game's characters, art, music, scripts or UI.
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.
