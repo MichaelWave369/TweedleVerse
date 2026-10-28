@@ -18,6 +18,10 @@ Three of the existing businesses have opt-in, turn-based **corporate dispute enc
 
 The playable game now tracks first visits to every one of Stemside's thirteen business landmarks, awards one original souvenir per unique landmark, computes fictional rank from existing achievements, displays a journal of coffee, Page 42, arena, and corporate events, and restores verified local browser saves. The collection is an authored feedback loop, not a physical-world product purchase. See [PLAYABLE_V06](PLAYABLE_V06.md).
 
+## Living streets and a second authored quest (v0.7)
+
+Four silicon residents stand or drift subtly around original Stemside locations and can be spoken to without entering a storefront. Marty, Buffer Bob, Chuck and Lenny have their own small dialogue and positions, and the optional four-stage Missing Tomorrow Tape quest yields a unique bonus collectible and 50 XP. Local save data migrates from v0.6 to v0.7 without wiping progress. See [PLAYABLE_V07](PLAYABLE_V07.md).
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.

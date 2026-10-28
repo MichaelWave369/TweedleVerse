@@ -3,9 +3,10 @@
 import {WORLD,clamp} from "./game-core.mjs";
 import {initialStory,REWRITES} from "./story-core.mjs";
 import {ENCOUNTERS} from "./battle-core.mjs";
+import {TAPE_REWARD} from "./residents-core.mjs";
 
 export const SAVE_KEY="tweedleverse.stemside.save.v1";
-export const SAVE_VERSION=1;
+export const SAVE_VERSION=2; // Same localStorage key so v0.6 saves migrate automatically.
 export const LANDMARK_SOUVENIRS=Object.freeze({
  "whole-moods":{name:"Mood Receipt",description:"Certifies that your feelings were properly billed."},
  "coffeecharles":{name:"Executive Stirrer",description:"Same coffee. Fancy little stick."},
@@ -34,10 +35,10 @@ const int=(n,max,def=0)=>Number.isInteger(n)&&n>=0&&n<=max?n:def;
 const uniqueKnown=(items,known,limit)=>Array.isArray(items)?
   [...new Set(items.filter(x=>typeof x==="string"&&known.has(x)))].slice(0,limit):[];
 export function initialProgress(){
- return {version:SAVE_VERSION,player:{x:215,y:690},quest:0,medal:false,story:initialStory(),wins:[],visited:[],interactions:0};
+ return {version:SAVE_VERSION,player:{x:215,y:690},quest:0,medal:false,story:initialStory(),wins:[],visited:[],interactions:0,tapeQuest:0};
 }
 export function decodeSave(data){
- if(!isObj(data)||data.version!==SAVE_VERSION)return null;
+ if(!isObj(data)||![1,SAVE_VERSION].includes(data.version))return null;
  const start=initialProgress();
  const visits=uniqueKnown(data.visited,new Set(LANDMARK_IDS),LANDMARK_IDS.length);
  const wins=uniqueKnown(data.wins,new Set(Object.keys(ENCOUNTERS)),Object.keys(ENCOUNTERS).length);
@@ -54,7 +55,7 @@ export function decodeSave(data){
   version:SAVE_VERSION,
   player,quest,medal:data.medal===true,
   story:{points,heard,rewrite:validRewrite,finished:validRewrite!==null&&data.story?.finished===true},
-  wins,visited:visits,interactions:int(data.interactions,1000000)
+  wins,visited:visits,interactions:int(data.interactions,1000000),tapeQuest:int(data.tapeQuest,4)
  };
 }
 export function encodeSave(progress){
@@ -67,8 +68,10 @@ export function visitLandmark(progress,id){
  return {...progress,visited:[...progress.visited,id]};
 }
 export function inventory(progress){
- return progress.visited.filter(id=>Object.hasOwn(LANDMARK_SOUVENIRS,id))
+ const items=progress.visited.filter(id=>Object.hasOwn(LANDMARK_SOUVENIRS,id))
   .map(id=>({id,...LANDMARK_SOUVENIRS[id]}));
+ if(progress.tapeQuest===4)items.push(TAPE_REWARD);
+ return items;
 }
 export function experience(progress){
  return progress.visited.length*5
@@ -77,7 +80,8 @@ export function experience(progress){
    +(progress.quest===3?25:0)
    +(progress.medal?35:0)
    +progress.wins.length*30
-   +(progress.story.finished?45:0);
+   +(progress.story.finished?45:0)
+   +(progress.tapeQuest===4?50:0);
 }
 export function rankFor(xp){
  const score=Number.isFinite(xp)?Math.max(0,xp):0;
@@ -93,6 +97,8 @@ export function passportStatus(progress){
 export function journalEntries(progress,places=[]){
  const names=new Map(places.map(p=>[p.id,p.name]));
  const entries=[];
+ if(progress.tapeQuest===4)entries.push("TOMORROW'S TAPE: Returned to Marty. Film credit awarded.");
+ else if(progress.tapeQuest>0)entries.push("TOMORROW'S TAPE: Clue "+progress.tapeQuest+" of 4 uncovered.");
  if(progress.story.finished)entries.push("PAGE 42 REWRITTEN: "+REWRITES[progress.story.rewrite].label+". Corporate reality was amended.");
  if(progress.medal)entries.push("TGA PRACTICE: Earned a Southside Stems League medal.");
  for(const id of progress.wins)entries.push("RESOLVED: "+ENCOUNTERS[id].title+".");

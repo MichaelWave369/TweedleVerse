@@ -14,7 +14,7 @@
 <a class="skip" href="#game-area">Skip to game</a>
 <header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
 <main id="game-area">
-<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.6</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>A silicon workplace comedy you can walk through. Meet the businesses, collect a completely unnecessary errand, compete in a Tweedleball practice match, enter three original storefront scenes, and rewrite the episode's ending, and defeat corporate bureaucracy in original turn-based encounters, and build a souvenir passport that remembers your progress.</p></div>
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.7</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore a ridiculous silicon town, meet its wandering residents, solve a mystery involving tomorrow's missing movie, compete in Tweedleball, rewrite the script, and outsmart absurd corporations. Your passport saves locally.</p></div>
 <div class="game-layout">
 <section class="game-panel" aria-label="Interactive Stemside game">
 <div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span><span id="plot-points">PLOT POINTS: 0</span><span id="city-rebels">DISPUTES: 0 / 3</span><span id="passport-rank-top">RANK: UNPAID INTERN</span></div>
@@ -24,15 +24,27 @@
 <button type="button" data-dir="up" aria-label="Move up">↑</button>
 <div><button type="button" data-dir="left" aria-label="Move left">←</button><button type="button" data-dir="down" aria-label="Move down">↓</button><button type="button" data-dir="right" aria-label="Move right">→</button></div>
 </div>
-<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="enter" class="btn secondary" type="button" disabled>ENTER SHOP</button><button id="challenge" class="btn secondary" type="button" disabled>CHALLENGE CORPORATE NONSENSE</button><button id="reset" class="btn secondary" type="button">RESET RUN + LOCAL SAVE</button></div>
+<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="talk-resident" class="btn secondary" type="button" disabled>TALK TO RESIDENT · T</button><button id="enter" class="btn secondary" type="button" disabled>ENTER SHOP</button><button id="challenge" class="btn secondary" type="button" disabled>CHALLENGE CORPORATE NONSENSE</button><button id="reset" class="btn secondary" type="button">RESET RUN + LOCAL SAVE</button></div>
 </div>
 </section>
 <aside class="sidebar">
 <div class="card"><span class="eyebrow">TWEEDCORP CO. · FIELD ASSIGNMENT</span><h2>THE COFFEE RUN</h2><p id="quest-text">Your shift is starting. Get a coffee at CoffeeChucks. It cannot possibly become a sports career.</p><ol id="quest-list"><li>Visit CoffeeChucks</li><li>Visit Stems League Arena</li><li>Report to TweedCorp HQ</li></ol><p class="state-label" id="quest-status" role="status" aria-live="polite">MISSION ACTIVE</p></div>
-<div class="card info"><span class="eyebrow">STEMSIDE LOCAL INTERACTIONS</span><h2 id="place-heading">NO BUSINESS SELECTED</h2><p id="place-message" aria-live="polite">Walk toward a glowing storefront and press E, tap Interact, or press the A button on your controller.</p><p class="help">WASD / arrows / gamepad left stick to walk. E / Enter / gamepad A to interact. Mobile: touch D-pad. Three locations offer an ENTER SHOP button with character conversations. Three corporate locations have optional turn-based encounters. Game runs entirely in your browser without accounts.</p>
+<div class="card info"><span class="eyebrow">STEMSIDE LOCAL INTERACTIONS</span><h2 id="place-heading">NO BUSINESS SELECTED</h2><p id="place-message" aria-live="polite">Walk toward a glowing storefront and press E, tap Interact, or press the A button on your controller.</p><p class="help">WASD / arrows / gamepad stick to walk. E / gamepad A to interact; T / gamepad B to talk to nearby residents. Mobile: touch D-pad. Three locations offer an ENTER SHOP button with character conversations. Three corporate locations have optional turn-based encounters. Game runs entirely in your browser without accounts.</p>
 <button id="script-open" class="btn primary" type="button" disabled>READ THE EPISODE SCRIPT</button>
 <p class="help" id="script-status" aria-live="polite">Complete the coffee run to unlock the script.</p></div>
-<div class="card battle-info"><span class="eyebrow">SOUTH STEMSIDE DISPUTE LEAGUE</span><h2>CORPORATE DISPUTES</h2><p id="battle-status" aria-live="polite">0 / 3 resolved. Find CoffeeCharles, Whole Moods, or Spacealite to challenge their nonsense.</p><p id="battle-reward" class="state-label">TWEEDSIE'S LEGAL ASSISTANCE: LOCKED</p></div>
+<div class="card tape-card">
+ <span class="eyebrow">NEW SIDE QUEST · THE CASE OF THE MISSING TOMORROW</span>
+ <h2>THE TAPE THAT HASN'T HAPPENED YET</h2>
+ <p id="resident-label" aria-live="polite">Meet Marty near Lackluster Video. He's somehow lost a movie from next week.</p>
+ <ol id="tape-steps" class="tape-steps">
+   <li>Talk to Marty near Lackluster Video</li>
+   <li>Check Snublishers Clearing House</li>
+   <li>Talk to Buffer Bob outside TweedCorp</li>
+   <li>Return the tape to Marty</li>
+ </ol>
+ <p class="state-label" id="tape-status" role="status" aria-live="polite">SIDE QUEST NOT STARTED</p>
+ </div>
+ <div class="card battle-info"><span class="eyebrow">SOUTH STEMSIDE DISPUTE LEAGUE</span><h2>CORPORATE DISPUTES</h2><p id="battle-status" aria-live="polite">0 / 3 resolved. Find CoffeeCharles, Whole Moods, or Spacealite to challenge their nonsense.</p><p id="battle-reward" class="state-label">TWEEDSIE'S LEGAL ASSISTANCE: LOCKED</p></div>
 <div class="card passport-card" id="passport">
   <span class="eyebrow">STEMSIDE TOURISM BUREAU · v0.6</span>
   <h2>THE OFFICIAL NON-OFFICIAL PASSPORT</h2>
@@ -43,7 +55,7 @@
   <h3>THE ADVENTURE JOURNAL</h3>
   <ol id="passport-journal" class="passport-journal"><li>Your first entry will be a complaint.</li></ol>
   <div class="save-actions"><button id="save-now" class="btn primary" type="button">SAVE LOCALLY NOW</button></div>
-  <p id="save-status" class="save-status" role="status" aria-live="polite">Local-only saves: no accounts, cloud uploads, or analytics.</p>
+  <p id="save-status" class="save-status" role="status" aria-live="polite">Local-only saves: no accounts, cloud uploads, or analytics. v0.6 progress migrates automatically.</p>
 </div>
 <div class="card broadcast"><span>SPACEALITE™ CORPORATE ALERT</span><strong>YOU ARE BEING CHARGED FOR STANDING STILL.</strong><p>Fees may be waived upon satisfactory completion of this sentence.</p></div>
 </aside>
