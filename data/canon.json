@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "0.1.0",
+  "project": "TweedleVerse",
+  "tagline": "Same universe. Different dimensions. Absolutely no refunds.",
+  "status": "seed",
+  "setting": {
+    "city": "Stemside",
+    "species": "fictional silicon people",
+    "districts": [
+      "South Stemside",
+      "North Stemside"
+    ]
+  },
+  "franchises": [
+    {
+      "name": "Practical Smokers",
+      "type": "animated sketch / workplace series"
+    },
+    {
+      "name": "Welcome to Stemside",
+      "type": "proposed adventure game"
+    },
+    {
+      "name": "TGA Pro Tour",
+      "type": "fictional sport and possible game"
+    },
+    {
+      "name": "Spacealite",
+      "type": "fictional cable network"
+    }
+  ],
+  "entities": [
+    {
+      "id": "tcc",
+      "name": "TweedCorp Co.",
+      "type": "corporation",
+      "status": "locked"
+    },
+    {
+      "id": "spacealite",
+      "name": "Spacealite",
+      "type": "corporation",
+      "status": "locked"
+    },
+    {
+      "id": "reggie",
+      "name": "Reggie Bands III",
+      "type": "character",
+      "status": "locked"
+    },
+    {
+      "id": "tweedsie",
+      "name": "Tweedsie",
+      "type": "character",
+      "status": "locked"
+    },
+    {
+      "id": "lenny",
+      "name": "Lenny Smokins",
+      "type": "character",
+      "status": "locked"
+    },
+    {
+      "id": "chip",
+      "name": "Chip Chronic Chipwell",
+      "type": "character",
+      "status": "proposed"
+    },
+    {
+      "id": "dank",
+      "name": "Dank-9000",
+      "type": "character",
+      "status": "proposed"
+    },
+    {
+      "id": "bob",
+      "name": "Buffer Bob",
+      "type": "character",
+      "status": "proposed"
+    },
+    {
+      "id": "terpenstein",
+      "name": "Professor Terpenstein",
+      "type": "character",
+      "status": "proposed"
+    }
+  ],
+  "botany": {
+    "commonName": "Tweed",
+    "fictionalTaxa": [
+      "Tweedimus Silativa",
+      "Tweedimus Indicone"
+    ],
+    "grades": [
+      "Reggie",
+      "Mids",
+      "Loud"
+    ]
+  },
+  "landmarks": [
+    {
+      "name": "CoffeeChucks",
+      "district": "South Stemside"
+    },
+    {
+      "name": "Reggie's Reggie",
+      "district": "South Stemside"
+    },
+    {
+      "name": "Lackluster Video",
+      "district": "South Stemside"
+    },
+    {
+      "name": "Taco McBurger Bell",
+      "district": "South Stemside"
+    },
+    {
+      "name": "Snublishers Clearing House",
+      "district": "South Stemside"
+    },
+    {
+      "name": "CoffeeCharles",
+      "district": "North Stemside"
+    },
+    {
+      "name": "Whole Moods",
+      "district": "North Stemside"
+    },
+    {
+      "name": "Le Biestro",
+      "district": "North Stemside"
+    },
+    {
+      "name": "Royal Tweedleball Club",
+      "district": "North Stemside"
+    },
+    {
+      "name": "North Stemside Invitational",
+      "district": "North Stemside"
+    }
+  ],
+  "sports": {
+    "name": "Tweedleball",
+    "tour": "TGA Pro Tour",
+    "localLeague": "Southside Stems League",
+    "championship": "Grand Stem",
+    "rulebookStatus": "proposed"
+  }
+}
