@@ -119,11 +119,20 @@ function renderTapeQuest(){
   item.classList.toggle("next",i===state.tapeQuest);
  }
 }
+function renderGigQuest(){
+ el("gig-status").textContent=gigStatus(state.gigQuest);
+ for(const [i,item] of Array.from(el("gig-steps").children).entries()){
+  item.classList.toggle("done",i<state.gigQuest);
+  item.classList.toggle("next",i===state.gigQuest);
+ }
+ const place=nearest();
+ el("gig-open").disabled=!(place?.id==="stems-league"&&state.gigQuest>=4);
+}
 function questUI(){
  el("progress").textContent="THE COFFEE RUN · "+state.quest+"/3";
  el("quest-text").textContent=questLines[state.quest];
  el("quest-status").textContent=state.quest===3?"COMPLETED · COFFEE STILL PENDING":"MISSION ACTIVE";
- renderStoryUI();renderTapeQuest();
+ renderStoryUI();renderTapeQuest();renderGigQuest();
  for(const [i,li] of Array.from(el("quest-list").children).entries()){
   li.classList.toggle("done",state.quest>i);
  }
@@ -362,12 +371,14 @@ function talkResident(){
  const npc=nearestResident(state.player.x,state.player.y,state.clock,undefined,reduced);
  if(!npc)return;
  const old=state.tapeQuest;
- const speech=npcReply(npc.id,old);
+ const oldGig=state.gigQuest;
+ const speech=npc.id==="lenny"?gigReply(oldGig):npcReply(npc.id,old);
+ state.gigQuest=advanceGigQuest(oldGig,"npc",npc.id);
  state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
  say({name:npc.name},speech);
- if(old!==state.tapeQuest){
+ if(old!==state.tapeQuest||oldGig!==state.gigQuest){
    questUI();refreshPassport();
-   saveProgress(state.tapeQuest===4?"MYSTERY SOLVED · FUTURE FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE RECORDED · SAVED LOCALLY");
+   saveProgress(oldGig!==state.gigQuest?"LENNY CONCERT CLUE SAVED LOCALLY":state.tapeQuest===4?"MYSTERY SOLVED · FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE SAVED LOCALLY");
  }
  el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
 }
@@ -382,6 +393,7 @@ function interact(){
  const oldTape=state.tapeQuest;
  state.tapeQuest=advanceTapeQuest(state.tapeQuest,"place",place.id);
  const tapeChanged=state.tapeQuest!==oldTape;
+ state.gigQuest=advanceGigQuest(state.gigQuest,"place",place.id);
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
