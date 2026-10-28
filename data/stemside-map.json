@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "0.2.0",
+  "city": "Stemside",
+  "status": "fictional prototype",
+  "places": [
+    {
+      "id": "whole-moods",
+      "name": "Whole Moods",
+      "mapLabel": "Whole Moods",
+      "district": "North Stemside",
+      "type": "Upscale grocery",
+      "icon": "✳",
+      "x": 19,
+      "y": 25,
+      "description": "The leaves are organic, the prices are astronomical, and every shopping cart comes with a lifestyle coach.",
+      "tagline": "Your mood is mandatory."
+    },
+    {
+      "id": "coffeecharles",
+      "name": "CoffeeCharles",
+      "mapLabel": "CoffeeCharles",
+      "district": "North Stemside",
+      "type": "Luxury cafe",
+      "icon": "☕",
+      "x": 44,
+      "y": 24,
+      "description": "Same beans as CoffeeChucks, now served with a velvet napkin and a surcharge for pronouncing the menu incorrectly.",
+      "tagline": "For the Distinguished Caffeinated."
+    },
+    {
+      "id": "biestro",
+      "name": "Le Biestro",
+      "mapLabel": "Le Biestro",
+      "district": "North Stemside",
+      "type": "Restaurant",
+      "icon": "♜",
+      "x": 64,
+      "y": 34,
+      "description": "A single microscopic Tweed leaf arrives on a seven-foot plate. The waiter begins by explaining its childhood.",
+      "tagline": "You are paying for the description."
+    },
+    {
+      "id": "royal-club",
+      "name": "Royal Tweedleball Club",
+      "mapLabel": "Royal TGA Club",
+      "district": "North Stemside",
+      "type": "Tweedleball club",
+      "icon": "🏆",
+      "x": 87,
+      "y": 18,
+      "description": "Northside athletes have expensive paddles and rules they invented on the drive over. Everyone insists they are professionals.",
+      "tagline": "Membership: hereditary, apparently."
+    },
+    {
+      "id": "north-invitational",
+      "name": "North Stemside Invitational",
+      "mapLabel": "Invitational",
+      "district": "North Stemside",
+      "type": "Championship venue",
+      "icon": "★",
+      "x": 83,
+      "y": 39,
+      "description": "The Grand Stem is awarded here. Local qualifiers are welcome only because Reggie Bands signed the rulebook himself.",
+      "tagline": "NO SOUTH STEMMERS. Unless legally required."
+    },
+    {
+      "id": "spacealite",
+      "name": "Spacealite Executive Tower",
+      "mapLabel": "Spacealite",
+      "district": "North Stemside",
+      "type": "Broadcasting monopoly",
+      "icon": "▣",
+      "x": 39,
+      "y": 41,
+      "description": "Reginald Von Bandwidth III sees every dimension from this building and bills them all for the view.",
+      "tagline": "You Have Infinite Choices. None Are Included."
+    },
+    {
+      "id": "tweedcorp",
+      "name": "TweedCorp Co.",
+      "mapLabel": "TweedCorp HQ",
+      "district": "South Stemside",
+      "type": "Corporate headquarters",
+      "icon": "⚙",
+      "x": 52,
+      "y": 63,
+      "description": "Home of four employees who have never seen a single rulebook they couldn't accidentally weaponize. Your employment may be fictional.",
+      "tagline": "We Take Productivity Seriously. Nobody Else Does."
+    },
+    {
+      "id": "coffeechucks",
+      "name": "CoffeeChucks",
+      "mapLabel": "CoffeeChucks",
+      "district": "South Stemside",
+      "type": "Coffee shop",
+      "icon": "☕",
+      "x": 13,
+      "y": 70,
+      "description": "Fast, cheap, and aggressively uninterested in your beverage's emotional journey. A local institution.",
+      "tagline": "It's Coffee, Chuck. Drink It."
+    },
+    {
+      "id": "stems-league",
+      "name": "Southside Stems League Arena",
+      "mapLabel": "Stems League",
+      "district": "South Stemside",
+      "type": "Tweedleball arena",
+      "icon": "◉",
+      "x": 37,
+      "y": 85,
+      "description": "Duct tape, donated equipment, and athletes who care more than their Northside sponsors could ever understand.",
+      "tagline": "Real players. Questionable scoreboard."
+    },
+    {
+      "id": "lackluster",
+      "name": "Lackluster Video",
+      "mapLabel": "Lackluster",
+      "district": "South Stemside",
+      "type": "Video rental",
+      "icon": "▤",
+      "x": 76,
+      "y": 72,
+      "description": "A VHS shop in an age of multiversal streaming. They have the movie you want, except apparently they don't.",
+      "tagline": "Be Kind. Rewind. Whatever."
+    },
+    {
+      "id": "taco-bell",
+      "name": "Taco McBurger Bell",
+      "mapLabel": "Taco McBurger",
+      "district": "South Stemside",
+      "type": "Fast food",
+      "icon": "✦",
+      "x": 59,
+      "y": 88,
+      "description": "A taco inside a burger inside a corporate disclaimer. Their drive-through sells whatever the menu forgot to print.",
+      "tagline": "Think Outside the Bun. Then Put It Back."
+    },
+    {
+      "id": "reggies-reggie",
+      "name": "Reggie's Reggie",
+      "mapLabel": "Reggie's Reggie",
+      "district": "South Stemside",
+      "type": "Discount Tweed",
+      "icon": "♣",
+      "x": 17,
+      "y": 91,
+      "description": "A bargain-bin fictional Tweed retailer where the receipts sometimes have more leaves than the bags.",
+      "tagline": "Cheap in a Pinch!"
+    },
+    {
+      "id": "snublishers",
+      "name": "Snublishers Clearing House",
+      "mapLabel": "Snublishers",
+      "district": "South Stemside",
+      "type": "Sweepstakes",
+      "icon": "$",
+      "x": 89,
+      "y": 89,
+      "description": "You've won a giant check! The microscopic fine print says the prize is redeemable next century in a collapsed dimension.",
+      "tagline": "You May Already Be Owed Absolutely Nothing!"
+    }
+  ]
+}
