@@ -6,6 +6,27 @@ An original, absurdist silicon-comedy universe created by **Michael Wave / Backy
 
 **TweedleVerse** is the umbrella world. **Practical Smokers** is its flagship workplace / hidden-camera-style comedy. **Welcome to Stemside** is its proposed explorable game. **TGA Pro Tour** is the world's ridiculous obstacle-course sport, **Tweedleball**. **Spacealite™** is the predatory interdimensional cable monopoly.
 
+
+## Enter the portal
+
+The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
+
+### Development bibles
+
+- [World and canon](docs/WORLD_BIBLE.md)
+- [Characters and relationships](docs/CHARACTERS.md)
+- [Practical Smokers series, skits, and season arc](docs/SHOW_BIBLE.md)
+- [Tweedleball and the TGA tournament](docs/TWEEDLEBALL.md)
+- [Welcome to Stemside game concept](docs/GAME_DESIGN.md)
+- [Production standards and rights](docs/PRODUCTION.md)
+- [Structured seed canon](data/canon.json)
+
+### Try the portal locally
+
+Run `python -m http.server 8000` from the repository folder and open `http://localhost:8000`. The website has no runtime dependency on any remote font, image or API. Run `npm test` with Node 22+ to validate the lore data and static entrypoint.
+
+GitHub Pages hosting can be configured **after** the portal PR is merged; deployment is not claimed to be live yet.
+
 ## Welcome to Stemside
 
 A sprawling, unequal retro-futuristic factory town inhabited by fictional *silicon people*. On the south side: scrappy residents, ridiculous businesses, actual community, and **Reggie's Reggie: “Cheap in a Pinch!”** On the north side: luxury shops, snobbery, fancy coffee, and the **North Stemside Invitational**. Both sides suffer under the same corporate absurdity.
@@ -45,6 +66,6 @@ The first major season arc follows a reluctant TweedCorp worker who wins the loc
 
 **Originality / rights:** This is a distinct fictional world. Comedic touchstones inform energy, not copyable characters, scenes, branding, lyrics, audio, or visual designs. All songs and assets should be original or properly licensed. This is satire and fictional entertainment, not a real cannabis-product brand or consumption instruction.
 
-**Status:** Seed repository, with story and implementation foundations evolving via reviewable pull requests.
+**Status:** v0.1 foundation. Some details (especially four lead character names and Tweedleball rules) remain proposals, not finalized canon.
 
 © 2026 Michael Wave / PHI369 Labs. License to be selected deliberately; no third-party copyrighted materials included.
