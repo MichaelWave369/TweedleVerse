@@ -3,13 +3,14 @@ import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite
 import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,medalText} from "./battle-core.mjs";
 import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmark,inventory,experience,rankFor,passportStatus,journalEntries,LANDMARK_SOUVENIRS} from "./progression-core.mjs";
 import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,nearestResident,npcReply} from "./residents-core.mjs";
+import {GIG_STEPS,BEAT_COUNT,BEAT_TIMES,WIN_SCORE,MAX_SCORE,freshShow,beginShow,tickShow,hitBeat,beatProgress,gigStatus,gigReply,advanceGigQuest} from "./gig-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,nearResidentId:null,battle:null,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,gigQuest:0,gigShow:freshShow(),nearResidentId:null,battle:null,overlay:null,returnFocus:null,
  saveReady:false,lastAutoSave:0,lastSavedPos:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadTalkHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
@@ -39,7 +40,7 @@ const dialogues={
 function snapshot(){
  return {version:SAVE_VERSION,player:{...state.player},quest:state.quest,
   medal:state.medal,story:state.story,wins:state.wins,visited:state.visited,
-  interactions:state.visits,tapeQuest:state.tapeQuest};
+  interactions:state.visits,tapeQuest:state.tapeQuest,gigQuest:state.gigQuest};
 }
 function refreshPassport(){
  const progress=snapshot();
@@ -94,6 +95,7 @@ function restoreProgress(){
    state.visited=restored.visited;
    state.visits=restored.interactions;
    state.tapeQuest=restored.tapeQuest;
+   state.gigQuest=restored.gigQuest;
    state.nearId=null;state.nearResidentId=null;
    state.lastSavedPos={...state.player};
    el("medal").textContent=state.medal?"SOUTHSIDE TGA MEDAL":"NO TGA MEDAL";
@@ -217,6 +219,7 @@ function updateNearby(){
  el("interact").disabled=!place;
  el("enter").disabled=!place||!canEnter(place.id);
  el("challenge").disabled=!place||!Object.hasOwn(ENCOUNTERS,place.id);
+ el("gig-open").disabled=!place||place.id!=="stems-league"||state.gigQuest<4;
  el("talk-resident").disabled=!resident;
  el("nearby").textContent=resident?"NEAR "+resident.name.toUpperCase()+" · T TO TALK":
   place?"NEAR "+place.name.toUpperCase()+" · E TO INTERACT":"EXPLORE THE STREETS · RESIDENTS AND SHOPS AWAIT";
@@ -393,7 +396,7 @@ function reset(){
  if(!window.confirm("Reset the entire Stemside adventure, passport and local save on this browser? This cannot be undone."))return;
  const initial=initialProgress();
  state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
- state.wins=[];state.visited=[];state.tapeQuest=0;state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
+ state.wins=[];state.visited=[];state.tapeQuest=0;state.gigQuest=0;state.gigShow=freshShow();state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
  renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
@@ -459,7 +462,7 @@ function gamepad(){
  const dx=pad.axes?.[0]||0,dy=pad.axes?.[1]||0;
  state.gamepadAxes={x:Math.abs(dx)<.2?0:dx,y:Math.abs(dy)<.2?0:dy};
  const a=!!pad.buttons?.[0]?.pressed;
- if(a&&!state.gamepadActionHeld&&!state.overlay)interact();
+ if(a&&!state.gamepadActionHeld){if(state.overlay==="gig")hitGig();else if(!state.overlay)interact()}
  state.gamepadActionHeld=a;
  const b=!!pad.buttons?.[1]?.pressed;
  if(b&&!state.gamepadTalkHeld&&!state.overlay)talkResident();
