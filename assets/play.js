@@ -4,14 +4,16 @@ import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,
 import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmark,inventory,experience,rankFor,passportStatus,journalEntries,LANDMARK_SOUVENIRS} from "./progression-core.mjs";
 import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,nearestResident,npcReply} from "./residents-core.mjs";
 import {GIG_STEPS,BEAT_COUNT,BEAT_TIMES,WIN_SCORE,MAX_SCORE,freshShow,beginShow,tickShow,hitBeat,beatProgress,gigStatus,gigReply,advanceGigQuest} from "./gig-core.mjs";
+import {NAV_MODES,resolveWaypoint,mapPosition,compass,encodePortableSave,decodePortableSave,MAX_SAVE_BYTES} from "./travel-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
+const mini=el("mini-map"),miniCtx=mini.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
  quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,gigQuest:0,gigShow:freshShow(),nearResidentId:null,battle:null,overlay:null,returnFocus:null,
- saveReady:false,lastAutoSave:0,lastSavedPos:null,
+ saveReady:false,lastAutoSave:0,lastSavedPos:null,navFocus:"auto",showMap:true,lastNavDraw:0,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadTalkHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
 };
@@ -104,6 +106,94 @@ function restoreProgress(){
  }catch{
    el("save-status").textContent="BROWSER STORAGE BLOCKED OR CORRUPT. THIS RUN WILL STILL PLAY.";
    return false;
+ }
+}
+
+
+function drawMinimap(waypoint){
+ if(!miniCtx||!state.showMap)return;
+ const w=mini.width,h=mini.height;
+ miniCtx.clearRect(0,0,w,h);
+ miniCtx.fillStyle="#47516a";miniCtx.fillRect(0,0,w,h/2);
+ miniCtx.fillStyle="#2e6451";miniCtx.fillRect(0,h/2,w,h/2);
+ miniCtx.fillStyle="#182e3b";
+ miniCtx.fillRect(0,h*.46,w,h*.08);
+ miniCtx.fillRect(w*.22,0,w*.05,h);
+ miniCtx.fillRect(w*.72,0,w*.05,h);
+ miniCtx.fillStyle="#f0e8c5";miniCtx.font="bold 9px Trebuchet MS,Arial";
+ miniCtx.fillText("N",6,12);miniCtx.fillText("S",6,h-5);
+ for(const p of state.places){
+   const pos=mapPosition({x:p.x/100*WORLD.width,y:p.y/100*WORLD.height},w,h);
+   miniCtx.fillStyle="#e6cfab";
+   miniCtx.beginPath();miniCtx.arc(pos.x,pos.y,2.5,0,Math.PI*2);miniCtx.fill();
+ }
+ for(const npc of RESIDENTS){
+   const pos=mapPosition(npc,w,h);
+   miniCtx.fillStyle="#b8d9f2";
+   miniCtx.fillRect(pos.x-2,pos.y-2,4,4);
+ }
+ if(waypoint){
+   const pos=mapPosition(waypoint,w,h);
+   miniCtx.save();miniCtx.translate(pos.x,pos.y);miniCtx.rotate(Math.PI/4);
+   miniCtx.fillStyle="#ffbb75";miniCtx.strokeStyle="#3c1b32";miniCtx.lineWidth=2;
+   miniCtx.fillRect(-5,-5,10,10);miniCtx.strokeRect(-5,-5,10,10);
+   miniCtx.restore();
+ }
+ const player=mapPosition(state.player,w,h);
+ miniCtx.beginPath();miniCtx.arc(player.x,player.y,4.2,0,Math.PI*2);
+ miniCtx.fillStyle="#e8fca3";miniCtx.fill();
+ miniCtx.strokeStyle="#122a32";miniCtx.lineWidth=2;miniCtx.stroke();
+}
+function updateWayfinder(){
+ if(!state.places.length){el("waypoint-status").textContent="STEMSIDE CITY MAP UNAVAILABLE";return}
+ const waypoint=resolveWaypoint(snapshot(),state.navFocus,state.places);
+ const mode=NAV_MODES.find(m=>m.id===state.navFocus)?.label||"QUEST TRACKER";
+ const bearing=compass(state.player,waypoint);
+ el("district").textContent=state.player.y<560?"NORTH STEMSIDE":"SOUTH STEMSIDE";
+ let message;
+ if(state.navFocus==="free")message="FREE EXPLORATION · DISCOVER THE CITY AT YOUR OWN PACE";
+ else if(!waypoint)message=mode+" · NO MORE OUTDOOR DESTINATIONS IN THIS TRACK";
+ else message=mode+" · "+waypoint.name.toUpperCase()+" · "+
+   (bearing.arrived?"YOU'VE ARRIVED · INTERACT HERE":bearing.direction+" · "+bearing.distance+" MAP UNITS")+" · "+waypoint.reason;
+ if(el("waypoint-status").textContent!==message)el("waypoint-status").textContent=message;
+ drawMinimap(waypoint);
+}
+function downloadSave(){
+ if(!state.saveReady){el("save-vault-status").textContent="CITY RECORDS ARE NOT READY";return}
+ try{
+  const json=encodePortableSave(snapshot());
+  const blob=new Blob([json],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;link.download="TweedleVerse-Stemside-Adventure.json";
+  document.body.append(link);link.click();link.remove();
+  window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+  el("save-vault-status").textContent="PORTABLE SAVE DOWNLOADED. KEEP YOUR COPY SOMEWHERE SAFE.";
+ }catch{
+  el("save-vault-status").textContent="COULD NOT PREPARE THE SAVE FILE. YOUR GAME WAS NOT CHANGED.";
+ }
+}
+async function importSave(file){
+ if(!file||!state.saveReady)return;
+ if(file.size>MAX_SAVE_BYTES){
+  el("save-vault-status").textContent="IMPORT REFUSED: SAVE FILE TOO LARGE.";
+  return;
+ }
+ let progress;
+ try{progress=decodePortableSave(await file.text())}catch{progress=null}
+ if(!progress){
+  el("save-vault-status").textContent="IMPORT REFUSED: UNKNOWN OR DAMAGED SAVE. CURRENT PROGRESS PRESERVED.";
+  return;
+ }
+ if(!window.confirm("Import this TweedleVerse adventure and replace the current local save? Export your current adventure first if you want a backup.")){
+  el("save-vault-status").textContent="IMPORT CANCELLED. YOUR CURRENT ADVENTURE IS SAFE.";
+  return;
+ }
+ try{
+  localStorage.setItem(SAVE_KEY,encodeSave(progress));
+  window.location.reload();
+ }catch{
+  el("save-vault-status").textContent="BROWSER STORAGE IS UNAVAILABLE. YOUR CURRENT GAME WAS NOT CHANGED.";
  }
 }
 
@@ -554,6 +644,7 @@ function loop(now){
    const last=state.lastSavedPos;
    if(last&&Math.hypot(state.player.x-last.x,state.player.y-last.y)>18)saveProgress("YOUR POSITION AUTOSAVED ON THIS DEVICE");
  }
+ if(now-state.lastNavDraw>180){state.lastNavDraw=now;updateWayfinder()}
  draw();
  requestAnimationFrame(loop);
 }
@@ -599,6 +690,23 @@ el("script-open").addEventListener("click",openScript);
 el("script-close").addEventListener("click",()=>closeModal("script"));
 el("reset").addEventListener("click",reset);
 el("save-now").addEventListener("click",()=>saveProgress("MANUAL SAVE COMPLETE · STORED IN THIS BROWSER"));
+el("save-export").addEventListener("click",downloadSave);
+el("save-import").addEventListener("change",async event=>{
+ const file=event.target.files?.[0];
+ event.target.value="";
+ await importSave(file);
+});
+el("waypoint-focus").addEventListener("change",event=>{
+ state.navFocus=event.target.value;
+ updateWayfinder();
+});
+el("minimap-toggle").addEventListener("click",()=>{
+ state.showMap=!state.showMap;
+ el("minimap-shell").hidden=!state.showMap;
+ el("minimap-toggle").setAttribute("aria-pressed",String(state.showMap));
+ el("minimap-toggle").textContent=state.showMap?"HIDE MINIMAP":"SHOW MINIMAP";
+ if(state.showMap)updateWayfinder();
+});
 el("arena-close").addEventListener("click",()=>closeModal("arena"));
 el("tweedsie-close").addEventListener("click",()=>closeModal("tweedsie"));
 el("fire").addEventListener("click",()=>state.arena.charging?fire():beginCharge());
@@ -615,5 +723,5 @@ el("easy-aim").addEventListener("change",syncArena);
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
  for(let i=0;i<BEAT_COUNT;i++){const note=document.createElement("span");note.textContent=String(i+1);el("gig-notes").append(note)}
  el("gig-easy").checked=matchMedia("(prefers-reduced-motion: reduce)").matches;
- questUI();renderBattleProgress();refreshPassport();resize();updateNearby();requestAnimationFrame(loop);
+ questUI();renderBattleProgress();refreshPassport();resize();updateNearby();updateWayfinder();requestAnimationFrame(loop);
 })();
