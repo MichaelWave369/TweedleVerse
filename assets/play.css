@@ -27,3 +27,37 @@
 .script-page .choice{border-color:#344b43;color:#263b37;background:#f9eed2}.script-page .choice:hover{background:#b5dbab}
 .script-page .close{color:#f9edcb}
 @media(max-width:670px){.interior-stage{height:190px}.npc-line{font-size:16px!important}.action-stack{width:min(230px,62%)}.game-top{font-size:9px}}
+
+
+/* v0.5: Original office-surreal turn-based encounter visuals */
+.game-top #city-rebels{color:#e5b67f}.battle-info{background:linear-gradient(145deg,#243945,#2e3b36)}
+.battle-modal{width:min(840px,100%);border-color:#e5bb7b}
+.battle-modal h2{font-size:clamp(29px,4vw,47px);padding-right:25px}
+.battle-modal>p{font-size:13px;color:#e2d8bf}
+.battle-scene{height:175px;position:relative;overflow:hidden;margin:16px 0;border-radius:9px;border:4px solid #b9b68e;background:repeating-conic-gradient(from 0deg at 50% 50%,#514b69 0 24deg,#806e71 25deg 48deg,#a27c6c 49deg 72deg);isolation:isolate}
+.battle-scene:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,#080b1438 0 2px,transparent 3px 6px);pointer-events:none}
+.battle-star{position:absolute;font-size:42px;color:#baf17a;opacity:.55}.s1{left:9%;top:18%}.s2{right:11%;top:13%}.s3{left:24%;bottom:7%}
+.battle-foe{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:106px;height:113px;background:#d3b98b;border:7px solid #1d323c;border-radius:48% 48% 23% 23%;box-shadow:6px 8px 0 #101827}
+.enemy-hair{display:block;position:absolute;top:-16px;left:25px;font-size:34px;color:#364f54}
+.battle-icon{display:block;position:absolute;inset:28px 0 auto;text-align:center;color:#1e3b41;font-size:42px;font-weight:1000;line-height:1}
+.enemy-mouth{display:block;position:absolute;bottom:2px;left:42px;color:#a04c50;font-size:22px}
+.battle-foe-name{position:absolute;bottom:5px;left:8px;right:8px;text-align:center;font-size:11px;font-weight:1000;letter-spacing:.1em;background:#172530dc;padding:5px;color:#f8eabb}
+.battle-meters{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.battle-meter>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.08em}
+.battle-meter output{font-variant-numeric:tabular-nums;color:#f3e8cf}
+.meter-rail{height:15px;overflow:hidden;border:2px solid #b5a683;margin-top:7px;background:#0c1b25;border-radius:4px}
+.meter-fill{height:100%;width:0;transition:width .18s ease}
+.composure-fill{background:#8bda99}.nonsense-fill{background:#f0ad70}
+.battle-last{margin:16px 0 4px!important;font-weight:900;color:#f2d58b!important}
+.battle-log{min-height:36px;font-size:15px!important;color:#c9ead0!important}
+.battle-commands{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}
+.battle-command{min-width:0;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;border:2px solid #8ea48b;border-radius:7px;padding:13px;background:#294242;color:#f2e9d1}
+.battle-command strong{font-size:10px;letter-spacing:.14em;color:#c1ed75}
+.battle-command span{font-weight:1000;font-size:16px}
+.battle-command small{color:#bfcac2;font-size:11px}
+.battle-command:hover:not(:disabled){background:#3b5a50;border-color:#c1ed75}
+.battle-command:disabled{opacity:.45;cursor:not-allowed}
+.battle-extras{display:flex;flex-wrap:wrap;gap:10px}.battle-extras .btn{flex:1;min-width:170px}
+.battle-hint{font-size:11px!important;color:#becac1!important;margin:15px 0 0!important}
+@media(max-width:670px){.battle-meters{grid-template-columns:1fr}.battle-commands{grid-template-columns:1fr}.battle-command{padding:9px 12px}.battle-command span{font-size:14px}.battle-scene{height:145px}.battle-foe{height:100px;width:96px}}
+@media(prefers-reduced-motion:reduce){.meter-fill{transition:none}}

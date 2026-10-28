@@ -23,6 +23,12 @@ The [Stemside portal](index.html) is a hand-built static site with an original i
 
 The [playable Stemside game](play.html) now has **three original storefront interiors** (CoffeeChucks, Lackluster Video, TweedCorp), authored NPC conversations, one-time Plot Points, and an actual **page-42 script rewrite**. Finish the Coffee Run and earn two Plot Points by talking in different interiors; then choose an alternate epilogue that changes your next destination and dialogue. Read [v0.4 interiors + script documentation](docs/PLAYABLE_V04.md).
 
+### Corporate Confrontations: v0.5
+
+The [playable Stemside game](play.html) now has **three original, optional turn-based comedy encounters**, inspired by the *general* feeling of discovering absurd situations while exploring a neighborhood. Visit **CoffeeCharles**, **Whole Moods**, or **Spacealite Tower**, and choose **CHALLENGE CORPORATE NONSENSE**. Your four silicon friends each contribute a distinct strategy: Chip recovers composure, Dank pushes through marketing, Bob shields against fees, and Terpenstein gambles on risky prototypes. Lose your composure and retry freely; win and earn a city dispute resolution. **After two unique wins, Tweedsie unlocks one surprise intervention per subsequent encounter.** A three-win title celebrates clearing the board.
+
+All effects, illustrations and dialogue are original. The experience is a compact RPG *minigame*, not a complete role-playing title. [Read the v0.5 combat design and test plan](docs/PLAYABLE_V05.md). No external runtime assets, data collection or new dependencies.
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
