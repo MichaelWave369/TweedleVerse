@@ -89,3 +89,36 @@
 .tape-steps li.next{color:#ffcb8c;font-weight:900}
 .tape-card .state-label{font-size:11px;color:#c9f38b!important;letter-spacing:.06em}
 @media(max-width:670px){.tape-card h2{font-size:22px}}
+
+
+/* v0.8 original Lenny Smokins visual rhythm show: no borrowed music or assets */
+.gig-card{border-color:#b48dbe;background:linear-gradient(135deg,#3a2f49,#203747)}
+.gig-card h2{font-size:26px}.gig-card .state-label{color:#f7c99c!important}
+.gig-modal{border-color:#eeb188;background:#222b41;width:min(770px,100%)}
+.gig-modal h2{font-size:clamp(30px,4vw,50px)}.gig-modal>p{font-size:13px;color:#e5dccd}
+.gig-stage{height:180px;position:relative;overflow:hidden;border:4px solid #cba0bd;border-radius:12px;
+background:radial-gradient(ellipse at 50% 90%,#64517e 0,#322f58 57%,#1b2340 100%)}
+.gig-spotlights span{position:absolute;top:-50px;width:115px;height:200px;opacity:.3;clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);background:#fff5aa}
+.gig-spotlights span:nth-child(1){left:8%;transform:rotate(-23deg)}
+.gig-spotlights span:nth-child(2){left:42%}
+.gig-spotlights span:nth-child(3){right:8%;transform:rotate(23deg)}
+.gig-figure{position:absolute;bottom:18px;left:40%;width:90px;height:110px;background:#ebad73;border:5px solid #1a2940;border-radius:50% 50% 15% 15%;box-shadow:inset -12px 0 #b76b74}
+.gig-figure:before{content:"";position:absolute;top:-17px;left:12px;width:65px;height:25px;border-radius:50%;background:#5b3d26;transform:rotate(-15deg)}
+.gig-figure span{position:absolute;left:29px;top:23px;color:#322640;font-size:53px;font-weight:900}
+.gig-pulse{position:absolute;right:20%;top:33%;color:#f5e78e;font-size:57px;transition:transform .1s;filter:drop-shadow(0 0 12px #f6ea7d)}
+.gig-caption{position:absolute;bottom:5px;left:10px;right:10px;text-align:center;font-size:10px;letter-spacing:.18em;color:#f9e2ac;font-weight:900}
+.gig-track{height:17px;margin:21px 0 13px;background:#0d182b;border:2px solid #f0d2a7;border-radius:5px;overflow:hidden}
+.gig-meter{height:100%;width:0;background:linear-gradient(90deg,#e39d77,#b2e899);transition:width .08s linear}
+.gig-note-row{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}
+.gig-note-row span{display:grid;place-items:center;min-height:30px;border:2px solid #a995ad;background:#333449;color:#dfcbb7;border-radius:4px;font-size:13px;font-weight:900}
+.gig-note-row span.hit{background:#486d55;color:#d5ffc0;border-color:#c6fb8f}
+.gig-note-row span.near{background:#756348;color:#ffe0a5;border-color:#eccc88}
+.gig-note-row span.current{border-color:#caff85;box-shadow:0 0 0 2px #b6e89133}
+.gig-scoreline{display:flex;justify-content:space-between;gap:15px;margin:18px 0 10px;font-size:12px;font-weight:900;color:#d6ebb6}
+.gig-feedback{min-height:34px;font-weight:900;color:#f3e6b6!important}
+.gig-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.gig-actions .btn{flex:1;min-width:150px}
+.gig-actions label{font-size:12px;display:flex;align-items:center;gap:7px;color:#ebe5df}
+.gig-actions input{accent-color:#c6f27c;width:18px;height:18px}
+@media(max-width:650px){.gig-stage{height:150px}.gig-actions .btn{min-width:125px}.gig-note-row{gap:3px}.gig-note-row span{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.gig-pulse,.gig-meter{transition:none}.gig-spotlights span{transform:none}}

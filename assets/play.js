@@ -3,13 +3,14 @@ import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite
 import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,medalText} from "./battle-core.mjs";
 import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmark,inventory,experience,rankFor,passportStatus,journalEntries,LANDMARK_SOUVENIRS} from "./progression-core.mjs";
 import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,nearestResident,npcReply} from "./residents-core.mjs";
+import {GIG_STEPS,BEAT_COUNT,BEAT_TIMES,WIN_SCORE,MAX_SCORE,freshShow,beginShow,tickShow,hitBeat,beatProgress,gigStatus,gigReply,advanceGigQuest} from "./gig-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,nearResidentId:null,battle:null,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,gigQuest:0,gigShow:freshShow(),nearResidentId:null,battle:null,overlay:null,returnFocus:null,
  saveReady:false,lastAutoSave:0,lastSavedPos:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadTalkHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
@@ -39,7 +40,7 @@ const dialogues={
 function snapshot(){
  return {version:SAVE_VERSION,player:{...state.player},quest:state.quest,
   medal:state.medal,story:state.story,wins:state.wins,visited:state.visited,
-  interactions:state.visits,tapeQuest:state.tapeQuest};
+  interactions:state.visits,tapeQuest:state.tapeQuest,gigQuest:state.gigQuest};
 }
 function refreshPassport(){
  const progress=snapshot();
@@ -94,6 +95,7 @@ function restoreProgress(){
    state.visited=restored.visited;
    state.visits=restored.interactions;
    state.tapeQuest=restored.tapeQuest;
+   state.gigQuest=restored.gigQuest;
    state.nearId=null;state.nearResidentId=null;
    state.lastSavedPos={...state.player};
    el("medal").textContent=state.medal?"SOUTHSIDE TGA MEDAL":"NO TGA MEDAL";
@@ -117,11 +119,20 @@ function renderTapeQuest(){
   item.classList.toggle("next",i===state.tapeQuest);
  }
 }
+function renderGigQuest(){
+ el("gig-status").textContent=gigStatus(state.gigQuest);
+ for(const [i,item] of Array.from(el("gig-steps").children).entries()){
+  item.classList.toggle("done",i<state.gigQuest);
+  item.classList.toggle("next",i===state.gigQuest);
+ }
+ const place=nearest();
+ el("gig-open").disabled=!(place?.id==="stems-league"&&state.gigQuest>=4);
+}
 function questUI(){
  el("progress").textContent="THE COFFEE RUN · "+state.quest+"/3";
  el("quest-text").textContent=questLines[state.quest];
  el("quest-status").textContent=state.quest===3?"COMPLETED · COFFEE STILL PENDING":"MISSION ACTIVE";
- renderStoryUI();renderTapeQuest();
+ renderStoryUI();renderTapeQuest();renderGigQuest();
  for(const [i,li] of Array.from(el("quest-list").children).entries()){
   li.classList.toggle("done",state.quest>i);
  }
@@ -217,6 +228,7 @@ function updateNearby(){
  el("interact").disabled=!place;
  el("enter").disabled=!place||!canEnter(place.id);
  el("challenge").disabled=!place||!Object.hasOwn(ENCOUNTERS,place.id);
+ el("gig-open").disabled=!place||place.id!=="stems-league"||state.gigQuest<4;
  el("talk-resident").disabled=!resident;
  el("nearby").textContent=resident?"NEAR "+resident.name.toUpperCase()+" · T TO TALK":
   place?"NEAR "+place.name.toUpperCase()+" · E TO INTERACT":"EXPLORE THE STREETS · RESIDENTS AND SHOPS AWAIT";
@@ -359,14 +371,72 @@ function talkResident(){
  const npc=nearestResident(state.player.x,state.player.y,state.clock,undefined,reduced);
  if(!npc)return;
  const old=state.tapeQuest;
- const speech=npcReply(npc.id,old);
+ const oldGig=state.gigQuest;
+ const speech=npc.id==="lenny"?gigReply(oldGig):npcReply(npc.id,old);
+ state.gigQuest=advanceGigQuest(oldGig,"npc",npc.id);
  state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
  say({name:npc.name},speech);
- if(old!==state.tapeQuest){
+ if(old!==state.tapeQuest||oldGig!==state.gigQuest){
    questUI();refreshPassport();
-   saveProgress(state.tapeQuest===4?"MYSTERY SOLVED · FUTURE FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE RECORDED · SAVED LOCALLY");
+   saveProgress(oldGig!==state.gigQuest?"LENNY CONCERT CLUE SAVED LOCALLY":state.tapeQuest===4?"MYSTERY SOLVED · FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE SAVED LOCALLY");
  }
  el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
+}
+
+
+function showOpen(){
+ if(state.overlay||state.gigQuest<4||nearest()?.id!=="stems-league")return;
+ state.gigShow=freshShow();
+ renderGigShow();
+ openModal("gig","gig-start");
+}
+function startGigShow(){
+ if(state.overlay!=="gig")return;
+ state.gigShow=beginShow(state.gigShow);
+ renderGigShow();
+ el("gig-hit").focus();
+}
+function hitGig(){
+ if(state.overlay!=="gig")return;
+ state.gigShow=hitBeat(state.gigShow,el("gig-easy").checked);
+ renderGigShow();
+}
+function renderGigShow(){
+ const show=state.gigShow;
+ el("gig-score").textContent="SCORE: "+show.score+" / "+MAX_SCORE+" · NEED "+WIN_SCORE;
+ el("gig-meter").style.width=beatProgress(show)+"%";
+ el("gig-feedback").textContent=show.last||"START THE SHOW, THEN HIT ON THE VISUAL BEAT.";
+ el("gig-clock").textContent=show.status==="ready"?"READY TO COUNT IN":
+  show.status==="playing"?(show.elapsed<3?"COUNT IN: "+Math.max(1,Math.ceil(3-show.elapsed)):
+    "BEAT "+Math.min(BEAT_COUNT,Math.floor((show.elapsed-3)/.9)+1)+" / "+BEAT_COUNT):
+  show.status==="won"?"SHOW COMPLETE!":"ENCORE NEEDED!";
+ el("gig-hit").disabled=show.status!=="playing";
+ el("gig-start").disabled=show.status==="playing";
+ el("gig-start").textContent=show.status==="ready"?"START THE SHOW":"PLAY AN ENCORE";
+ for(const [index,node] of Array.from(el("gig-notes").children).entries()){
+  node.classList.toggle("hit",show.notes[index]===2);
+  node.classList.toggle("near",show.notes[index]===1);
+  node.classList.toggle("current",show.status==="playing"&&show.notes[index]===null&&Math.abs(show.elapsed-BEAT_TIMES[index])<.34);
+  node.textContent=show.notes[index]===2?"★":show.notes[index]===1?"✓":String(index+1);
+ }
+ if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+  const pulse=BEAT_TIMES.some(t=>Math.abs(show.elapsed-t)<.2)&&show.status==="playing";
+  el("gig-pulse").style.transform=pulse?"scale(1.3)":"scale(1)";
+ }else el("gig-pulse").style.transform="none";
+}
+function advanceGigFrame(dt){
+ const oldStatus=state.gigShow.status;
+ state.gigShow=tickShow(state.gigShow,dt);
+ if(oldStatus==="playing"&&state.gigShow.status==="won"){
+   const wasComplete=state.gigQuest===5;
+   state.gigQuest=advanceGigQuest(state.gigQuest,"show","stems-league");
+   if(!wasComplete&&state.gigQuest===5){
+     refreshPassport();renderGigQuest();
+     saveProgress("LENNY SHOW COMPLETED · BACKSTAGE PASS SAVED LOCALLY");
+     say(null,gigReply(5));
+   }
+ }
+ renderGigShow();
 }
 
 function interact(){
@@ -379,6 +449,7 @@ function interact(){
  const oldTape=state.tapeQuest;
  state.tapeQuest=advanceTapeQuest(state.tapeQuest,"place",place.id);
  const tapeChanged=state.tapeQuest!==oldTape;
+ state.gigQuest=advanceGigQuest(state.gigQuest,"place",place.id);
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
@@ -393,7 +464,7 @@ function reset(){
  if(!window.confirm("Reset the entire Stemside adventure, passport and local save on this browser? This cannot be undone."))return;
  const initial=initialProgress();
  state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
- state.wins=[];state.visited=[];state.tapeQuest=0;state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
+ state.wins=[];state.visited=[];state.tapeQuest=0;state.gigQuest=0;state.gigShow=freshShow();state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
  renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
@@ -459,7 +530,7 @@ function gamepad(){
  const dx=pad.axes?.[0]||0,dy=pad.axes?.[1]||0;
  state.gamepadAxes={x:Math.abs(dx)<.2?0:dx,y:Math.abs(dy)<.2?0:dy};
  const a=!!pad.buttons?.[0]?.pressed;
- if(a&&!state.gamepadActionHeld&&!state.overlay)interact();
+ if(a&&!state.gamepadActionHeld){if(state.overlay==="gig")hitGig();else if(!state.overlay)interact()}
  state.gamepadActionHeld=a;
  const b=!!pad.buttons?.[1]?.pressed;
  if(b&&!state.gamepadTalkHeld&&!state.overlay)talkResident();
@@ -469,7 +540,9 @@ function loop(now){
  const dt=state.last?Math.min((now-state.last)/1000,.05):0;
  state.last=now;state.clock+=dt;
  gamepad();
- if(state.overlay==="arena"){
+ if(state.overlay==="gig"){
+   advanceGigFrame(dt);
+ }else if(state.overlay==="arena"){
    if(state.arena.charging)state.arena.charge=Math.min(1,state.arena.charge+dt*.54);
    syncArena();
  }else if(!state.overlay&&state.places.length){
@@ -488,6 +561,7 @@ document.addEventListener("keydown",ev=>{
  if(state.overlay){
    if(ev.code==="Escape"){ev.preventDefault();closeModal(state.overlay);return}
    if(ev.code==="Tab"){const modal=el(state.overlay+"-overlay");const nodes=Array.from(modal.querySelectorAll("button:not(:disabled),input:not(:disabled)"));if(nodes.length){const first=nodes[0],last=nodes[nodes.length-1];if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus()}else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus()}}return}
+   if(state.overlay==="gig"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();hitGig();return}
    if(state.overlay==="battle"&&/^Digit[1-4]$/.test(ev.code)&&ev.target?.tagName!=="INPUT"&&!ev.repeat){ev.preventDefault();battleMove(PARTY[Number(ev.code.slice(-1))-1].id);return}
    if(state.overlay==="arena"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="INPUT"&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();beginCharge()}
    return;
@@ -510,6 +584,10 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last
 window.addEventListener("pagehide",()=>saveProgress());
 el("interact").addEventListener("click",interact);
 el("talk-resident").addEventListener("click",talkResident);
+el("gig-open").addEventListener("click",showOpen);
+el("gig-close").addEventListener("click",()=>closeModal("gig"));
+el("gig-start").addEventListener("click",startGigShow);
+el("gig-hit").addEventListener("click",hitGig);
 el("challenge").addEventListener("click",startEncounter);
 el("battle-close").addEventListener("click",()=>closeModal("battle"));
 el("battle-retry").addEventListener("click",retryBattle);
@@ -535,5 +613,7 @@ el("easy-aim").addEventListener("change",syncArena);
   say(null,recovered?"Welcome back to Stemside. Your bureaucratic burdens have been remembered.":"City Hall approved your walking permit. Find CoffeeChucks to begin your perfectly ordinary errand.");
   state.saveReady=true;
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
+ for(let i=0;i<BEAT_COUNT;i++){const note=document.createElement("span");note.textContent=String(i+1);el("gig-notes").append(note)}
+ el("gig-easy").checked=matchMedia("(prefers-reduced-motion: reduce)").matches;
  questUI();renderBattleProgress();refreshPassport();resize();updateNearby();requestAnimationFrame(loop);
 })();

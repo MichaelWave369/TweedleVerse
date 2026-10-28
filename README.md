@@ -37,6 +37,10 @@ All effects, illustrations and dialogue are original. The experience is a compac
 
 **Stemside now has four original street residents** to approach and talk to: Marty, Buffer Bob, Chuck, and Lenny Smokins. They appear as animated original canvas characters. The game now includes an optional four-step side quest, **The Tape That Hasn't Happened Yet**: ask Marty about an unfilmed VHS, check Snublishers' prize mail, ask Buffer Bob to repair the paperwork, and return to Marty. Completion awards **Tomorrow's Film Credit** (a 14th *bonus* collectible, outside the 13-stamp passport) and 50 XP. Progress is included in the local browser save, with automatic migration of v0.6 saves and no loss of your existing coffee mission, Tweedleball medal, encounters, script rewrites, or collectibles. Read [v0.7 development notes](docs/PLAYABLE_V07.md).
 
+### Lenny Smokins' original visual concert: v0.8
+
+[Welcome to Stemside](play.html) now includes **The Gig That Almost Wasn't**, a five-step quest. Talk to Lenny, find his set list at Lackluster Video, recover the stage power adapter at Taco McBurger Bell, return to Lenny, and perform an **original eight-beat visual rhythm game** at the Southside Stems League arena. Score **9/16** to win Lenny's Gold-Plated Backstage Pass and a **one-time 60 XP** bonus. The challenge uses original visual cues with **no existing songs, melodies, sound samples, or remote music services**. A wider timing window improves accessibility. The same local save key now accepts **versions 1 and 2** and migrates them into v3 without losing earlier achievements. See [v0.8 design and QA](docs/PLAYABLE_V08.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)

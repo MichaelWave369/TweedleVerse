@@ -22,6 +22,10 @@ The playable game now tracks first visits to every one of Stemside's thirteen bu
 
 Four silicon residents stand or drift subtly around original Stemside locations and can be spoken to without entering a storefront. Marty, Buffer Bob, Chuck and Lenny have their own small dialogue and positions, and the optional four-stage Missing Tomorrow Tape quest yields a unique bonus collectible and 50 XP. Local save data migrates from v0.6 to v0.7 without wiping progress. See [PLAYABLE_V07](PLAYABLE_V07.md).
 
+## Live-stage visual rhythm quest (v0.8)
+
+The new **Gig That Almost Wasn't** mission uses four city interactions and an eight-beat original, silent timing minigame to complete Lenny Smokins' gig at the Southside Stems League arena. A score of 9 or more out of 16 grants a Gold-Plated Backstage Pass and one-time 60 XP. A wider timing option is provided, and no recording, melody or licensed music is included. Save format v3 migrates versions 1 and 2. See [PLAYABLE_V08](PLAYABLE_V08.md).
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.
