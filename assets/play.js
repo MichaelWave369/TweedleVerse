@@ -1,12 +1,13 @@
 import {WORLD,OBJECTIVES,move,nearby,advanceQuest,scoreShot,arenaResult,clamp,normalizedPlaces} from "./game-core.mjs";
 import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite,chooseRewrite,resolveEpilogue,scriptStatus,REWRITES} from "./story-core.mjs";
+import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,medalText} from "./battle-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],battle:null,overlay:null,returnFocus:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
 };
@@ -113,6 +114,7 @@ function updateNearby(){
  state.nearId=id;
  el("interact").disabled=!place;
  el("enter").disabled=!place||!canEnter(place.id);
+ el("challenge").disabled=!place||!Object.hasOwn(ENCOUNTERS,place.id);
  el("nearby").textContent=place?"NEAR "+place.name.toUpperCase()+" · PRESS E / INTERACT":"MOVE TOWARD A GLOWING STOREFRONT";
 }
 function openModal(name,focusId){
@@ -185,6 +187,64 @@ function openScript(){
  openModal("script","script-close");
 }
 
+
+function renderBattleProgress(){
+ el("city-rebels").textContent="DISPUTES: "+state.wins.length+" / 3";
+ el("battle-status").textContent=medalText(state.wins);
+ el("battle-reward").textContent=state.wins.length>=2?
+  "TWEEDSIE LEGAL ASSISTANCE: AVAILABLE IN EACH NEW ENCOUNTER":
+  "TWEEDSIE LEGAL ASSISTANCE: WIN "+(2-state.wins.length)+" MORE DISPUTE"+(state.wins.length===1?"":"S")+" TO UNLOCK";
+}
+function renderBattle(){
+ const b=state.battle;
+ if(!b)return;
+ const foe=ENCOUNTERS[b.id];
+ el("battle-title").textContent=foe.title;
+ el("battle-description").textContent=foe.flavor;
+ el("battle-foe-name").textContent=foe.foe;
+ el("battle-icon").textContent=foe.icon;
+ el("battle-composure-label").textContent=b.composure+" / 100";
+ el("battle-composure").style.width=b.composure+"%";
+ el("battle-pressure-label").textContent=b.pressure+" / "+foe.target;
+ el("battle-pressure").style.width=progress(b)+"%";
+ el("battle-last").textContent=b.last||"YOUR PARTY HAS FILED A FORMAL COMPLAINT.";
+ el("battle-log").textContent=b.log;
+ for(const button of el("battle-actions").querySelectorAll("[data-party]")){
+  button.disabled=!actionAvailable(b,button.dataset.party,state.wins);
+ }
+ const gopher=el("battle-tweedsie");
+ gopher.disabled=!actionAvailable(b,"tweedsie",state.wins);
+ gopher.textContent=b.tweedsieUsed?"TWEEDSIE ALREADY SIGNED OFF":
+  state.wins.length<2?"TWEEDSIE: WIN 2 UNIQUE DISPUTES TO UNLOCK":
+  "TWEEDSIE: CANCEL THEIR NEXT TURN";
+ el("battle-retry").textContent=b.status==="active"?"RESTART ENCOUNTER":
+   b.status==="won"?"PLAY AGAIN (PRACTICE)":"RETRY THE CONFRONTATION";
+}
+function startEncounter(){
+ if(state.overlay)return;
+ const place=nearest();
+ if(!place||!Object.hasOwn(ENCOUNTERS,place.id))return;
+ state.battle=startBattle(place.id);
+ renderBattle();
+ openModal("battle","battle-close");
+}
+function battleMove(id){
+ const next=playTurn(state.battle,id,state.wins);
+ if(!next)return;
+ state.battle=next;
+ if(next.status==="won"){
+   state.wins=awardWin(state.wins,next);
+   renderBattleProgress();
+   say(null,ENCOUNTERS[next.id].victory);
+ }
+ renderBattle();
+}
+function retryBattle(){
+ if(!state.battle)return;
+ state.battle=startBattle(state.battle.id);
+ renderBattle();
+}
+
 function interact(){
  if(state.overlay||!state.places.length)return;
  const place=nearest();if(!place)return;
@@ -200,6 +260,7 @@ function interact(){
 function reset(){
  state.player={x:215,y:690};
  state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
+ state.wins=[];state.battle=null;state.nearId=null;renderBattleProgress();
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
  questUI();
@@ -284,6 +345,7 @@ document.addEventListener("keydown",ev=>{
  if(state.overlay){
    if(ev.code==="Escape"){ev.preventDefault();closeModal(state.overlay);return}
    if(ev.code==="Tab"){const modal=el(state.overlay+"-overlay");const nodes=Array.from(modal.querySelectorAll("button:not(:disabled),input:not(:disabled)"));if(nodes.length){const first=nodes[0],last=nodes[nodes.length-1];if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus()}else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus()}}return}
+   if(state.overlay==="battle"&&/^Digit[1-4]$/.test(ev.code)&&ev.target?.tagName!=="INPUT"&&!ev.repeat){ev.preventDefault();battleMove(PARTY[Number(ev.code.slice(-1))-1].id);return}
    if(state.overlay==="arena"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="INPUT"&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();beginCharge()}
    return;
  }
@@ -302,6 +364,11 @@ for(const btn of document.querySelectorAll("[data-dir]")){
 window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();if(state.arena.charging)state.arena.charging=false});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear()}});
 el("interact").addEventListener("click",interact);
+el("challenge").addEventListener("click",startEncounter);
+el("battle-close").addEventListener("click",()=>closeModal("battle"));
+el("battle-retry").addEventListener("click",retryBattle);
+el("battle-tweedsie").addEventListener("click",()=>battleMove("tweedsie"));
+for(const button of el("battle-actions").querySelectorAll("[data-party]"))button.addEventListener("click",()=>battleMove(button.dataset.party));
 el("enter").addEventListener("click",enterInterior);
 el("interior-close").addEventListener("click",()=>closeModal("interior"));
 el("script-open").addEventListener("click",openScript);
@@ -319,5 +386,5 @@ el("easy-aim").addEventListener("change",syncArena);
   state.places=normalizedPlaces(await res.json());
   say(null,"City Hall approved your walking permit. Find CoffeeChucks to begin your perfectly ordinary errand.");
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
- questUI();resize();requestAnimationFrame(loop);
+ questUI();renderBattleProgress();resize();requestAnimationFrame(loop);
 })();
