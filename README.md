@@ -19,6 +19,10 @@ The [Stemside portal](index.html) is a hand-built static site with an original i
 
 [PLAY: Welcome to Stemside](play.html) is a **real playable top-down browser prototype** that shares [the city JSON](data/stemside-map.json) with the Street Explorer. Walk through the city using WASD/arrows, controller stick, or touch controls; interact with 13 named landmarks; complete the Coffee Run; practice a five-shot Tweedleball challenge and earn a Southside medal. Tweedsie may interrupt your visit. The game requires no accounts, libraries, build system or network beyond loading its own static assets. It is **not** a finished open-world game or full 3D environment. See [playable prototype notes](docs/PLAYABLE_V03.md).
 
+### Inside the episode: v0.4
+
+The [playable Stemside game](play.html) now has **three original storefront interiors** (CoffeeChucks, Lackluster Video, TweedCorp), authored NPC conversations, one-time Plot Points, and an actual **page-42 script rewrite**. Finish the Coffee Run and earn two Plot Points by talking in different interiors; then choose an alternate epilogue that changes your next destination and dialogue. Read [v0.4 interiors + script documentation](docs/PLAYABLE_V04.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)

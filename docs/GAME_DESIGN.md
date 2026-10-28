@@ -6,6 +6,10 @@
 
 [play.html](../play.html) now implements a small top-down walking prototype with visitable location markers, controller/keyboard/touch input, dialogue stubs, Coffee Run story progression, an interactive five-shot timing/power Tweedleball practice game, and an occasional Tweedsie cameo. The browser build uses the shared [Stemside map JSON](../data/stemside-map.json) and has automated tests. It is not yet a fully interactive 3D environment, and shops do not have interior scenes. Further features below remain design direction, not delivered behavior.
 
+## Script-rewrite branch v0.4
+
+The game now includes three story interiors, dialogue options, Plot Points, and a deterministic two-choice rewrite system. Finishing the Coffee Run and talking to two distinct interior residents allows the player to edit Page 42, changing the next objective to CoffeeChucks or Spacealite Tower and triggering a distinct ending. See [v0.4 notes](PLAYABLE_V04.md). This is authored branching narrative, not unconstrained generative dialogue.
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.
