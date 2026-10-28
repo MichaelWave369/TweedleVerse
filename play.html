@@ -14,11 +14,31 @@
 <a class="skip" href="#game-area">Skip to game</a>
 <header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
 <main id="game-area">
-<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.8</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore a ridiculous silicon town, rescue tomorrow's VHS tape, and help Lenny Smokins put on a concert with our original eight-beat visual rhythm challenge. Tweedleball, corporate battles, and your local passport remain intact.</p></div>
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.9</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore Stemside with a new quest compass and minimap. Follow Coffee Run errands, find Marty and Lenny, confront Spacealite, and carry your adventure in a portable local save file. All earlier RPG adventures remain playable.</p></div>
 <div class="game-layout">
 <section class="game-panel" aria-label="Interactive Stemside game">
 <div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span><span id="plot-points">PLOT POINTS: 0</span><span id="city-rebels">DISPUTES: 0 / 3</span><span id="passport-rank-top">RANK: UNPAID INTERN</span></div>
-<div class="viewport"><canvas id="world" aria-label="Top-down Stemside city game. Move with WASD or arrow keys, use E or the Interact button to visit a nearby place." tabindex="0"></canvas><div class="world-badge" id="nearby">MOVE TO A BUSINESS TO INTERACT</div></div>
+<div class="travel-toolbar">
+<label for="waypoint-focus">FOLLOW QUEST</label>
+<select id="waypoint-focus" aria-label="Choose objective to follow">
+<option value="auto">NEXT STORY OBJECTIVE</option>
+<option value="coffee">COFFEE RUN</option>
+<option value="tape">TOMORROW'S TAPE</option>
+<option value="gig">LENNY'S GIG</option>
+<option value="script">PAGE 42 REWRITE</option>
+<option value="battles">CORPORATE DISPUTES</option>
+<option value="passport">PASSPORT STAMPS</option>
+<option value="free">FREE EXPLORATION</option>
+</select>
+<button id="minimap-toggle" type="button" aria-pressed="true">HIDE MINIMAP</button>
+</div>
+<div class="waypoint-status" id="waypoint-status" role="status" aria-live="off">FOLLOWING NEXT STORY OBJECTIVE · LOADING CITY MAP</div>
+<div class="viewport"><canvas id="world" aria-label="Top-down Stemside city game. Move with WASD or arrow keys, use E or the Interact button to visit a nearby place." tabindex="0"></canvas><div class="world-badge" id="nearby">MOVE TO A BUSINESS TO INTERACT</div>
+<div id="minimap-shell" class="minimap-shell">
+<span class="mini-map-title">STEMSIDE / LIVE RADAR</span>
+<canvas id="mini-map" width="220" height="154" role="img" aria-label="Minimap: North Stemside above South Stemside, showing the player, business markers and the tracked objective"></canvas>
+<div class="mini-map-legend">● YOU &nbsp; <b>◆</b> OBJECTIVE &nbsp; • SHOPS</div>
+</div></div>
 <div class="game-controls">
 <div class="dpad" aria-label="Movement controls">
 <button type="button" data-dir="up" aria-label="Move up">↑</button>
@@ -62,6 +82,13 @@
   <h3>THE ADVENTURE JOURNAL</h3>
   <ol id="passport-journal" class="passport-journal"><li>Your first entry will be a complaint.</li></ol>
   <div class="save-actions"><button id="save-now" class="btn primary" type="button">SAVE LOCALLY NOW</button></div>
+<details class="save-vault"><summary>PORTABLE SAVE VAULT</summary>
+<p class="passport-note">Download a copy of your validated adventure, or bring a save from another browser. No server is involved. Import replaces this browser's current save only after you confirm.</p>
+<button id="save-export" type="button" class="btn secondary">DOWNLOAD SAVE FILE</button>
+<label class="save-file-label" for="save-import">IMPORT A TWEEDLEVERSE JSON SAVE</label>
+<input id="save-import" type="file" accept=".json,application/json">
+<p id="save-vault-status" role="status" aria-live="polite">The contents of a save file stay on this device.</p>
+</details>
   <p id="save-status" class="save-status" role="status" aria-live="polite">Local-only saves: no accounts or cloud uploads. Older v0.6 and v0.7 progress migrates automatically.</p>
 </div>
 <div class="card broadcast"><span>SPACEALITE™ CORPORATE ALERT</span><strong>YOU ARE BEING CHARGED FOR STANDING STILL.</strong><p>Fees may be waived upon satisfactory completion of this sentence.</p></div>
