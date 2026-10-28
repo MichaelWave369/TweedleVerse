@@ -1,13 +1,15 @@
 import {WORLD,OBJECTIVES,move,nearby,advanceQuest,scoreShot,arenaResult,clamp,normalizedPlaces} from "./game-core.mjs";
 import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite,chooseRewrite,resolveEpilogue,scriptStatus,REWRITES} from "./story-core.mjs";
 import {ENCOUNTERS,PARTY,startBattle,actionAvailable,playTurn,progress,awardWin,medalText} from "./battle-core.mjs";
+import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmark,inventory,experience,rankFor,passportStatus,journalEntries,LANDMARK_SOUVENIRS} from "./progression-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),wins:[],battle:null,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],visited:[],battle:null,overlay:null,returnFocus:null,
+ saveReady:false,lastAutoSave:0,lastSavedPos:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
 };
@@ -32,6 +34,75 @@ const dialogues={
  "taco-bell":"CASHIER: Would you like a taco with your burger or a burger with your taco? The answer is yes.",
  "snublishers":"PRIZE PATROL: Congratulations! You've won a free obligation! Please sign this enormous novelty check."
 };
+
+function snapshot(){
+ return {version:SAVE_VERSION,player:{...state.player},quest:state.quest,
+  medal:state.medal,story:state.story,wins:state.wins,visited:state.visited,
+  interactions:state.visits};
+}
+function refreshPassport(){
+ const progress=snapshot();
+ const xp=experience(progress),rank=rankFor(xp);
+ el("passport-stamps").textContent=passportStatus(progress);
+ el("passport-rank").textContent=rank.name;
+ el("passport-rank-top").textContent="RANK: "+rank.name;
+ el("passport-xp").textContent=xp+" XP";
+ const items=el("passport-items");items.replaceChildren();
+ for(const item of inventory(progress)){
+   const li=document.createElement("li"),title=document.createElement("strong"),desc=document.createElement("small");
+   title.textContent=item.name;desc.textContent=item.description;
+   li.append(title,desc);items.append(li);
+ }
+ if(!items.childElementCount){
+   const li=document.createElement("li");li.textContent="No souvenirs. Reggie is charging for the empty space.";items.append(li);
+ }
+ const journal=el("passport-journal");journal.replaceChildren();
+ for(const entry of journalEntries(progress,state.places)){
+   const li=document.createElement("li");li.textContent=entry;journal.append(li);
+ }
+}
+function saveProgress(message="SAVED TO THIS BROWSER ONLY"){
+ if(!state.saveReady)return false;
+ try{
+   localStorage.setItem(SAVE_KEY,encodeSave(snapshot()));
+   state.lastSavedPos={...state.player};
+   el("save-status").textContent=message;
+   return true;
+ }catch{
+   el("save-status").textContent="LOCAL SAVE UNAVAILABLE. PLAY STILL WORKS UNTIL THIS TAB CLOSES.";
+   return false;
+ }
+}
+function restoreProgress(){
+ try{
+   const raw=localStorage.getItem(SAVE_KEY);
+   if(!raw){
+     el("save-status").textContent="NEW RUN. AUTOSAVES STAY ON THIS DEVICE ONLY.";
+     return false;
+   }
+   const restored=decodeSave(JSON.parse(raw));
+   if(!restored){
+     el("save-status").textContent="OLDER OR DAMAGED SAVE IGNORED. STARTING A FRESH RUN.";
+     return false;
+   }
+   state.player=restored.player;
+   state.quest=restored.quest;
+   state.medal=restored.medal;
+   state.story=restored.story;
+   state.wins=restored.wins;
+   state.visited=restored.visited;
+   state.visits=restored.interactions;
+   state.nearId=null;
+   state.lastSavedPos={...state.player};
+   el("medal").textContent=state.medal?"SOUTHSIDE TGA MEDAL":"NO TGA MEDAL";
+   el("save-status").textContent="WELCOME BACK. LOCAL ADVENTURE RECOVERED.";
+   return true;
+ }catch{
+   el("save-status").textContent="BROWSER STORAGE BLOCKED OR CORRUPT. THIS RUN WILL STILL PLAY.";
+   return false;
+ }
+}
+
 function say(place,text){
  el("place-heading").textContent=place?place.name.toUpperCase():"CITY HALL ERROR";
  el("place-message").textContent=text;
@@ -159,6 +230,7 @@ function enterInterior(){
      el("npc-line").textContent=getReply(place.id,choice.id);
      el("scene-note").textContent=first?"+1 PLOT POINT EARNED. NEW CONVERSATION NOTED IN YOUR SCRIPT.":"THIS RESIDENT HAS ALREADY CONTRIBUTED A PLOT POINT.";
      renderStoryUI();
+     refreshPassport();saveProgress(first?"NEW CONVERSATION STAMPED · SAVED LOCALLY":"CONVERSATION UPDATED · SAVED LOCALLY");
    });
    root.append(button);
  }
@@ -180,6 +252,7 @@ function openScript(){
      el("script-feedback").textContent="APPROVED BY ABSOLUTELY NOBODY. "+option.objective;
      say(null,"PAGE 42 REWRITTEN: "+option.objective);
      renderStoryUI();
+     refreshPassport();saveProgress("PAGE 42 REWRITTEN · SAVED LOCALLY");
      for(const item of root.querySelectorAll("button"))item.disabled=true;
    });
    root.append(button);
@@ -235,6 +308,7 @@ function battleMove(id){
  if(next.status==="won"){
    state.wins=awardWin(state.wins,next);
    renderBattleProgress();
+   refreshPassport();saveProgress("CORPORATE DISPUTE RESOLVED · SAVED LOCALLY");
    say(null,ENCOUNTERS[next.id].victory);
  }
  renderBattle();
@@ -249,18 +323,24 @@ function interact(){
  if(state.overlay||!state.places.length)return;
  const place=nearest();if(!place)return;
  state.visits+=1;
+ const newStamp=!state.visited.includes(place.id);
+ state.visited=visitLandmark({visited:state.visited},place.id).visited;
  state.quest=advanceQuest(state.quest,place.id);
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
  say(place,ending.completed?ending.message:(dialogues[place.id]||place.description));
+ refreshPassport();
+ saveProgress(newStamp?"PASSPORT STAMPED: "+LANDMARK_SOUVENIRS[place.id].name+" · SAVED LOCALLY":"STEMSIDE PROGRESS SAVED LOCALLY");
  if(place.id==="stems-league")openArena();
  else if(state.visits%5===0)openModal("tweedsie","tweedsie-close");
 }
 function reset(){
- state.player={x:215,y:690};
- state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
- state.wins=[];state.battle=null;state.nearId=null;renderBattleProgress();
+ if(!window.confirm("Reset the entire Stemside adventure, passport and local save on this browser? This cannot be undone."))return;
+ const initial=initialProgress();
+ state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
+ state.wins=[];state.visited=[];state.battle=null;state.nearId=null;state.lastSavedPos=null;
+ renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
  questUI();
@@ -305,6 +385,7 @@ function fire(){
      state.medal=true;el("medal").textContent="SOUTHSIDE TGA MEDAL";
      el("arena-feedback").textContent="SOUTHSIDE MEDAL WON! THE NORTHSIDE STIMMERS HAVE FILED A COMPLAINT.";
      say(null,"The Southside Stems League has awarded you a practice medal. Reggie Bands demands a recount.");
+     refreshPassport();saveProgress("TGA MEDAL EARNED · SAVED LOCALLY");
    } else {
      el("arena-feedback").textContent="NO MEDAL YET. THE LEAGUE RECOMMENDS MORE PRACTICE, NOT MORE FEES.";
    }
@@ -338,6 +419,11 @@ function loop(now){
    state.player=move(state.player,keysAxis(),dt);
    updateNearby();
  }
+ if(state.saveReady&&!state.overlay&&now-state.lastAutoSave>6000){
+   state.lastAutoSave=now;
+   const last=state.lastSavedPos;
+   if(last&&Math.hypot(state.player.x-last.x,state.player.y-last.y)>18)saveProgress("YOUR POSITION AUTOSAVED ON THIS DEVICE");
+ }
  draw();
  requestAnimationFrame(loop);
 }
@@ -362,7 +448,8 @@ for(const btn of document.querySelectorAll("[data-dir]")){
  for(const type of ["pointerup","pointercancel","lostpointercapture"])btn.addEventListener(type,()=>state.touch.delete(dir));
 }
 window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();if(state.arena.charging)state.arena.charging=false});
-document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear()}});
+document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear();saveProgress()}});
+window.addEventListener("pagehide",()=>saveProgress());
 el("interact").addEventListener("click",interact);
 el("challenge").addEventListener("click",startEncounter);
 el("battle-close").addEventListener("click",()=>closeModal("battle"));
@@ -374,6 +461,7 @@ el("interior-close").addEventListener("click",()=>closeModal("interior"));
 el("script-open").addEventListener("click",openScript);
 el("script-close").addEventListener("click",()=>closeModal("script"));
 el("reset").addEventListener("click",reset);
+el("save-now").addEventListener("click",()=>saveProgress("MANUAL SAVE COMPLETE · STORED IN THIS BROWSER"));
 el("arena-close").addEventListener("click",()=>closeModal("arena"));
 el("tweedsie-close").addEventListener("click",()=>closeModal("tweedsie"));
 el("fire").addEventListener("click",()=>state.arena.charging?fire():beginCharge());
@@ -384,7 +472,9 @@ el("easy-aim").addEventListener("change",syncArena);
   const res=await fetch("data/stemside-map.json");
   if(!res.ok)throw Error("City records unavailable");
   state.places=normalizedPlaces(await res.json());
-  say(null,"City Hall approved your walking permit. Find CoffeeChucks to begin your perfectly ordinary errand.");
+  const recovered=restoreProgress();
+  say(null,recovered?"Welcome back to Stemside. Your bureaucratic burdens have been remembered.":"City Hall approved your walking permit. Find CoffeeChucks to begin your perfectly ordinary errand.");
+  state.saveReady=true;
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
- questUI();renderBattleProgress();resize();requestAnimationFrame(loop);
+ questUI();renderBattleProgress();refreshPassport();resize();updateNearby();requestAnimationFrame(loop);
 })();

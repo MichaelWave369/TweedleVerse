@@ -14,6 +14,10 @@ The game now includes three story interiors, dialogue options, Plot Points, and 
 
 Three of the existing businesses have opt-in, turn-based **corporate dispute encounters**, with distinct nonviolent enemy meters, four party abilities, repeatable wins/losses, and a limited Tweedsie assist unlocked by two unique wins. This supplements rather than replacing the walkable world, Coffee Run, authored dialogue and Tweedleball. Details and mechanics: [PLAYABLE_V05](PLAYABLE_V05.md). This is an original satirical RPG experiment, not a reproduction of any existing game's characters, art, music, scripts or UI.
 
+## RPG progression, passport, and local saves (v0.6)
+
+The playable game now tracks first visits to every one of Stemside's thirteen business landmarks, awards one original souvenir per unique landmark, computes fictional rank from existing achievements, displays a journal of coffee, Page 42, arena, and corporate events, and restores verified local browser saves. The collection is an authored feedback loop, not a physical-world product purchase. See [PLAYABLE_V06](PLAYABLE_V06.md).
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.

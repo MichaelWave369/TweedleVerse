@@ -61,3 +61,19 @@
 .battle-hint{font-size:11px!important;color:#becac1!important;margin:15px 0 0!important}
 @media(max-width:670px){.battle-meters{grid-template-columns:1fr}.battle-commands{grid-template-columns:1fr}.battle-command{padding:9px 12px}.battle-command span{font-size:14px}.battle-scene{height:145px}.battle-foe{height:100px;width:96px}}
 @media(prefers-reduced-motion:reduce){.meter-fill{transition:none}}
+
+/* v0.6: A legible paper-like passport embedded in the existing RPG sidebar. */
+.passport-card{background:linear-gradient(165deg,#ece0bc,#d8c99e);color:#27353b;border:3px double #776c4e;box-shadow:inset 0 0 0 4px #efe1bb}
+.passport-card .eyebrow{color:#675037}.passport-card h2{font-size:25px;color:#273338}.passport-card h3{font-size:13px;letter-spacing:.1em;margin:23px 0 9px;border-bottom:2px solid #9a8762;padding-bottom:5px}
+.passport-card .passport-note{color:#4e534c;font-size:12px}
+.passport-stats{display:grid;gap:6px;background:#c5bc95;border:1px dashed #6d7459;padding:13px}
+.passport-stats>*{font-size:12px;font-weight:900;color:#253a31;letter-spacing:.03em}
+.passport-stats strong{font-size:16px}
+.passport-items,.passport-journal{max-height:260px;overflow-y:auto;padding-left:19px;margin:0;scrollbar-color:#786f52 #ede1bd}
+.passport-items li,.passport-journal li{font-size:12px;line-height:1.5;padding:5px 0;color:#263c39}
+.passport-items li{border-bottom:1px dashed #b3a780}
+.passport-items li strong{display:block}
+.passport-items li small{display:block;color:#53645a}
+.save-actions{margin-top:20px}.save-actions .btn{width:100%}
+.save-status{font-size:11px!important;color:#374d3e!important;font-weight:900;margin:12px 0 0}
+@media(max-width:670px){.passport-card h2{font-size:23px}}
