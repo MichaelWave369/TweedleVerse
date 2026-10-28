@@ -1,0 +1,73 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+import {resolve} from "node:path";
+import {NAV_MODES,resolveWaypoint,mapPosition,compass,encodePortableSave,decodePortableSave,MAX_SAVE_BYTES} from "../assets/travel-core.mjs";
+import {initialProgress,decodeSave,SAVE_VERSION} from "../assets/progression-core.mjs";
+import {WORLD} from "../assets/game-core.mjs";
+import {RESIDENTS} from "../assets/residents-core.mjs";
+const root=resolve(import.meta.dirname,".."),read=x=>readFileSync(resolve(root,x),"utf8");
+const places=JSON.parse(read("data/stemside-map.json")).places;
+const p=()=>initialProgress();
+test("navigation modes unique, stable and don't invent a destination",()=>{
+ assert.equal(new Set(NAV_MODES.map(x=>x.id)).size,NAV_MODES.length);
+ assert.equal(resolveWaypoint(p(),"free",places),null);
+ assert.deepEqual(resolveWaypoint(p(),"bogus",places),resolveWaypoint(p(),"auto",places));
+ assert.equal(resolveWaypoint({...p(),quest:3,tapeQuest:4,gigQuest:5,visited:places.map(x=>x.id),wins:["whole-moods","coffeecharles","spacealite"],story:{points:1,heard:["coffeechucks","lackluster","tweedcorp"],rewrite:"coffee",finished:true}},"auto",places),null);
+});
+test("main quest and mission focus correctly resolve canonical stops",()=>{
+ const initial=p(),start=resolveWaypoint(initial,"auto",places);
+ assert.equal(start.id,"coffeechucks");
+ assert.equal(start.type,"place");
+ assert.equal(resolveWaypoint({...initial,quest:2},"coffee",places).id,"tweedcorp");
+ assert.equal(resolveWaypoint({...initial,quest:3},"coffee",places),null);
+ assert.equal(resolveWaypoint({...initial,tapeQuest:0},"tape",places).id,"marty");
+ assert.equal(resolveWaypoint({...initial,tapeQuest:2},"tape",places).id,"bob-street");
+ assert.equal(resolveWaypoint({...initial,gigQuest:0},"gig",places).id,"lenny");
+ assert.equal(resolveWaypoint({...initial,gigQuest:4},"gig",places).id,"stems-league");
+});
+test("script endings, battles, and passport markers track live progress",()=>{
+ let old=p();
+ assert.equal(resolveWaypoint({...old,quest:3,story:{points:0,heard:[],rewrite:null,finished:false}},"script",places).id,"coffeechucks");
+ assert.equal(resolveWaypoint({...old,quest:3,story:{points:2,heard:["coffeechucks","lackluster"],rewrite:"audit",finished:false}},"script",places).id,"spacealite");
+ assert.equal(resolveWaypoint({...old,wins:["whole-moods"]},"battles",places).id,"coffeecharles");
+ assert.equal(resolveWaypoint({...old,visited:["whole-moods"]},"passport",places).id,"coffeecharles");
+ assert.ok(RESIDENTS.some(n=>n.id===resolveWaypoint(old,"tape",places).id));
+});
+test("map coordinates and compass directions are consistent",()=>{
+ const first=resolveWaypoint(p(),"coffee",places);
+ assert.equal(first.x,places.find(x=>x.id===first.id).x/100*WORLD.width);
+ assert.deepEqual(mapPosition({x:WORLD.width,y:WORLD.height},200,140),{x:200,y:140});
+ assert.deepEqual(mapPosition({x:-100,y:9000},200,140),{x:0,y:140});
+ assert.deepEqual(compass({x:0,y:0},{x:500,y:0}),{distance:500,direction:"E",arrived:false});
+ assert.equal(compass({x:5,y:5},{x:5,y:100}).arrived,true);
+ assert.equal(compass({x:0,y:0},{x:0,y:-300}).direction,"N");
+ assert.equal(compass({x:0,y:0},null),null);
+});
+test("portable save roundtrips, migrates old data, rejects corrupt or foreign files",()=>{
+ let progress={...p(),quest:3,tapeQuest:4,gigQuest:5,visited:["coffeechucks"],wins:["spacealite"],story:{points:1,heard:["coffeechucks"],rewrite:"coffee",finished:true}};
+ const text=encodePortableSave(progress);
+ const restored=decodePortableSave(text);
+ assert.deepEqual(restored,decodeSave({...progress,version:SAVE_VERSION}));
+ assert.equal(restored.quest,3);
+ assert.equal(decodePortableSave(JSON.stringify({...p(),version:1})).version,SAVE_VERSION);
+ assert.equal(decodePortableSave(JSON.stringify({...p(),version:2})).version,SAVE_VERSION);
+ for(const invalid of ["","not json","[]","true",JSON.stringify({format:"another-project",schema:1,save:p()}),JSON.stringify({format:"tweedleverse.stemside.portable",schema:999,save:p()})," ".repeat(MAX_SAVE_BYTES+1)])assert.equal(decodePortableSave(invalid),null);
+ const hostile=JSON.stringify({format:"tweedleverse.stemside.portable",schema:1,save:{...p(),player:{x:Infinity,y:-100},visited:["coffeechucks","evil"],gigQuest:999}});
+ const safe=decodePortableSave(hostile);
+ assert.equal(safe.gigQuest,0);
+ assert.deepEqual(safe.visited,["coffeechucks"]);
+});
+test("interface and local-only export/import actions are connected",()=>{
+ const html=read("play.html"),js=read("assets/play.js"),css=read("assets/play.css");
+ for(const id of ["mini-map","minimap-toggle","waypoint-focus","waypoint-status","save-export","save-import","save-vault-status"])assert.ok(html.includes('id="'+id+'"'),id);
+ assert.ok(js.includes('from "./travel-core.mjs"'));
+ assert.ok(js.includes("encodePortableSave"));
+ assert.ok(js.includes("decodePortableSave"));
+ assert.ok(js.includes("URL.createObjectURL"));
+ assert.ok(js.includes("localStorage.setItem"));
+ assert.ok(css.includes(".mini-map"));
+ assert.ok(read(".github/workflows/checks.yml").includes("assets/travel-core.mjs"));
+ assert.ok(read(".github/workflows/pages.yml").includes("assets/travel-core.mjs"));
+ assert.ok(read("README.md").includes("v0.9"));
+});
