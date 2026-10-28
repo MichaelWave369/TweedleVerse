@@ -1,0 +1,51 @@
+name: TweedleVerse Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate scripts
+        run: node --check assets/app.js && node --check assets/stemside.js
+      - name: Run local tests
+        run: npm test
+  deploy:
+    # Enable manually after Settings > Pages > Source: GitHub Actions
+    # and Settings > Secrets and variables > Actions > Variables
+    # sets ENABLE_TWEEDLEVERSE_PAGES=true.
+    if: ${{ vars.ENABLE_TWEEDLEVERSE_PAGES == 'true' }}
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare safe public artifact
+        run: |
+          mkdir -p public
+          cp index.html stemside.html public/
+          cp -R assets data public/
+          touch public/.nojekyll
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4

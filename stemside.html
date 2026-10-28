@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111c28">
+<meta name="description" content="Visit South and North Stemside in TweedleVerse's first interactive street explorer.">
+<title>Stemside Street Explorer | TweedleVerse</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/stemside.css">
+<script src="assets/stemside.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the map</a>
+<header class="site-header">
+  <a class="back" href="index.html">↖ BACK TO TWEEDLEVERSE</a>
+  <span class="broadcast"><span class="light" aria-hidden="true"></span> SPACEALITE™ FIELD SIGNAL 420</span>
+</header>
+<main id="main">
+<section class="intro">
+  <span class="eyebrow">WELCOME TO STEMSIDE // INTERACTIVE PREVIEW 0.2</span>
+  <h1>TAKE A WRONG TURN.<br><em>FIND A NEW ONE.</em></h1>
+  <p>Explore the streets of South and North Stemside. Tap a business to get the local scoop, or try your first highly unnecessary corporate errand.</p>
+  <div class="intro-actions"><button id="begin-quest" class="solid" type="button">START: THE COFFEE RUN ↗</button><a href="#street-map" class="outline">EXPLORE THE STREETS ↓</a></div>
+</section>
+<div class="ticker"><span>NOW HIRING: TWEEDCORP CO. ◈ LOST: ONE OFFICIAL EPISODE SCRIPT ◈ WARNING: NORTHSIDE PRICES MAY BE FICTIONAL ◈ REGGIE'S REGGIE: CHEAP IN A PINCH! ◈</span></div>
+<section id="street-map" class="explorer" aria-label="Interactive city explorer">
+  <div class="map-column">
+    <div class="heading-row"><div><span class="eyebrow">STEMSIDE CITY AUTHORITY</span><h2>YOUR DISCOUNT <em>CITY MAP</em></h2></div><span class="issue">MAP REV. 0042<br>ACCURACY NOT GUARANTEED</span></div>
+    <div class="filter-bar" role="group" aria-label="Choose district">
+      <button class="filter active" type="button" data-filter="all" aria-pressed="true">ALL STEMSIDE</button>
+      <button class="filter" type="button" data-filter="south" aria-pressed="false">SOUTH STEMSIDE</button>
+      <button class="filter" type="button" data-filter="north" aria-pressed="false">NORTH STEMSIDE</button>
+    </div>
+    <div class="scroll-hint">SCROLL THE MAP SIDEWAYS ON SMALLER SCREENS ↔</div>
+    <div class="map-scroll" tabindex="0" aria-label="Scroll to explore all map locations">
+      <div id="map-stage" class="map-stage" aria-label="Stylized top-down map of Stemside">
+        <div class="zone-north" aria-hidden="true"></div>
+        <div class="zone-south" aria-hidden="true"></div>
+        <div class="road road-horizontal" aria-hidden="true"></div>
+        <div class="road road-vertical" aria-hidden="true"></div>
+        <div class="road road-side" aria-hidden="true"></div>
+        <div class="railway" aria-hidden="true"></div>
+        <div class="district-label north-label" aria-hidden="true">NORTH STEMSIDE<span>EXPENSIVE BY DESIGN</span></div>
+        <div class="district-label south-label" aria-hidden="true">SOUTH STEMSIDE<span>CHEAP IN A PINCH</span></div>
+        <div class="corporate-stamp" aria-hidden="true">CITY LIMITS<br>PROPERTY OF SOMEONE ELSE</div>
+        <div id="map-pins" class="map-pins"></div>
+      </div>
+    </div>
+    <div class="legend"><span><b class="swatch south-swatch"></b> SOUTH SIDE</span><span><b class="swatch north-swatch"></b> NORTH SIDE</span><span><b class="swatch chosen-swatch"></b> SELECTED</span></div>
+    <p class="map-footnote">Not to scale, not to code, and definitely not approved by the Department of Cartography. Everything here is fictional.</p>
+  </div>
+  <aside class="side-panel">
+    <div class="place-card">
+      <span class="eyebrow" id="place-category">CITY VISITOR INFORMATION</span>
+      <div class="place-icon" id="place-icon" aria-hidden="true">⌖</div>
+      <h2 id="place-title">Pick a place.</h2>
+      <p class="place-district" id="place-district">SOUTH OR NORTH, YOUR CHOICE.</p>
+      <p id="place-description" class="place-description" aria-live="polite">Select a marker on the map or a location from the directory below. Stemside's businesses are legally required to exist.</p>
+      <blockquote id="place-quote">“Same city. Different tax brackets. Identical stems.”</blockquote>
+      <p class="visit-count" id="visit-count">0 LANDMARKS VISITED</p>
+    </div>
+    <div class="quest-card" aria-live="polite">
+      <span class="eyebrow">TWEEDCORP HR / UNPAID ASSIGNMENT</span>
+      <h3>THE COFFEE RUN</h3>
+      <p id="quest-instructions">Your first mission is available. A simple trip for coffee. What could possibly go wrong?</p>
+      <ol class="quest-steps" id="quest-steps">
+        <li data-step="1">Visit CoffeeChucks</li>
+        <li data-step="2">Report to Stems League Arena</li>
+        <li data-step="3">Return to TweedCorp HQ</li>
+      </ol>
+      <p class="quest-status" id="quest-status">NOT STARTED</p>
+      <button id="quest-action" type="button" class="outline">START MISSION</button>
+    </div>
+    <div class="ad-card"><span>THIS SPACE PURCHASED BY SPACEALITE™</span><h3>YOU HAVE INFINITE CHOICES.</h3><strong>NONE ARE INCLUDED.</strong><p>Enter promo code SEEDSMCSTEMS to pay the regular price.</p></div>
+  </aside>
+</section>
+<section class="directory" aria-labelledby="directory-heading">
+  <div class="heading-row"><div><span class="eyebrow">VISITOR DIRECTORY // FREE FOR NOW</span><h2 id="directory-heading">EVERY PLACE HAS <em>A PROBLEM.</em></h2></div></div>
+  <div class="directory-grid" id="directory-list" aria-label="Stemside businesses"><p>Loading the directory from City Hall's one working computer…</p></div>
+</section>
+<section class="closing"><h2>THIS IS JUST <em>ONE BLOCK.</em></h2><p>Stemside's first explorer is a prototype for the larger <strong>Welcome to Stemside</strong> game. Future versions may add a walkable character, character conversations, Tweedleball trials, and a truly unnecessary Spacealite subscription.</p><a href="index.html" class="solid">RETURN TO THE TWEEDLEVERSE ↗</a></section>
+</main>
+<div id="tweedsie-pop" class="tweedsie-pop" role="dialog" aria-modal="true" aria-labelledby="tweedsie-title" hidden>
+  <div class="tweedsie-inner">
+    <button type="button" class="close-pop" id="dismiss-tweedsie" aria-label="Close Tweedsie encounter">×</button>
+    <img src="assets/tweedsie.svg" alt="Tweedsie, a smiling gopher with dreadlocks and sunglasses">
+    <div><span class="eyebrow">UNAUTHORIZED CAMEO</span><h2 id="tweedsie-title">HEY, IT'S TWEEDSIE.</h2><p>“Same hole. Different day.”</p><small>Reggie Bands has been invoiced for this appearance.</small></div>
+  </div>
+</div>
+<footer><span>© 2026 MICHAEL WAVE · TWEEDLEVERSE</span><span>ORIGINAL SILICON SATIRE · NO REAL SHOPS, NO REAL PRODUCT CLAIMS</span></footer>
+</body>
+</html>
