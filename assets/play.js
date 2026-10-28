@@ -125,7 +125,7 @@ function closeModal(name){
  el(name+"-overlay").hidden=true;state.overlay=null;
  state.arena.charging=false;
  const focus=state.returnFocus;state.returnFocus=null;
- (focus?.isConnected?focus:canvas).focus();
+ (focus?.isConnected&&!focus.disabled?focus:canvas).focus();
 }
 
 function renderStoryUI(){
