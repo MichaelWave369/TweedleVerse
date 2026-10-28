@@ -14,26 +14,56 @@
 <a class="skip" href="#game-area">Skip to game</a>
 <header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
 <main id="game-area">
-<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.3</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>A silicon workplace comedy you can walk through. Meet the businesses, collect a completely unnecessary errand, and compete in a Tweedleball practice match.</p></div>
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.4</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>A silicon workplace comedy you can walk through. Meet the businesses, collect a completely unnecessary errand, compete in a Tweedleball practice match, enter three original storefront scenes, and rewrite the episode's ending.</p></div>
 <div class="game-layout">
 <section class="game-panel" aria-label="Interactive Stemside game">
-<div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span></div>
+<div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span><span id="plot-points">PLOT POINTS: 0</span></div>
 <div class="viewport"><canvas id="world" aria-label="Top-down Stemside city game. Move with WASD or arrow keys, use E or the Interact button to visit a nearby place." tabindex="0"></canvas><div class="world-badge" id="nearby">MOVE TO A BUSINESS TO INTERACT</div></div>
 <div class="game-controls">
 <div class="dpad" aria-label="Movement controls">
 <button type="button" data-dir="up" aria-label="Move up">↑</button>
 <div><button type="button" data-dir="left" aria-label="Move left">←</button><button type="button" data-dir="down" aria-label="Move down">↓</button><button type="button" data-dir="right" aria-label="Move right">→</button></div>
 </div>
-<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="reset" class="btn secondary" type="button">RESET RUN</button></div>
+<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="enter" class="btn secondary" type="button" disabled>ENTER SHOP</button><button id="reset" class="btn secondary" type="button">RESET RUN</button></div>
 </div>
 </section>
 <aside class="sidebar">
 <div class="card"><span class="eyebrow">TWEEDCORP CO. · FIELD ASSIGNMENT</span><h2>THE COFFEE RUN</h2><p id="quest-text">Your shift is starting. Get a coffee at CoffeeChucks. It cannot possibly become a sports career.</p><ol id="quest-list"><li>Visit CoffeeChucks</li><li>Visit Stems League Arena</li><li>Report to TweedCorp HQ</li></ol><p class="state-label" id="quest-status" role="status" aria-live="polite">MISSION ACTIVE</p></div>
-<div class="card info"><span class="eyebrow">STEMSIDE LOCAL INTERACTIONS</span><h2 id="place-heading">NO BUSINESS SELECTED</h2><p id="place-message" aria-live="polite">Walk toward a glowing storefront and press E, tap Interact, or press the A button on your controller.</p><p class="help">WASD / arrows / gamepad left stick to walk. E / Enter / gamepad A to interact. Mobile: touch D-pad. Game runs entirely in your browser without accounts.</p></div>
+<div class="card info"><span class="eyebrow">STEMSIDE LOCAL INTERACTIONS</span><h2 id="place-heading">NO BUSINESS SELECTED</h2><p id="place-message" aria-live="polite">Walk toward a glowing storefront and press E, tap Interact, or press the A button on your controller.</p><p class="help">WASD / arrows / gamepad left stick to walk. E / Enter / gamepad A to interact. Mobile: touch D-pad. Three locations also offer an ENTER SHOP button with character conversations. Game runs entirely in your browser without accounts.</p>
+<button id="script-open" class="btn primary" type="button" disabled>READ THE EPISODE SCRIPT</button>
+<p class="help" id="script-status" aria-live="polite">Complete the coffee run to unlock the script.</p></div>
 <div class="card broadcast"><span>SPACEALITE™ CORPORATE ALERT</span><strong>YOU ARE BEING CHARGED FOR STANDING STILL.</strong><p>Fees may be waived upon satisfactory completion of this sentence.</p></div>
 </aside>
 </div>
 </main>
+<div class="overlay" id="interior-overlay" role="dialog" aria-modal="true" aria-labelledby="interior-title" hidden>
+  <div class="modal interior">
+    <button id="interior-close" class="close" type="button" aria-label="Leave interior">×</button>
+    <span class="eyebrow">STEMSIDE // ONE OF THREE EXPLORABLE INTERIORS</span>
+    <h2 id="interior-title">WELCOME IN</h2>
+    <div class="interior-stage" id="interior-stage" data-tone="south" role="img" aria-label="Stylized, original side-view business interior with a counter and a silicon resident">
+      <div class="ceiling-sign" id="interior-sign">STEMSIDE WELCOMES YOU</div>
+      <div class="shelf"><span></span><span></span><span></span><span></span></div>
+      <div class="counter"></div><div class="npc-portrait" aria-hidden="true"><div class="npc-eyes"></div><div class="npc-mouth"></div></div>
+      <span class="interior-caption">COUNTER SERVICE / REALITY SUBJECT TO CHANGE</span>
+    </div>
+    <span class="eyebrow" id="npc-name">SILICON RESIDENT</span>
+    <p class="npc-line" id="npc-line" aria-live="polite">Somebody is about to say something ridiculous.</p>
+    <div id="interior-choices" class="choice-grid" aria-label="Conversation options"></div>
+    <p class="scene-note" id="scene-note">One Plot Point is earned the first time you speak in each interior.</p>
+  </div>
+</div>
+<div class="overlay" id="script-overlay" role="dialog" aria-modal="true" aria-labelledby="script-title" hidden>
+  <div class="modal script-page">
+    <button id="script-close" class="close" type="button" aria-label="Close script">×</button>
+    <span class="eyebrow">TWEEDCORP WRITERS' ROOM · PAGE 42 · CLASSIFIED</span>
+    <h2 id="script-title">THE ENDING IS WRONG.</h2>
+    <p class="script-typed">SCENE 42: OUR HEROES FINISH THE COFFEE RUN ONLY TO DISCOVER THEY'VE BECOME CONTRACTUALLY OBLIGATED PROFESSIONAL TWEEDLEBALL ATHLETES.</p>
+    <p>Spend <strong>2 Plot Points</strong> to replace the next scene. You get one rewrite per run. The new objective will be real, not just an altered caption.</p>
+    <div id="script-choices" class="choice-grid" aria-label="Choose the new ending"></div>
+    <p id="script-feedback" class="scene-note" aria-live="polite">Corporate does not authorize unscripted employee decisions.</p>
+  </div>
+</div>
 <div class="overlay" id="arena-overlay" role="dialog" aria-modal="true" aria-labelledby="arena-title" hidden>
 <div class="modal arena">
 <button id="arena-close" class="close" type="button" aria-label="Close Tweedleball arena">×</button>

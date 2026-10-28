@@ -1,11 +1,12 @@
 import {WORLD,OBJECTIVES,move,nearby,advanceQuest,scoreShot,arenaResult,clamp,normalizedPlaces} from "./game-core.mjs";
+import {initialStory,canEnter,getScene,getReply,awardPlotPoint,eligibleToRewrite,chooseRewrite,resolveEpilogue,scriptStatus,REWRITES} from "./story-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),overlay:null,returnFocus:null,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
 };
@@ -38,6 +39,7 @@ function questUI(){
  el("progress").textContent="THE COFFEE RUN · "+state.quest+"/3";
  el("quest-text").textContent=questLines[state.quest];
  el("quest-status").textContent=state.quest===3?"COMPLETED · COFFEE STILL PENDING":"MISSION ACTIVE";
+ renderStoryUI();
  for(const [i,li] of Array.from(el("quest-list").children).entries()){
   li.classList.toggle("done",state.quest>i);
  }
@@ -110,6 +112,7 @@ function updateNearby(){
  if(id===state.nearId)return;
  state.nearId=id;
  el("interact").disabled=!place;
+ el("enter").disabled=!place||!canEnter(place.id);
  el("nearby").textContent=place?"NEAR "+place.name.toUpperCase()+" · PRESS E / INTERACT":"MOVE TOWARD A GLOWING STOREFRONT";
 }
 function openModal(name,focusId){
@@ -122,21 +125,81 @@ function closeModal(name){
  el(name+"-overlay").hidden=true;state.overlay=null;
  state.arena.charging=false;
  const focus=state.returnFocus;state.returnFocus=null;
- (focus?.isConnected?focus:canvas).focus();
+ (focus?.isConnected&&!focus.disabled?focus:canvas).focus();
 }
+
+function renderStoryUI(){
+ el("plot-points").textContent="PLOT POINTS: "+state.story.points;
+ el("script-status").textContent=scriptStatus(state.story,state.quest);
+ el("script-open").disabled=!eligibleToRewrite(state.story,state.quest);
+}
+function enterInterior(){
+ if(state.overlay)return;
+ const place=nearest();
+ if(!place||!canEnter(place.id))return;
+ const scene=getScene(place.id);
+ el("interior-title").textContent=scene.place.toUpperCase();
+ el("interior-sign").textContent=scene.prop;
+ el("npc-name").textContent=scene.npc.toUpperCase();
+ el("npc-line").textContent=scene.greeting;
+ el("interior-stage").dataset.tone=scene.tone;
+ el("scene-note").textContent=state.story.heard.includes(place.id)?
+  "Plot Point already earned here. Your conversation remains complimentary.":
+  "Speak with the resident to earn 1 Plot Point. One point per distinct interior.";
+ const root=el("interior-choices");root.replaceChildren();
+ for(const choice of scene.choices){
+   const button=document.createElement("button");
+   button.type="button";button.className="btn secondary choice";
+   button.textContent=choice.label;
+   button.addEventListener("click",()=>{
+     const first=!state.story.heard.includes(place.id);
+     state.story=awardPlotPoint(state.story,place.id);
+     el("npc-line").textContent=getReply(place.id,choice.id);
+     el("scene-note").textContent=first?"+1 PLOT POINT EARNED. NEW CONVERSATION NOTED IN YOUR SCRIPT.":"THIS RESIDENT HAS ALREADY CONTRIBUTED A PLOT POINT.";
+     renderStoryUI();
+   });
+   root.append(button);
+ }
+ openModal("interior","interior-close");
+}
+function openScript(){
+ if(!eligibleToRewrite(state.story,state.quest))return;
+ const root=el("script-choices");
+ root.replaceChildren();
+ el("script-feedback").textContent="The next scene will change depending on which choice you make.";
+ for(const option of Object.values(REWRITES)){
+   const button=document.createElement("button");
+   button.type="button";button.className="btn secondary choice";
+   button.textContent=option.label+" → "+option.objective;
+   button.addEventListener("click",()=>{
+     const next=chooseRewrite(state.story,state.quest,option.id);
+     if(!next)return;
+     state.story=next;
+     el("script-feedback").textContent="APPROVED BY ABSOLUTELY NOBODY. "+option.objective;
+     say(null,"PAGE 42 REWRITTEN: "+option.objective);
+     renderStoryUI();
+     for(const item of root.querySelectorAll("button"))item.disabled=true;
+   });
+   root.append(button);
+ }
+ openModal("script","script-close");
+}
+
 function interact(){
  if(state.overlay||!state.places.length)return;
  const place=nearest();if(!place)return;
  state.visits+=1;
  state.quest=advanceQuest(state.quest,place.id);
+ const ending=resolveEpilogue(state.story,place.id);
+ state.story=ending.story;
  questUI();
- say(place,dialogues[place.id]||place.description);
+ say(place,ending.completed?ending.message:(dialogues[place.id]||place.description));
  if(place.id==="stems-league")openArena();
  else if(state.visits%5===0)openModal("tweedsie","tweedsie-close");
 }
 function reset(){
  state.player={x:215,y:690};
- state.quest=0;state.visits=0;state.medal=false;
+ state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
  questUI();
@@ -221,7 +284,7 @@ document.addEventListener("keydown",ev=>{
  if(state.overlay){
    if(ev.code==="Escape"){ev.preventDefault();closeModal(state.overlay);return}
    if(ev.code==="Tab"){const modal=el(state.overlay+"-overlay");const nodes=Array.from(modal.querySelectorAll("button:not(:disabled),input:not(:disabled)"));if(nodes.length){const first=nodes[0],last=nodes[nodes.length-1];if(ev.shiftKey&&document.activeElement===first){ev.preventDefault();last.focus()}else if(!ev.shiftKey&&document.activeElement===last){ev.preventDefault();first.focus()}}return}
-   if(state.overlay==="arena"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="INPUT"){ev.preventDefault();beginCharge()}
+   if(state.overlay==="arena"&&ev.code==="Space"&&!ev.repeat&&ev.target?.tagName!=="INPUT"&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();beginCharge()}
    return;
  }
  if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD"].includes(ev.code)){ev.preventDefault();state.keys.add(ev.code)}
@@ -229,7 +292,7 @@ document.addEventListener("keydown",ev=>{
 });
 document.addEventListener("keyup",ev=>{
  state.keys.delete(ev.code);
- if(state.overlay==="arena"&&ev.code==="Space"&&state.arena.charging){ev.preventDefault();fire()}
+ if(state.overlay==="arena"&&ev.code==="Space"&&state.arena.charging&&ev.target?.tagName!=="BUTTON"){ev.preventDefault();fire()}
 });
 for(const btn of document.querySelectorAll("[data-dir]")){
  const dir=btn.dataset.dir;
@@ -239,6 +302,10 @@ for(const btn of document.querySelectorAll("[data-dir]")){
 window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();if(state.arena.charging)state.arena.charging=false});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear()}});
 el("interact").addEventListener("click",interact);
+el("enter").addEventListener("click",enterInterior);
+el("interior-close").addEventListener("click",()=>closeModal("interior"));
+el("script-open").addEventListener("click",openScript);
+el("script-close").addEventListener("click",()=>closeModal("script"));
 el("reset").addEventListener("click",reset);
 el("arena-close").addEventListener("click",()=>closeModal("arena"));
 el("tweedsie-close").addEventListener("click",()=>closeModal("tweedsie"));

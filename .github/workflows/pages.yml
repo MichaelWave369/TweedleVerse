@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '22'
       - name: Validate scripts
-        run: node --check assets/app.js && node --check assets/stemside.js && node --check assets/play.js && node --check assets/game-core.mjs
+        run: node --check assets/app.js && node --check assets/stemside.js && node --check assets/play.js && node --check assets/game-core.mjs && node --check assets/story-core.mjs
       - name: Run local tests
         run: npm test
   deploy:
