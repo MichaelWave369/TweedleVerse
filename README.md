@@ -15,6 +15,10 @@ The [Stemside portal](index.html) is a hand-built static site with an original i
 
 [Stemside Street Explorer](stemside.html) adds a clickable district map, 13 local landmarks, local information cards, surprise Tweedsie cameos, and a short three-stop Coffee Run story mission. This is an interactive map/story prototype, not an open-world game yet. See [Pages and Explorer guide](docs/PAGES_AND_EXPLORER.md) for the GitHub Pages setup and manual publish gate. The deployment workflow does not run unless the repository variable `ENABLE_TWEEDLEVERSE_PAGES=true` is set after enabling Pages.
 
+### Play Stemside v0.3
+
+[PLAY: Welcome to Stemside](play.html) is a **real playable top-down browser prototype** that shares [the city JSON](data/stemside-map.json) with the Street Explorer. Walk through the city using WASD/arrows, controller stick, or touch controls; interact with 13 named landmarks; complete the Coffee Run; practice a five-shot Tweedleball challenge and earn a Southside medal. Tweedsie may interrupt your visit. The game requires no accounts, libraries, build system or network beyond loading its own static assets. It is **not** a finished open-world game or full 3D environment. See [playable prototype notes](docs/PLAYABLE_V03.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)

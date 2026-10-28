@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111d26">
+<meta name="description" content="Walk around Stemside, meet its ridiculous businesses, and play a Tweedleball shooting challenge in the TweedleVerse.">
+<title>Welcome to Stemside | Playable Prototype</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/play.css">
+<script type="module" src="assets/play.js"></script>
+</head>
+<body>
+<a class="skip" href="#game-area">Skip to game</a>
+<header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
+<main id="game-area">
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.3</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>A silicon workplace comedy you can walk through. Meet the businesses, collect a completely unnecessary errand, and compete in a Tweedleball practice match.</p></div>
+<div class="game-layout">
+<section class="game-panel" aria-label="Interactive Stemside game">
+<div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span></div>
+<div class="viewport"><canvas id="world" aria-label="Top-down Stemside city game. Move with WASD or arrow keys, use E or the Interact button to visit a nearby place." tabindex="0"></canvas><div class="world-badge" id="nearby">MOVE TO A BUSINESS TO INTERACT</div></div>
+<div class="game-controls">
+<div class="dpad" aria-label="Movement controls">
+<button type="button" data-dir="up" aria-label="Move up">↑</button>
+<div><button type="button" data-dir="left" aria-label="Move left">←</button><button type="button" data-dir="down" aria-label="Move down">↓</button><button type="button" data-dir="right" aria-label="Move right">→</button></div>
+</div>
+<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="reset" class="btn secondary" type="button">RESET RUN</button></div>
+</div>
+</section>
+<aside class="sidebar">
+<div class="card"><span class="eyebrow">TWEEDCORP CO. · FIELD ASSIGNMENT</span><h2>THE COFFEE RUN</h2><p id="quest-text">Your shift is starting. Get a coffee at CoffeeChucks. It cannot possibly become a sports career.</p><ol id="quest-list"><li>Visit CoffeeChucks</li><li>Visit Stems League Arena</li><li>Report to TweedCorp HQ</li></ol><p class="state-label" id="quest-status" role="status" aria-live="polite">MISSION ACTIVE</p></div>
+<div class="card info"><span class="eyebrow">STEMSIDE LOCAL INTERACTIONS</span><h2 id="place-heading">NO BUSINESS SELECTED</h2><p id="place-message" aria-live="polite">Walk toward a glowing storefront and press E, tap Interact, or press the A button on your controller.</p><p class="help">WASD / arrows / gamepad left stick to walk. E / Enter / gamepad A to interact. Mobile: touch D-pad. Game runs entirely in your browser without accounts.</p></div>
+<div class="card broadcast"><span>SPACEALITE™ CORPORATE ALERT</span><strong>YOU ARE BEING CHARGED FOR STANDING STILL.</strong><p>Fees may be waived upon satisfactory completion of this sentence.</p></div>
+</aside>
+</div>
+</main>
+<div class="overlay" id="arena-overlay" role="dialog" aria-modal="true" aria-labelledby="arena-title" hidden>
+<div class="modal arena">
+<button id="arena-close" class="close" type="button" aria-label="Close Tweedleball arena">×</button>
+<span class="eyebrow">SOUTH STEMSIDE STEMS LEAGUE · PRACTICE COURT</span>
+<h2 id="arena-title">THE TWEEDLEBALL SHOT-OUT</h2>
+<p>Time your shot as the moving target crosses center. Charge toward the green zone, then fire. Five shots. Six points earns a Southside medal.</p>
+<div class="court" aria-hidden="true"><div class="goal-track"><div id="target" class="moving-target"><span>◎</span></div><div class="crosshair"></div></div><div class="court-floor">✳ STEMSIDE STEMS LEAGUE ✳</div></div>
+<div class="meter"><span>SHOT POWER</span><div class="power-bar"><div id="power-fill"></div><div class="ideal-mark"></div></div><output id="power-number">0%</output></div>
+<div class="score-line"><strong id="score">SCORE: 0</strong><span id="shots">SHOTS: 0 / 5</span></div>
+<p class="arena-feedback" id="arena-feedback" role="status" aria-live="polite">READY. SPACE TO CHARGE AND RELEASE, OR TAP THE BUTTON TO START/STOP.</p>
+<div class="arena-actions"><button class="btn primary" id="fire" type="button">START CHARGING</button><label><input id="easy-aim" type="checkbox"> Steady target (accessibility)</label></div>
+</div>
+</div>
+<div class="overlay" id="tweedsie-overlay" role="dialog" aria-modal="true" aria-labelledby="tweedsie-title" hidden><div class="modal tweedsie"><button id="tweedsie-close" class="close" type="button" aria-label="Close Tweedsie cameo">×</button><img src="assets/tweedsie.svg" alt="Tweedsie, the mischievous gopher in sunglasses with dreadlocks and a gold leaf pendant"><div><span class="eyebrow">UNLICENSED CHARACTER APPEARANCE</span><h2 id="tweedsie-title">PSSST... BRO.</h2><p>Same hole. Different day.</p><small>Reggie Bands has been invoiced for this cameo.</small></div></div></div>
+<footer>© 2026 MICHAEL WAVE / TWEEDLEVERSE · ALL LOCATIONS AND PRODUCTS ARE FICTIONAL · <a href="stemside.html">BACK TO THE MAP</a></footer>
+</body>
+</html>
