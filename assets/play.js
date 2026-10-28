@@ -383,6 +383,62 @@ function talkResident(){
  el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
 }
 
+
+function showOpen(){
+ if(state.overlay||state.gigQuest<4||nearest()?.id!=="stems-league")return;
+ state.gigShow=freshShow();
+ renderGigShow();
+ openModal("gig","gig-start");
+}
+function startGigShow(){
+ if(state.overlay!=="gig")return;
+ state.gigShow=beginShow(state.gigShow);
+ renderGigShow();
+ el("gig-hit").focus();
+}
+function hitGig(){
+ if(state.overlay!=="gig")return;
+ state.gigShow=hitBeat(state.gigShow,el("gig-easy").checked);
+ renderGigShow();
+}
+function renderGigShow(){
+ const show=state.gigShow;
+ el("gig-score").textContent="SCORE: "+show.score+" / "+MAX_SCORE+" · NEED "+WIN_SCORE;
+ el("gig-meter").style.width=beatProgress(show)+"%";
+ el("gig-feedback").textContent=show.last||"START THE SHOW, THEN HIT ON THE VISUAL BEAT.";
+ el("gig-clock").textContent=show.status==="ready"?"READY TO COUNT IN":
+  show.status==="playing"?(show.elapsed<3?"COUNT IN: "+Math.max(1,Math.ceil(3-show.elapsed)):
+    "BEAT "+Math.min(BEAT_COUNT,Math.floor((show.elapsed-3)/.9)+1)+" / "+BEAT_COUNT):
+  show.status==="won"?"SHOW COMPLETE!":"ENCORE NEEDED!";
+ el("gig-hit").disabled=show.status!=="playing";
+ el("gig-start").disabled=show.status==="playing";
+ el("gig-start").textContent=show.status==="ready"?"START THE SHOW":"PLAY AN ENCORE";
+ for(const [index,node] of Array.from(el("gig-notes").children).entries()){
+  node.classList.toggle("hit",show.notes[index]===2);
+  node.classList.toggle("near",show.notes[index]===1);
+  node.classList.toggle("current",show.status==="playing"&&show.notes[index]===null&&Math.abs(show.elapsed-BEAT_TIMES[index])<.34);
+  node.textContent=show.notes[index]===2?"★":show.notes[index]===1?"✓":String(index+1);
+ }
+ if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+  const pulse=BEAT_TIMES.some(t=>Math.abs(show.elapsed-t)<.2)&&show.status==="playing";
+  el("gig-pulse").style.transform=pulse?"scale(1.3)":"scale(1)";
+ }else el("gig-pulse").style.transform="none";
+}
+function advanceGigFrame(dt){
+ const oldStatus=state.gigShow.status;
+ state.gigShow=tickShow(state.gigShow,dt);
+ if(oldStatus==="playing"&&state.gigShow.status==="won"){
+   const wasComplete=state.gigQuest===5;
+   state.gigQuest=advanceGigQuest(state.gigQuest,"show","stems-league");
+   if(!wasComplete&&state.gigQuest===5){
+     refreshPassport();renderGigQuest();
+     saveProgress("LENNY SHOW COMPLETED · BACKSTAGE PASS SAVED LOCALLY");
+     say(null,gigReply(5));
+   }
+ }
+ renderGigShow();
+}
+
 function interact(){
  if(state.overlay||!state.places.length)return;
  const place=nearest();if(!place)return;
