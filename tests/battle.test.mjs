@@ -37,7 +37,7 @@ test("three enemies can be beaten with core four-character party",()=>{
  for(const id of Object.keys(ENCOUNTERS)){
    let battle=startBattle(id),turns=0;
    while(battle.status==="active"&&turns<20){
-     const action=turns%3===2?"chip":"professor";
+     const action=turns===0?"bob":turns<=2?"professor":"chip";
      battle=playTurn(battle,action);
      turns++;
    }
@@ -49,7 +49,7 @@ test("three enemies can be beaten with core four-character party",()=>{
 });
 test("losing is reachable, replay is clean",()=>{
  let battle=startBattle("spacealite");
- for(let i=0;i<20&&battle.status==="active";i++)battle=playTurn(battle,"chip");
+ for(let i=0;i<20&&battle.status==="active";i++)battle=playTurn(battle,"professor");
  assert.equal(battle.status,"lost");
  assert.equal(startBattle("spacealite").composure,100);
 });
