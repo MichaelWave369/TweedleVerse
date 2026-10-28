@@ -2,6 +2,10 @@
 
 **A standalone game in the TweedleVerse, not a claim that a game already exists.**
 
+## First playable slice (v0.3)
+
+[play.html](../play.html) now implements a small top-down walking prototype with visitable location markers, controller/keyboard/touch input, dialogue stubs, Coffee Run story progression, an interactive five-shot timing/power Tweedleball practice game, and an occasional Tweedsie cameo. The browser build uses the shared [Stemside map JSON](../data/stemside-map.json) and has automated tests. It is not yet a fully interactive 3D environment, and shops do not have interior scenes. Further features below remain design direction, not delivered behavior.
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.

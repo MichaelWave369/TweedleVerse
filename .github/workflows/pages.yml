@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '22'
       - name: Validate scripts
-        run: node --check assets/app.js && node --check assets/stemside.js
+        run: node --check assets/app.js && node --check assets/stemside.js && node --check assets/play.js && node --check assets/game-core.mjs
       - name: Run local tests
         run: npm test
   deploy:
@@ -39,7 +39,7 @@ jobs:
       - name: Prepare safe public artifact
         run: |
           mkdir -p public
-          cp index.html stemside.html public/
+          cp index.html stemside.html play.html public/
           cp -R assets data public/
           touch public/.nojekyll
       - name: Upload site
