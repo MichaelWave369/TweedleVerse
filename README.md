@@ -29,6 +29,10 @@ The [playable Stemside game](play.html) now has **three original, optional turn-
 
 All effects, illustrations and dialogue are original. The experience is a compact RPG *minigame*, not a complete role-playing title. [Read the v0.5 combat design and test plan](docs/PLAYABLE_V05.md). No external runtime assets, data collection or new dependencies.
 
+### Your persistent RPG Passport: v0.6
+
+[Welcome to Stemside](play.html) now includes a **13-souvenir collectible passport**, adventure journal, five fictional progress ranks, and **local browser saves**. Discover every unique business once to receive its original one-of-a-kind trinket. Quest stages, Page 42 choices, corporate victories, Tweedleball medal, location, and passport persist after a reload where browser storage is available. Saves never leave the browser, and gameplay remains playable if storage is unavailable. **RESET RUN + LOCAL SAVE** deliberately starts over (with a confirmation prompt). See [v0.6 documentation](docs/PLAYABLE_V06.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
