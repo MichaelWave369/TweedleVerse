@@ -1,0 +1,36 @@
+/* TweedlePD v0.13 Patrol Shift: original static CSS, fully keyboard/touch accessible */
+.patrol-body{background:radial-gradient(ellipse at 75% 5%,#30435c,#101d2b 70%);}
+.patrol-main{max-width:1540px;padding:36px clamp(14px,3vw,50px) 90px;margin:auto}
+.patrol-intro{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-bottom:23px}
+.patrol-intro h1{font-size:clamp(46px,6.7vw,82px);margin:9px 0}
+.patrol-intro p:not(.eyebrow){max-width:720px;color:#cbded7;font-size:17px}
+.patrol-badge{flex:0 0 165px;aspect-ratio:1;border:8px double #f2d397;border-radius:50%;background:#384f58;display:flex;flex-direction:column;justify-content:center;align-items:center;transform:rotate(8deg);box-shadow:8px 7px #111b28}
+.patrol-badge strong{font-size:45px;color:#f9d18d}.patrol-badge span{font-size:10px;line-height:1.4;font-weight:1000;text-align:center}
+.patrol-locked{max-width:780px;border:3px solid #eeba88;background:#293d4e;padding:35px;margin:34px auto;text-align:center;box-shadow:9px 9px #111929}
+.patrol-locked h2{color:#ffd192;font-size:clamp(28px,4vw,46px)}.patrol-locked p:not(.eyebrow){color:#e2e6df}
+.patrol-status-line,.patrol-map-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center;padding:11px 17px;background:#f2cc8b;color:#1d2e33;font-size:12px;font-weight:1000;letter-spacing:.08em}
+.patrol-status-line{margin-bottom:15px}.patrol-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,.75fr);align-items:start;gap:17px}
+.patrol-map-panel{overflow:hidden;border:3px solid #9ccaa6;border-radius:8px;background:#172b36;box-shadow:8px 9px #0b1521}
+.patrol-map-top{background:#283c4b;color:#e4e9ce}
+#patrol-canvas{display:block;width:100%;height:auto;aspect-ratio:3/2;background:#1b3d4b;touch-action:none}
+.patrol-controls{padding:16px;display:flex;align-items:center;gap:22px;border-top:3px solid #9fc3a9}
+.patrol-dpad{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.patrol-dpad>div{display:flex;gap:6px}
+.patrol-dpad button{width:53px;height:48px;border:2px solid #c2e8bb;background:#365a61;border-radius:6px;color:#f0e5c9;font-weight:1000;font-size:21px;touch-action:none;user-select:none}
+.patrol-dpad button:hover,.patrol-dpad button:active{background:#587960}
+.patrol-actions{display:flex;align-items:flex-start;flex-direction:column;gap:9px}
+.patrol-actions p{font-size:12px;color:#ccd9d8;margin:3px 0}
+.patrol-actions .btn{min-width:min(100%,300px)}
+.patrol-sidebar{display:grid;gap:16px}.dispatch-card{background:linear-gradient(150deg,#384254,#223a41)}
+.dispatch-card h2{font-size:28px;color:#ffcb8e}.dispatch-card>p:not(.eyebrow){font-size:14px;color:#dce7e2}
+.dispatch-location{margin:15px 0;padding:13px;border:2px dashed #d8b480;display:flex;flex-direction:column;gap:3px}
+.dispatch-location span{font-size:10px;letter-spacing:.15em;color:#dfc496;font-weight:1000}.dispatch-location strong{font-size:19px;color:#fff0b5}
+.patrol-choices{display:grid;gap:9px;margin-top:14px}.patrol-choices button{border:2px solid #a7d3c7;border-radius:5px;padding:13px;color:#f1e7d0;font-weight:900;background:#294752;text-align:left;font-size:13px}
+.patrol-choices button:hover:not(:disabled){background:#3c6659;border-color:#ecedaa}.patrol-choices:empty{display:none}
+.patrol-log{margin:10px 0;padding-left:23px;color:#d7e3dc}.patrol-log li{margin:10px 0;font-size:13px}.patrol-log li.done{color:#b9f4af}.patrol-log li.next{color:#ffd291;font-weight:900}
+.patrol-feedback{padding:16px;background:#0d2735;border-left:4px solid #f1b87c;color:#f2e6cf;font-size:14px;min-height:75px}
+.patrol-reward{padding:16px;background:#345944;border:3px solid #c4ef97;margin:15px 0}.patrol-reward strong{font-size:24px;color:#d7ffae}.patrol-reward p{font-size:13px;color:#e3eddf}
+#patrol-reset{margin-top:10px}
+@media(max-width:1030px){.patrol-layout{grid-template-columns:1fr}.patrol-sidebar{grid-template-columns:repeat(2,minmax(0,1fr))}.dispatch-card{grid-row:span 2}}
+@media(max-width:690px){.patrol-intro{align-items:flex-start}.patrol-badge{display:none}.patrol-sidebar{grid-template-columns:1fr}.patrol-controls{flex-wrap:wrap;justify-content:center}.patrol-actions{align-items:center;text-align:center}.patrol-status-line{font-size:11px}.patrol-dpad button{width:56px;height:54px}}
+@media(prefers-reduced-motion:reduce){.patrol-body *{animation:none!important;transition:none!important}}

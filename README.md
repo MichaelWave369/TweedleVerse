@@ -13,6 +13,10 @@ The universe now has a central [TweedleVerse Arcade](arcade.html) connecting **t
 
 The detective game uses its **own versioned browser-only save** and cannot overwrite the existing Stemside RPG's local save. It introduces no third-party dependencies or server requests. The Pages workflow includes the Arcade and detective game; the main portal, city explorer, and RPG link to Arcade. See [Arcade and TweedlePD guide](docs/ARCADE_TWEEDLEPD.md) for complete mechanics, automated tests and browser QA instructions.
 
+### Patrol Shift: v0.13
+
+[Play TweedlePD: Patrol Shift](patrol.html) is **Episode Two** of the detective comedy. After solving Case #001, the rookie can drive a top-down squad car around a stylized Stemside patrol map using WASD, arrow keys, touch buttons or a gamepad stick. Answer three sequential original dispatch calls at CoffeeChucks, Lackluster Video and Spacealite Tower. Wrong decisions are explained and retriable; each safe solution is recorded in a separate local patrol save. Completing all three awards the **Senior Unpaid Deputy** badge. An accessible fast-travel action lets players skip the steering step. No real policing advice, multiplayer, or network services are involved. See [Patrol Shift guide](docs/PATROL_SHIFT.md). Existing Case #001 and Stemside RPG save files stay unchanged.
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**

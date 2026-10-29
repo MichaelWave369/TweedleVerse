@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111d2f">
+<meta name="description" content="TweedlePD Patrol Shift: drive Chip's rookie squad car, respond to bizarre dispatch calls and solve three nonviolent civic dilemmas.">
+<title>TweedlePD: Patrol Shift | Case #002</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/arcade.css">
+<link rel="stylesheet" href="assets/patrol.css">
+<script type="module" src="assets/patrol.js"></script>
+</head>
+<body class="patrol-body">
+<a class="skip-link" href="#patrol-main">Skip to patrol game</a>
+<header class="arcade-header"><a class="brand" href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="Patrol navigation"><a href="arcade.html">THE ARCADE</a><a href="tweedlepd.html">CASE #001</a><a href="play.html">STEMSIDE RPG</a></nav></header>
+<main id="patrol-main" class="patrol-main">
+<section class="patrol-intro">
+ <div><p class="eyebrow">TWEEDLE POLICE DEPARTMENT / EPISODE TWO</p><h1>ROOKIE <em>ON PATROL</em></h1>
+ <p>Congratulations on solving a case involving pastry crumbs. Chief McBadge has rewarded you with a municipal squad car, which is somehow registered to a photocopier.</p></div>
+ <div class="patrol-badge" aria-hidden="true"><strong>TVPD</strong><span>TO PROTECT<br>AND TO INVOICE</span></div>
+</section>
+<section class="patrol-locked" id="patrol-locked" aria-labelledby="locked-title" hidden>
+ <p class="eyebrow">ACCESS DENIED / UNPAID ROOKIE CERTIFICATION</p>
+ <h2 id="locked-title">FIRST, SOLVE THE DONUT CASE.</h2>
+ <p>Patrol Shift unlocks when you close Case #001 in this browser. Your original detective evidence and all Stemside RPG saves remain separate.</p>
+ <a class="btn main-btn" href="tweedlepd.html">RETURN TO CASE #001 ↗</a>
+</section>
+<div id="patrol-game" hidden>
+ <section class="patrol-status-line"><span id="patrol-rank">OFFICER CHIP · JUNIOR UNPAID ROOKIE</span><strong id="patrol-status" role="status" aria-live="polite">DISPATCH CONNECTING...</strong></section>
+ <div class="patrol-layout">
+  <section class="patrol-map-panel" aria-label="Top-down playable patrol map">
+   <div class="patrol-map-top"><span>STEMSIDE / TVPD VEHICLE TRACKING</span><span>GPS FEE: $0 (FOR NOW)</span></div>
+   <canvas id="patrol-canvas" width="1200" height="800" tabindex="0" role="img" aria-label="Drivable cartoon map of Stemside. Use WASD or arrow keys to drive Officer Chip toward the highlighted dispatch site."></canvas>
+   <div class="patrol-controls">
+    <div class="patrol-dpad" aria-label="Touch driving controls">
+     <button type="button" data-drive="up" aria-label="Drive north">▲</button>
+     <div><button type="button" data-drive="left" aria-label="Drive west">◀</button><button type="button" data-drive="down" aria-label="Drive south">▼</button><button type="button" data-drive="right" aria-label="Drive east">▶</button></div>
+    </div>
+    <div class="patrol-actions">
+     <button type="button" class="btn main-btn" id="patrol-interact" disabled>RESPOND AT LOCATION · E</button>
+     <button type="button" class="btn secondary-btn" id="patrol-fast-travel">ACCESSIBLE FAST TRAVEL TO CALL</button>
+     <p>DRIVE: WASD / ARROWS / TOUCH / GAMEPAD STICK. Pull into the highlighted area, then press E or Respond. Fast travel is available if driving is difficult.</p>
+    </div>
+   </div>
+  </section>
+  <aside class="patrol-sidebar">
+   <section class="pd-card dispatch-card">
+    <p class="eyebrow" id="patrol-call-number">DISPATCH #042</p>
+    <h2 id="patrol-call-title">PATROL RADIO</h2>
+    <p id="patrol-call-setup">Radio contact incoming.</p>
+    <div class="dispatch-location"><span>REPORT TO</span><strong id="patrol-destination">WAITING...</strong></div>
+    <p id="patrol-arrival" class="objective" role="status" aria-live="polite">Drive to the scene to inspect the call.</p>
+    <div id="patrol-choices" class="patrol-choices" aria-label="Choose your response to the dispatch call"></div>
+   </section>
+   <section class="pd-card">
+    <p class="eyebrow">THE OFFICIAL UNOFFICIAL CALL LEDGER</p><h2>SHIFT REPORT</h2>
+    <ol id="patrol-log" class="patrol-log"></ol>
+    <p id="patrol-count" class="objective">0 / 3 CALLS RESOLVED</p>
+    <p id="patrol-errors" class="mini-note">0 questionable decisions recorded.</p>
+    <div id="patrol-reward" class="patrol-reward" hidden>
+     <strong>SENIOR UNPAID DEPUTY</strong>
+     <p>You made three reasonable decisions in a town that considers that suspicious. The badge is yours. No salary is attached.</p>
+     <a href="arcade.html" class="btn secondary-btn">RETURN TO THE ARCADE ↗</a>
+    </div>
+   </section>
+   <section class="pd-card">
+    <p class="eyebrow">TVPD BODYCAM TRANSCRIPT / TEXT ONLY</p>
+    <p id="patrol-feedback" class="patrol-feedback" role="status" aria-live="polite">CHIEF McBADGE: Do not put the siren in reverse, rookie.</p>
+    <p id="patrol-save" class="mini-note">PROGRESS SAVES LOCALLY IN THIS BROWSER.</p>
+    <button type="button" id="patrol-reset" class="btn secondary-btn">RESTART PATROL SHIFT (CONFIRM)</button>
+    <p class="mini-note">Resetting patrol does not affect the solved donut case or the Stemside RPG.</p>
+   </section>
+  </aside>
+ </div>
+</div>
+</main>
+<footer class="arcade-footer">© 2026 MICHAEL WAVE · TWEEDLEVERSE · ALL EMERGENCIES ARE FICTIONAL · NO REAL LAW ENFORCEMENT ADVICE</footer>
+</body></html>
