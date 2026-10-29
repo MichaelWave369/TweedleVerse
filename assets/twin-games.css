@@ -1,0 +1,50 @@
+/* Original TweedleVerse double-feature UI. No external fonts, images or libraries. */
+.tunnel-body{background:radial-gradient(ellipse at 30% 5%,#324d44,#121f23 58%,#0d161c)}
+.golf-body{background:radial-gradient(ellipse at 60% 0%,#345f4d,#152b31 60%,#0b1d25)}
+.twin-main{max-width:1500px;margin:auto;padding:36px clamp(16px,3.5vw,52px) 80px}
+.twin-hero{display:flex;align-items:center;justify-content:space-between;gap:35px;margin-bottom:24px}
+.twin-hero h1{font-size:clamp(45px,7.4vw,96px);line-height:.99;margin:10px 0 19px}
+.twin-hero p:not(.eyebrow){font-size:17px;color:#cadbd5;max-width:800px}
+.twin-hero-image{width:170px;max-height:220px;filter:drop-shadow(7px 13px 0 #091b1d)}
+.golf-green{color:#d9f7a4}
+.golf-logo{flex:none;width:180px;height:175px;border-radius:50%;background:#c2eca0;border:10px double #37593e;color:#1c3c34;display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:9px 9px #0e1b25;transform:rotate(-9deg)}
+.golf-logo span{font-size:43px}.golf-logo strong{font-size:45px;line-height:.8}.golf-logo small{font-weight:1000;letter-spacing:.15em}
+.game-status{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#d8d3a0;color:#18302f;border:3px solid #f4eec4;padding:10px 15px;margin-bottom:16px;font-size:13px;font-weight:1000;letter-spacing:.075em}
+.tunnel-layout,.golf-layout{display:grid;grid-template-columns:minmax(0,1.48fr) minmax(285px,.75fr);gap:17px;align-items:start}
+.twin-stage{border:3px solid #8bb9ad;border-radius:8px;overflow:hidden;background:#1b2f39;box-shadow:8px 9px #0b121d}
+.twin-stage canvas{display:block;width:100%;height:auto;touch-action:none;background:#233e42}
+.game-controlbar{border-top:3px solid #719d8b;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px}
+.tunnel-buttons{display:flex;align-items:center;gap:8px}
+.tunnel-buttons .btn{min-width:75px;user-select:none;touch-action:none}
+.tiny-help{padding:0 15px;color:#bcd1cc;font-size:12px;line-height:1.6}
+.tunnel-story{margin:15px;border-left:5px solid #e5b783;background:#0c252e;padding:14px;min-height:53px;color:#f7e2bd;font-size:14px;font-weight:900}
+.twin-aside{display:grid;gap:15px}
+.twin-aside .pd-card{padding:20px}
+.twin-aside h2{font-size:26px}
+.tunnel-network{display:flex;flex-wrap:wrap;gap:7px}
+.tunnel-room-chip{font-size:10px;font-weight:900;letter-spacing:.03em;color:#9eb7b3;border:1px dashed #547a75;padding:7px;background:#172e36;max-width:100%}
+.tunnel-room-chip.explored{background:#38584b;border-color:#87b294;color:#e4f1c8}
+.tunnel-room-chip.current{background:#d7f39b;color:#163734;border-color:#f5f4c4}
+.twin-reward{padding:15px;margin:18px 0;background:#304f39;border:3px solid #c4f390}
+.twin-reward strong{font-size:25px;color:#e8ffb0}.twin-reward p{font-size:13px}
+.golf-mode{display:flex;gap:8px;flex-wrap:wrap;padding:12px;background:#203f3c}
+.golf-mode .btn[aria-pressed="true"]{background:#c6f29d;color:#122f22;border-color:#f5ffd8}
+.golf-playtools{display:flex;align-items:end;gap:13px;flex-wrap:wrap;padding:15px;background:#1a3538}
+.golf-playtools label{display:flex;flex-direction:column;gap:7px;flex:1;min-width:105px;color:#e7e9c5;font-size:11px;font-weight:1000;letter-spacing:.08em}
+.golf-playtools select,.club-name-row input{min-height:43px;border:2px solid #a0c5a9;background:#0f272d;color:#f1eed0;padding:8px;font:inherit;font-size:12px}
+.golf-playtools input[type="range"]{accent-color:#c9ed9f;min-height:35px;cursor:pointer}
+.golf-playtools button{min-width:130px}
+.golf-buildtools{background:#233e38;padding:17px}
+.golf-buildtools p{font-size:13px;color:#d6e2d3;margin:0 0 12px}
+.golf-terrains{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.golf-terrains button{background:#334c46;border:2px solid #a7bc9e;color:#f4f1d5;padding:9px 12px;font-size:12px;font-weight:900}
+.golf-terrains button[aria-pressed="true"]{background:#daed9e;color:#173d2a}
+.club-name-label{display:block;color:#d9edc6;font-size:11px;font-weight:900;letter-spacing:.11em;margin:10px 0 7px}
+.club-name-row{display:flex;gap:8px;flex-wrap:wrap}
+.club-name-row input{flex:1;min-width:125px}.club-name-row .btn{font-size:11px;min-height:43px;padding:7px 9px}
+.guest-button{display:block;border:2px solid #c7e5ad;background:#395746;color:#ecf6d9;padding:6px 10px;margin:6px 0;font-size:11px;font-weight:1000}
+.guest-button:hover{background:#4b7855}.golf-body .pd-card{border-color:#7ba98c}
+.twin-main #golf-guests li{padding:5px 0 7px}
+@media(max-width:1060px){.tunnel-layout,.golf-layout{grid-template-columns:1fr}.twin-aside{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.twin-main{padding-top:24px}.twin-hero-image{width:88px}.twin-hero{gap:14px}.golf-logo{width:105px;height:105px;border-width:6px}.golf-logo span{font-size:20px}.golf-logo strong{font-size:29px}.golf-logo small{font-size:8px}.twin-aside{grid-template-columns:1fr}.game-controlbar{flex-direction:column}.tunnel-buttons{width:100%;justify-content:center}.game-controlbar>.btn{width:100%}.twin-hero h1{font-size:clamp(34px,8vw,55px)}.tunnel-buttons .btn{min-width:0;padding:11px}}
+@media(prefers-reduced-motion:reduce){.twin-stage *{animation:none!important;transition:none!important}}

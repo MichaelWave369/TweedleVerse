@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1a2f34">
+<meta name="description" content="Adventures of Tweedsie: an original browser side-scrolling underground gopher adventure across eight hidden caverns.">
+<title>Adventures of Tweedsie | The Underground Network</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/arcade.css"><link rel="stylesheet" href="assets/twin-games.css">
+<script type="module" src="assets/tweedsie-game.js"></script></head><body class="tunnel-body">
+<a class="skip-link" href="#tunnel-main">Skip to game</a><header class="arcade-header"><a class="brand" href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="Tunnel game navigation"><a href="arcade.html">THE ARCADE</a><a href="golf.html">TWEEDLEGOLF</a><a href="play.html">STEMSIDE</a></nav></header>
+<main class="twin-main" id="tunnel-main">
+<section class="twin-hero"><div><p class="eyebrow">ORIGINAL SIDE-SCROLL ADVENTURE / THE LOUDEST TUNNEL NETWORK IN STEMSIDE</p><h1>ADVENTURES<br>OF <em>TWEEDSIE</em></h1><p>Somewhere under North Stemside's fancy farms lies a gopher tunnel network that definitely isn't on the city map. Recover six fictional loud-bud curiosities, explore eight connected caverns, and get them to the secret vault before Reggie invents an underground transit toll.</p></div><img src="assets/tweedsie.svg" alt="Tweedsie, an original cartoon gopher with sunglasses and dreadlocks" class="twin-hero-image"></section>
+<div class="game-status"><strong id="tunnel-room">THE ORIGINAL HOLE</strong><span id="tunnel-count">0 / 6 FICTIONAL BUDS FOUND</span></div>
+<div class="tunnel-layout">
+<section class="twin-stage">
+ <canvas id="tunnel-canvas" width="1000" height="534" tabindex="0" role="img" aria-label="Side scrolling underground cave. Move with left and right, jump with space, press E to travel through a glowing tunnel passage."></canvas>
+ <div class="game-controlbar"><div class="tunnel-buttons"><button type="button" class="btn secondary-btn" data-control="left" aria-label="Move Tweedsie left">◀ LEFT</button><button type="button" class="btn main-btn" data-control="jump">JUMP</button><button type="button" class="btn secondary-btn" data-control="right" aria-label="Move Tweedsie right">RIGHT ▶</button></div><button type="button" class="btn main-btn" id="tunnel-enter" disabled>ENTER PASSAGE · E</button></div>
+ <p class="tiny-help">ARROWS / A,D to move · SPACE / W / UP to jump · E to enter passages · gamepad left stick + A jump / B interact · touch controls included. Buds are collectible fictional comedy props.</p>
+ <p id="tunnel-story" class="tunnel-story" role="status" aria-live="polite">SAME HOLE. DIFFERENT DAY.</p>
+</section>
+<aside class="twin-aside">
+<section class="pd-card"><p class="eyebrow">TWEEDSIE'S CARTOGRAPHY DEPARTMENT</p><h2>THE BURROW NETWORK</h2><p id="tunnel-room-desc">Eight caverns. An entire city's worth of tunnels.</p><div id="tunnel-network" class="tunnel-network" aria-label="Visited caves and current destination"></div><p id="tunnel-portal" class="objective">Explore the passages and find the secret branches.</p></section>
+<section class="pd-card"><p class="eyebrow">LOUD VAULT INVENTORY</p><h2>HIDDEN HARVEST</h2><p id="tunnel-progress" class="objective">Collect at least five curiosities to open the vault.</p><ul id="tunnel-buds" class="case-list"><li>No curiosities yet.</li></ul><div id="tunnel-win" class="twin-reward" hidden><strong>UNDERGROUND LEGEND!</strong><p>You reached the vault with the loudest fictional harvest in Stemside. Reggie still has no idea which way is down.</p><a href="arcade.html" class="btn secondary-btn">BACK TO THE ARCADE ↗</a></div></section>
+<section class="pd-card"><p class="eyebrow">SAVE / LOCAL ONLY</p><p id="tunnel-save" class="tiny-help">Progress saved only on this device.</p><button type="button" class="btn secondary-btn" id="tunnel-reset">RESTART ADVENTURE (CONFIRM)</button></section>
+</aside></div>
+</main><footer class="arcade-footer">© 2026 MICHAEL WAVE · TWEEDLEVERSE · ORIGINAL FICTIONAL COMEDY · NO REFUNDS, PARTICULARLY UNDERGROUND</footer></body></html>

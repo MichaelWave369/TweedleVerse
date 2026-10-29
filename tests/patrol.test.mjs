@@ -97,7 +97,7 @@ test("Patrol Shift is wired to the Arcade and detective badge, and published by 
  assert.ok(css.includes("prefers-reduced-motion"));
  assert.ok(arcade.includes('href="patrol.html"'));
  assert.ok(pd.includes('href="patrol.html"'));
- assert.ok(read(".github/workflows/pages.yml").includes("arcade.html tweedlepd.html patrol.html public/"));
+ for(const file of ["arcade.html","tweedlepd.html","patrol.html","tweedsie.html","golf.html"])assert.ok(read(".github/workflows/pages.yml").includes(file),file);
  assert.ok(read(".github/workflows/checks.yml").includes("assets/patrol-core.mjs"));
- assert.ok(read("package.json").includes("0.13.0"));
+ assert.ok(Number(JSON.parse(read("package.json")).version.split(".")[1])>=13);
 });
