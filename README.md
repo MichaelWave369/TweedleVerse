@@ -17,6 +17,13 @@ The detective game uses its **own versioned browser-only save** and cannot overw
 
 [Play TweedlePD: Patrol Shift](patrol.html) is **Episode Two** of the detective comedy. After solving Case #001, the rookie can drive a top-down squad car around a stylized Stemside patrol map using WASD, arrow keys, touch buttons or a gamepad stick. Answer three sequential original dispatch calls at CoffeeChucks, Lackluster Video and Spacealite Tower. Wrong decisions are explained and retriable; each safe solution is recorded in a separate local patrol save. Completing all three awards the **Senior Unpaid Deputy** badge. An accessible fast-travel action lets players skip the steering step. No real policing advice, multiplayer, or network services are involved. See [Patrol Shift guide](docs/PATROL_SHIFT.md). Existing Case #001 and Stemside RPG save files stay unchanged.
 
+## Two more playable Arcade series (v0.14)
+
+- [**Adventures of Tweedsie**](tweedsie.html): An original platforming side-scroller with **eight linked underground rooms**, branching tunnels, jumping, six fictional collectible loud buds, an unlockable vault ending, a cave chart, and local saves. Original Tweedsie art is reused, no borrowed sprites or licensed game mechanics.
+- [**TweedleGolf ProTour**](golf.html): **Three playable arcade golf holes**, aiming and shot power, four clubs, golf lies and hazards, persistent strokes and scores, plus a **15×9 editable custom hole**, **named clubhouse** and **invite-able fictional celebrity golfers** unlocked by course prestige.
+
+Both link from [TweedleVerse Arcade](arcade.html) and use entirely separate validated browser save keys. They are original playable first slices, not a finished 3D golf simulator or sprawling finished Metroidvania. Full controls, QA and limitations: [Twin Arcade v0.14](docs/TWIN_ARCADE_V014.md).
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
