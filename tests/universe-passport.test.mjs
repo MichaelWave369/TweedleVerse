@@ -8,18 +8,19 @@ import {PD_SAVE_KEY,initialPD,encodePD} from "../assets/pd-core.mjs";
 import {PATROL_SAVE_KEY,initialPatrol,encodePatrol,PATROL_CALLS} from "../assets/patrol-core.mjs";
 import {TUNNEL_KEY,initialTunnel,encodeTunnel,ROOMS,BUDS} from "../assets/tweedsie-core.mjs";
 import {COURIER_KEY,initialCourier,encodeCourier,CONTRACTS} from "../assets/tunnel-contracts.mjs";
-import {GOLF_KEY,initialGolf,encodeGolf,HOLES,CELEBS} from "../assets/golf-core.mjs";
+import {GOLF_KEY,initialGolf,encodeGolf,HOLES,CELEBS,COLS,ROWS} from "../assets/golf-core.mjs";
 import {CUP_KEY,initialCup,encodeCup} from "../assets/golf-cup.mjs";
 const root=resolve(import.meta.dirname,".."),read=p=>readFileSync(resolve(root,p),"utf8");
 const solvedPD=()=>({...initialPD(),scene:"precinct",solved:true,clues:["receipt","tape"],interviews:["chuck","marty"],report:"chief:snack:tape"});
 const completeTunnel=()=>({...initialTunnel(),room:"vault",found:BUDS.map(b=>b.id),finished:true,visits:ROOMS.map(r=>r.id)});
 function completeSaves(){
  const stem={...initialProgress(),quest:3,medal:true,visited:[...LANDMARK_IDS],
-  story:{points:0,heard:["coffeechucks","lackluster","tweedcorp"],rewrite:"union",finished:true},
+  story:{points:0,heard:["coffeechucks","lackluster","tweedcorp"],rewrite:"coffee",finished:true},
   finale:{stage:5,evidence:3,mistakes:0,ending:"commons"}};
  const pd=solvedPD(),patrol={...initialPatrol(),resolved:PATROL_CALLS.map(c=>c.id)};
  const tunnels=completeTunnel(),courier={...initialCourier(),claimed:CONTRACTS.map(c=>c.id),bursts:3};
- const golf={...initialGolf(),clubName:"ROOT TOP LINKS",guests:CELEBS.map(c=>c.id),
+ const tiles=Array(COLS*ROWS).fill("water");tiles[4*COLS+1]="fairway";tiles[4*COLS+13]="green";
+ const golf={...initialGolf(),clubName:"ROOT TOP LINKS",tiles,guests:CELEBS.map(c=>c.id),
   results:Object.fromEntries(HOLES.map(h=>[h.id,h.par]))};
  const cup={...initialCup(),status:"completed",scores:[3,3,3],rounds:2,best:9,last:9};
  return {stemside:encodeSave(stem),pd:encodePD(pd),patrol:encodePatrol(patrol),
