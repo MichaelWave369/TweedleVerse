@@ -5,6 +5,7 @@ import {SAVE_KEY,SAVE_VERSION,initialProgress,decodeSave,encodeSave,visitLandmar
 import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,nearestResident,npcReply} from "./residents-core.mjs";
 import {GIG_STEPS,BEAT_COUNT,BEAT_TIMES,WIN_SCORE,MAX_SCORE,freshShow,beginShow,tickShow,hitBeat,beatProgress,gigStatus,gigReply,advanceGigQuest} from "./gig-core.mjs";
 import {NAV_MODES,resolveWaypoint,mapPosition,compass,encodePortableSave,decodePortableSave,MAX_SAVE_BYTES} from "./travel-core.mjs";
+import {initialFinale,finaleEligible,finaleStatus,nextFinaleEvent,auditEvidence,pickFinaleEnding,FINALE_ENDINGS,FINALE_EVIDENCE} from "./finale-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
@@ -12,7 +13,7 @@ const mini=el("mini-map"),miniCtx=mini.getContext("2d");
 const state={
  places:[],player:{x:215,y:690},keys:new Set(),touch:new Set(),
  clock:0,last:0,w:960,h:600,dpr:1,nearId:null,visits:0,
- quest:0,medal:false,story:initialStory(),wins:[],visited:[],tapeQuest:0,gigQuest:0,gigShow:freshShow(),nearResidentId:null,battle:null,overlay:null,returnFocus:null,
+ quest:0,medal:false,story:initialStory(),wins:[],visited:[],finale:initialFinale(),tapeQuest:0,gigQuest:0,gigShow:freshShow(),nearResidentId:null,battle:null,overlay:null,returnFocus:null,
  saveReady:false,lastAutoSave:0,lastSavedPos:null,navFocus:"auto",showMap:true,lastNavDraw:0,
  arena:{shots:0,score:0,charge:0,charging:false,active:false},
  gamepadActionHeld:false,gamepadTalkHeld:false,gamepadAxes:{x:0,y:0},targetOffset:0
@@ -42,7 +43,7 @@ const dialogues={
 function snapshot(){
  return {version:SAVE_VERSION,player:{...state.player},quest:state.quest,
   medal:state.medal,story:state.story,wins:state.wins,visited:state.visited,
-  interactions:state.visits,tapeQuest:state.tapeQuest,gigQuest:state.gigQuest};
+  interactions:state.visits,tapeQuest:state.tapeQuest,gigQuest:state.gigQuest,finale:state.finale};
 }
 function refreshPassport(){
  const progress=snapshot();
@@ -98,6 +99,7 @@ function restoreProgress(){
    state.visits=restored.interactions;
    state.tapeQuest=restored.tapeQuest;
    state.gigQuest=restored.gigQuest;
+   state.finale=restored.finale;
    state.nearId=null;state.nearResidentId=null;
    state.lastSavedPos={...state.player};
    el("medal").textContent=state.medal?"SOUTHSIDE TGA MEDAL":"NO TGA MEDAL";
@@ -222,7 +224,7 @@ function questUI(){
  el("progress").textContent="THE COFFEE RUN · "+state.quest+"/3";
  el("quest-text").textContent=questLines[state.quest];
  el("quest-status").textContent=state.quest===3?"COMPLETED · COFFEE STILL PENDING":"MISSION ACTIVE";
- renderStoryUI();renderTapeQuest();renderGigQuest();
+ renderStoryUI();renderTapeQuest();renderGigQuest();renderFinaleUI();
  for(const [i,li] of Array.from(el("quest-list").children).entries()){
   li.classList.toggle("done",state.quest>i);
  }
@@ -319,6 +321,7 @@ function updateNearby(){
  el("enter").disabled=!place||!canEnter(place.id);
  el("challenge").disabled=!place||!Object.hasOwn(ENCOUNTERS,place.id);
  el("gig-open").disabled=!place||place.id!=="stems-league"||state.gigQuest<4;
+ el("finale-open").disabled=!place||place.id!=="spacealite"||state.finale.stage<3||!finaleEligible(snapshot());
  el("talk-resident").disabled=!resident;
  el("nearby").textContent=resident?"NEAR "+resident.name.toUpperCase()+" · T TO TALK":
   place?"NEAR "+place.name.toUpperCase()+" · E TO INTERACT":"EXPLORE THE STREETS · RESIDENTS AND SHOPS AWAIT";
@@ -442,7 +445,7 @@ function battleMove(id){
  state.battle=next;
  if(next.status==="won"){
    state.wins=awardWin(state.wins,next);
-   renderBattleProgress();
+   renderBattleProgress();renderFinaleUI();
    refreshPassport();saveProgress("CORPORATE DISPUTE RESOLVED · SAVED LOCALLY");
    say(null,ENCOUNTERS[next.id].victory);
  }
@@ -554,7 +557,7 @@ function reset(){
  if(!window.confirm("Reset the entire Stemside adventure, passport and local save on this browser? This cannot be undone."))return;
  const initial=initialProgress();
  state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
- state.wins=[];state.visited=[];state.tapeQuest=0;state.gigQuest=0;state.gigShow=freshShow();state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
+ state.wins=[];state.visited=[];state.finale=initialFinale();state.tapeQuest=0;state.gigQuest=0;state.gigShow=freshShow();state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
  renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
