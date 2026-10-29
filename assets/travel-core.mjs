@@ -6,12 +6,14 @@ import {GIG_STEPS} from "./gig-core.mjs";
 import {REWRITES,SCENES} from "./story-core.mjs";
 import {ENCOUNTERS} from "./battle-core.mjs";
 import {decodeSave,encodeSave,LANDMARK_IDS} from "./progression-core.mjs";
+import {finaleDestination,initialFinale} from "./finale-core.mjs";
 
 export const NAV_MODES=Object.freeze([
  {id:"auto",label:"NEXT STORY OBJECTIVE"},
  {id:"coffee",label:"COFFEE RUN"},
  {id:"tape",label:"TOMORROW'S TAPE"},
  {id:"gig",label:"LENNY'S GIG"},
+ {id:"finale",label:"BILLING REVERSAL FINALE"},
  {id:"script",label:"PAGE 42 REWRITE"},
  {id:"battles",label:"CORPORATE DISPUTES"},
  {id:"passport",label:"PASSPORT STAMPS"},
@@ -39,11 +41,15 @@ export function resolveWaypoint(progress,mode,places){
  const query=validModes.has(mode)?mode:"auto";
  if(query==="free")return null;
  if(query==="auto"){
-   for(const candidate of ["coffee","tape","gig","script","battles","passport"]){
+   for(const candidate of ["coffee","finale","tape","gig","script","battles","passport"]){
      const next=resolveWaypoint(progress,candidate,places);
      if(next)return {...next,mode:candidate};
    }
    return null;
+ }
+ if(query==="finale"){
+   const scene=finaleDestination(progress.finale||initialFinale(),progress);
+   return scene?objectiveTarget(scene,places,"The Great Billing Reversal"):null;
  }
  if(query==="coffee"){
    const id=OBJECTIVES[progress.quest];
