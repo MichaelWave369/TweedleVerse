@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#1b3442">
+<meta name="description" content="Explore the connected districts of Stemside. Walk to 11 fictional landmarks, collect local postcards, complete neighborhood tours and enter existing TweedleVerse games.">
+<title>The Stemside World Map | One Universe, Too Many Streets</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/arcade.css"><link rel="stylesheet" href="assets/world-map.css">
+<script type="module" src="assets/world-map.js"></script>
+</head><body class="world-body">
+<a class="skip-link" href="#world-main">Skip to world map</a>
+<header class="arcade-header">
+ <a class="brand" href="index.html">✳ TWEEDLE<span>VERSE</span></a>
+ <nav aria-label="World map navigation"><a href="arcade.html">THE ARCADE</a><a href="passport.html">UNIVERSE PASSPORT</a><a href="crossroads.html">CROSSROADS</a><a href="play.html">STEMSIDE RPG</a></nav>
+</header>
+<main class="world-main" id="world-main">
+<section class="world-hero"><div>
+ <p class="eyebrow">STEMSIDE MUNICIPAL TOURISM AUTHORITY · NO LICENSE, NO REFUNDS</p>
+ <h1>THE <em>WORLD</em> MAP</h1>
+ <p>One fictional city, eleven explorable locations, and far more streets than anyone approved. Walk the neighborhoods, collect postcards, complete three city tours, meet familiar locals, and step into the playable adventures at their real in-universe entrances.</p>
+</div><div class="world-emblem" aria-hidden="true"><b>STEMSIDE</b><span>EST. WHENEVER</span><small>THE UNOFFICIAL OFFICIAL MAP</small></div></section>
+<section class="world-status-bar" aria-label="Your exploration status">
+ <strong id="world-loc-name">STEMSIDE PLAZA</strong>
+ <span id="world-tour-counter">1 / 11 PLACES · 0 / 10 POSTCARDS</span>
+ <span id="world-steps">0 STREETS WALKED</span>
+</section>
+<div class="world-layout">
+<section class="world-map-shell" aria-label="Interactive city navigation">
+ <div class="world-map-top"><span>STEMSIDE MUNICIPAL TRANSIT · LAST MAPPED ON A NAPKIN</span><span>ALL ROADS INCLUDE FREE POTHOLES</span></div>
+ <canvas id="world-canvas" width="1200" height="760" tabindex="0" role="img" aria-label="Original illustrated map of Stemside. Click a destination marker to select a landmark, then use Walk Route or the arrow keys to travel along connected streets."></canvas>
+ <div class="world-controls">
+  <div class="world-arrow-pad" aria-label="Move to connected adjacent streets">
+   <button type="button" data-direction="up" aria-label="Walk north">▲</button>
+   <div><button type="button" data-direction="left" aria-label="Walk west">◀</button><button type="button" data-direction="down" aria-label="Walk south">▼</button><button type="button" data-direction="right" aria-label="Walk east">▶</button></div>
+  </div>
+  <div class="world-map-actions">
+   <button type="button" id="world-walk" class="btn main-btn">WALK TO SELECTED LOCATION</button>
+   <button type="button" id="world-stop" class="btn secondary-btn" disabled>STOP WALKING</button>
+   <p>CLICK A MAP PIN OR DESTINATION BELOW · WALK ROUTE TO TRAVEL. ARROWS / WASD WALK ONE STREET. YOUR ROUTE IS SHOWN IN YELLOW.</p>
+  </div>
+ </div>
+ <p id="world-story" class="world-story" role="status" aria-live="polite">TWEEDSIE: Same hole. Different day. Whole different map.</p>
+</section>
+<aside class="world-side">
+ <section class="world-card">
+  <p class="eyebrow">DESTINATION / FIND THE ENTRANCE</p><h2 id="world-target-name">STEMSIDE PLAZA</h2>
+  <p id="world-target-district" class="world-district">CIVIC CENTER</p>
+  <p id="world-target-desc">The city begins here.</p>
+  <p class="world-route" id="world-route-summary">ALREADY HERE</p>
+  <p class="world-context" id="world-context">Your adventure begins at Stemside Plaza.</p>
+  <a id="world-enter" href="play.html" class="btn main-btn">ENTER STEMSIDE RPG ↗</a>
+  <p class="world-small">Game entrances work only after you physically reach that landmark on this fictional map. Your existing game save is never changed here.</p>
+ </section>
+ <section class="world-card">
+  <p class="eyebrow">TRAVEL BY FOOT / PUBLIC NAVIGATION</p><h2>WHERE TO, BRO?</h2>
+  <div id="world-places" class="world-places" aria-label="Select a city destination"></div>
+ </section>
+ <section class="world-card">
+  <p class="eyebrow">MUNICIPAL TOURISM / NO REFUNDS</p><h2>THE POSTCARD BOOK</h2>
+  <p id="world-postcard-count" class="world-route">0 OF 10 POSTCARDS COLLECTED</p>
+  <ul id="world-postcards" class="world-postcards"></ul>
+  <div id="world-victory" class="world-victory" hidden><strong>STEMSIDE GRAND TOUR!</strong><p>You've walked every location in the city. Reggie is still looking for a way to tax the sidewalks.</p><a href="passport.html" class="btn secondary-btn">SEE YOUR UNIVERSE PASSPORT ↗</a></div>
+ </section>
+ <section class="world-card">
+  <p class="eyebrow">THREE UNOFFICIAL SIGHTSEEING MISSIONS</p><h2>THE TOUR BOARD</h2>
+  <div id="world-tours" class="world-tour-list"></div>
+ </section>
+ <section class="world-card">
+  <p class="eyebrow">YOUR STREET RECEIPT</p><p id="world-save" class="world-small" role="status" aria-live="polite">AUTO-SAVES TO THIS BROWSER ONLY.</p>
+  <button type="button" class="btn secondary-btn" id="world-reset">RESTART ONLY WORLD MAP (CONFIRM)</button>
+  <p class="world-small">Map exploration is its own separate local save. No external accounts, downloads, analytics, APIs or third-party game engines.</p>
+ </section>
+</aside>
+</div>
+</main>
+<footer class="arcade-footer">© 2026 MICHAEL WAVE · TWEEDLEVERSE · ORIGINAL FICTIONAL CITY · NAVIGATION DIRECTIONS ARE NOT FOR REAL ROADS</footer>
+</body></html>
