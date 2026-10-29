@@ -97,11 +97,11 @@ function renderCasebook(){
 }
 function renderReport(){
  const ready=canFile(state);
- el("pd-submit").disabled=!ready;
+ el("pd-submit").disabled=!(ready&&state.scene==="precinct");
  for(const id of ["pd-suspect","pd-explanation","pd-proof"])el(id).disabled=state.solved;
  el("pd-credits").hidden=!state.solved;
  el("pd-report-status").textContent=state.solved?"REPORT 97-B APPROVED. NO CHARGES FILED. ONE EXTREMELY EMBARRASSED CHIEF.":
-  ready?"EVIDENCE COMPLETE. YOU MAY NOW FILE REPORT 97-B. CHECK YOUR FACTS.":
+  ready?(state.scene==="precinct"?"EVIDENCE COMPLETE. YOU MAY NOW FILE REPORT 97-B. CHECK YOUR FACTS.":"EVIDENCE COMPLETE. RETURN TO THE TVPD PRECINCT TO FILE YOUR REPORT."):
   "COLLECT THE RECEIPT AND SECURITY TAPE; INTERVIEW CHUCK AND MARTY FIRST.";
 }
 function render(){
