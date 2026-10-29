@@ -1,0 +1,46 @@
+/* TweedleVerse Universe Passport: original print-friendly badge album */
+.passport-body{background:radial-gradient(ellipse at 75% 0,#33584b,#152737 62%,#111923)}
+.passport-main{max-width:1460px;margin:0 auto;padding:40px clamp(17px,4vw,58px) 95px}
+.passport-hero{display:flex;align-items:center;justify-content:space-between;gap:36px;padding:20px 0 30px}
+.passport-hero h1{font-size:clamp(49px,7vw,94px);line-height:1.02;margin:10px 0 20px}
+.passport-hero p:not(.eyebrow){max-width:780px;color:#d0dfda;font-size:17px}
+.passport-hero .passport-notice{font-size:12px!important;color:#b5cfc3!important}
+.passport-buttons{display:flex;gap:11px;flex-wrap:wrap;padding-top:10px}
+.passport-seal{border:8px double #d7de9c;background:#314f4a;width:190px;min-width:190px;height:190px;border-radius:50%;transform:rotate(12deg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:10px 9px #091c24}
+.passport-seal strong{font-size:63px;line-height:1;color:#e8e6ac}.passport-seal span{color:#e8f6cb;font-size:11px;font-weight:1000;letter-spacing:.1em;line-height:1.2}.passport-seal small{font-size:10px;color:#f8cbaa;margin-top:8px;letter-spacing:.11em;font-weight:900}
+.passport-score{border:3px solid #a3c4a1;background:#233b44;display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:20px;padding:27px;border-radius:9px;box-shadow:8px 9px #0d1721;margin:12px 0 55px}
+.passport-score>div{display:flex;flex-direction:column;gap:5px}.passport-score>div:not(:first-child){border-left:1px solid #5e867d;padding-left:22px}
+.passport-big-number{font-size:clamp(42px,5vw,68px);color:#e8f4b3;line-height:1;font-weight:1000;letter-spacing:-.065em}
+.passport-score span{font-size:12px;letter-spacing:.07em;color:#d4e4d5;font-weight:900}
+.passport-meter{justify-content:center}.passport-meter label{font-size:12px;letter-spacing:.1em;font-weight:900;color:#dbebd0}.passport-meter progress{width:100%;accent-color:#c7f496;height:21px}.passport-meter strong{color:#c4f8aa;font-size:28px}
+.passport-section-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.passport-section-heading h2,.passport-crossovers h2{font-size:clamp(34px,4.5vw,56px)}
+.passport-filters{display:flex;gap:7px;flex-wrap:wrap}.passport-filters button{background:#304d4f;border:2px solid #8dab9e;color:#edf3db;padding:10px 13px;font-size:12px;letter-spacing:.07em;font-weight:900;cursor:pointer}
+.passport-filters button[aria-pressed="true"]{background:#d0ee9f;color:#213b32;border-color:#ecfad2}
+.passport-series{display:grid;gap:32px}.passport-group{border:2px solid #597c7d;border-radius:9px;background:#203741;box-shadow:6px 7px #0a1922;overflow:hidden}
+.passport-group-header{background:#304b55;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.passport-group-header h3{margin:0;font-size:23px}.passport-group-header a{font-size:11px;color:#ddf4ae;font-weight:900;letter-spacing:.1em}
+.passport-group-progress{font-size:12px;font-weight:900;color:#d7ecc4;letter-spacing:.07em}
+.passport-stamp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:13px;padding:17px}
+.passport-stamp{padding:17px;border:2px solid #718e84;background:#294740;min-height:222px;display:flex;flex-direction:column;border-radius:7px}
+.passport-stamp.locked{background:#263644;opacity:.72;border-style:dashed;border-color:#70888a}
+.passport-stamp .stamp-symbol{display:grid;place-items:center;width:60px;height:60px;border-radius:50%;background:#e1efb9;color:#214035;border:5px double #375741;font-size:31px;line-height:1;font-weight:900;margin-bottom:12px}
+.passport-stamp.locked .stamp-symbol{background:#62717c;color:#d2d6ca;border-color:#8b9aa0}
+.passport-stamp strong{font-size:15px;line-height:1.2;letter-spacing:-.02em}.passport-stamp p{font-size:12px;color:#d2e5d8;margin:10px 0 0;flex:1}
+.passport-stamp small{font-size:11px;color:#cdefa6;font-weight:1000;letter-spacing:.1em;margin-top:15px}
+.passport-stamp.locked small{color:#dbbbaa}
+.passport-crossovers{margin:65px 0 50px;background:#273b44;border-left:7px solid #f6ca94;padding:32px}
+.passport-intro{max-width:780px;color:#d3dfda}.passport-news{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:24px}
+.passport-headline{background:#f2e9cf;color:#273034;padding:22px 20px;box-shadow:7px 7px #101e24;border-top:6px solid #edbb84}
+.passport-headline h3{font:900 22px/1.15 "Trebuchet MS",Arial,sans-serif;letter-spacing:-.045em;margin:9px 0}
+.passport-headline .byline{font-size:10px;letter-spacing:.09em;font-weight:900;color:#63746d}
+.passport-headline p{font-size:14px;line-height:1.55}
+.passport-sources{padding:20px 0}.passport-sources>p:not(.eyebrow){max-width:850px;color:#ccdeda}.passport-source-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:10px;padding:0;list-style:none}
+.passport-source-list li{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #537d7b;background:#213a46;font-size:13px}.passport-source-list a{font-weight:900;text-decoration:none}.passport-source-list .source-ok{color:#cff4a2}.passport-source-list .source-none{color:#ffc69e}
+.passport-fineprint{font-size:12px!important;color:#bad1cc!important;margin-top:23px}
+.arcade-passport-strip{display:flex;align-items:center;justify-content:space-between;gap:25px;flex-wrap:wrap;background:#2d4547;border:2px solid #9ab99d;padding:22px 25px;margin:35px clamp(18px,4vw,64px) 0;box-shadow:7px 7px #101923}
+.arcade-passport-strip h2{font-size:27px;margin:5px 0}.arcade-passport-strip p:not(.eyebrow){font-size:13px;color:#c7e2d4}.arcade-passport-strip strong{font-size:27px;color:#d4f9a1}
+@media(max-width:770px){.passport-hero{align-items:flex-start}.passport-seal{display:none}.passport-score{grid-template-columns:1fr 1fr}.passport-score .passport-meter{grid-column:span 2;border-left:0;padding-left:0}.passport-stamp-grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}}
+@media(max-width:460px){.passport-score{grid-template-columns:1fr;padding:18px}.passport-score>div:not(:first-child){border-left:0;padding-left:0;border-top:1px solid #587671;padding-top:15px}.passport-score .passport-meter{grid-column:auto}.passport-stamp-grid{grid-template-columns:1fr}.passport-crossovers{padding:19px}.passport-buttons .btn{width:100%}}
+@media print{.arcade-header,.passport-buttons,.passport-filters,.arcade-footer{display:none!important}.passport-body{background:#fff;color:#111}.passport-score,.passport-group,.passport-crossovers,.passport-headline{color:#111;background:#fff;box-shadow:none;break-inside:avoid}.passport-stamp{color:#111;background:#eee;min-height:0}.passport-stamp p,.passport-hero p:not(.eyebrow),.passport-intro{color:#333}.passport-stamp.locked{opacity:.75}}
+@media(prefers-reduced-motion:reduce){.passport-body *{animation:none!important;transition:none!important}}
