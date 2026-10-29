@@ -1,9 +1,14 @@
 import {GOLF_KEY,WIDTH,HEIGHT,COLS,ROWS,TILE,CLUBS,HOLES,CELEBS,initialGolf,decodeGolf,encodeGolf,holeById,tileAt,prestige,guestsFor,setClub,chooseHole,paintTile,renameClub,inviteGuest,ballAtCup,swing,totalScore} from "./golf-core.mjs";
+import {CUP_KEY,CUP_RIVALS,initialCup,decodeCup,encodeCup,cupActive,cupHole,cupTotal,startCup,recordCupHole,advanceCup,cupStandings,cupRank,cupBadge} from "./golf-cup.mjs";
 const el=id=>document.getElementById(id),canvas=el("golf-canvas"),ctx=canvas.getContext("2d");
-let state=initialGolf(),mode="play",angle=0,aim={x:800,y:270},anim=null;
+let state=initialGolf(),cup=initialCup(),mode="play",angle=0,aim={x:800,y:270},anim=null;
 const colors={rough:"#457e46",fairway:"#79b65d",green:"#a2d66a",sand:"#eac580",water:"#4d9eb7"};
-function save(msg){try{localStorage.setItem(GOLF_KEY,encodeGolf(state));el("golf-save").textContent=msg||"GOLF CAREER AND DESIGN SAVED LOCALLY"}catch{el("golf-save").textContent="STORAGE UNAVAILABLE. GAME WILL WORK UNTIL THIS TAB CLOSES."}}
-function restore(){try{const raw=localStorage.getItem(GOLF_KEY);if(!raw)return;const p=decodeGolf(JSON.parse(raw));if(p)state=p}catch{state=initialGolf()}}
+function save(msg){try{localStorage.setItem(GOLF_KEY,encodeGolf(state));localStorage.setItem(CUP_KEY,encodeCup(cup));el("golf-save").textContent=msg||"GOLF CAREER AND DESIGN SAVED LOCALLY"}catch{el("golf-save").textContent="STORAGE UNAVAILABLE. GAME WILL WORK UNTIL THIS TAB CLOSES."}}
+function restore(){try{const raw=localStorage.getItem(GOLF_KEY);if(!raw)return;const p=decodeGolf(JSON.parse(raw));if(p)state=p;
+ const savedCup=localStorage.getItem(CUP_KEY);
+ if(savedCup){const restored=decodeCup(JSON.parse(savedCup));if(restored)cup=restored}
+ if(cup.status==="playing"&&state.hole!==cupHole(cup))state=chooseHole(state,cupHole(cup));
+ }catch{state=initialGolf();cup=initialCup()}}
 const current=()=>holeById(mode==="build"?"custom":state.hole,state.tiles);
 function message(s){el("golf-message").textContent=s||state.message}
 function aimAt(x,y){angle=Math.atan2(y-state.ball.y,x-state.ball.x)*180/Math.PI;aim={x,y};}
@@ -80,6 +85,36 @@ function renderClub(){
   root.append(item);
  }
 }
+function renderCup(){
+ const status=el("cup-status"),record=el("cup-record"),list=el("cup-scores");
+ status.textContent=cup.status==="idle"?"READY TO START · THREE HOLES · FICTIONAL RIVALS":
+ cup.status==="playing"?"IN PROGRESS · HOLE "+(cup.scores.length+1)+" / 3 · "+cupTotal(cup)+" STROKES RECORDED":
+ cup.status==="between"?"HOLE "+cup.scores.length+" RECORDED · NEXT TEE WAITING":
+ "TOURNAMENT COMPLETE · "+cup.last+" STROKES · RANK "+cupRank(cup);
+ el("cup-start").disabled=cupActive(cup);
+ el("cup-start").textContent=cup.status==="completed"?"PLAY A NEW CUP ROUND":"START THREE-HOLE CUP";
+ el("cup-next-hint").textContent=cup.status==="between"?"USE THE NEXT TOUR HOLE BUTTON ON THE SCORECARD TO CONTINUE.":
+ cup.status==="playing"?"SINK YOUR BALL TO RECORD THIS HOLE. YOU CANNOT SKIP A HOLE.":
+ cup.status==="completed"?"CUP FINISHED! START AGAIN TO IMPROVE YOUR BEST ROUND.":"THREE HOLES, ONE HONEST SCORECARD. REPLAYABLE ANYTIME.";
+ record.textContent="COMPLETED ROUNDS "+cup.rounds+" · BEST "+(cup.best??"NOT YET SET")+" · LAST "+(cup.last??"NOT YET SET");
+ list.replaceChildren();
+ for(const [index,hole]of HOLES.entries()){
+  const li=document.createElement("li");li.textContent=(index+1)+". "+hole.name+" · "+(cup.scores[index]??"AWAITING ROUND")+" STROKES";list.append(li);
+ }
+ el("cup-podium").hidden=cup.status!=="completed";
+ if(cup.status==="completed"){
+  el("cup-badge").textContent=cupBadge(cup);
+  el("cup-podium-message").textContent="YOUR OFFICIAL RANK: "+cupRank(cup)+" OF 4. FICTIONAL OPPONENT SCORECARDS ARE SCRIPTED, NOT LIVE PLAYERS.";
+  const board=el("cup-leaderboard");board.replaceChildren();
+  for(const [i,p] of cupStandings(cup).entries()){
+   const li=document.createElement("li");li.textContent=(i+1)+". "+p.name+" · "+p.strokes+" STROKES"+(p.player?" · YOU":"");board.append(li);
+  }
+ }
+ el("golf-hole").disabled=cupActive(cup);
+ el("golf-mode-build").disabled=cupActive(cup);
+ el("golf-next").disabled=cup.status==="playing";
+ el("golf-next").textContent=cup.status==="between"?"NEXT CUP HOLE ↗":"NEXT HOLE ↗";
+}
 function render(){
  el("golf-hole").value=state.hole;el("golf-club").value=state.club;
  el("golf-mode-play").setAttribute("aria-pressed",String(mode==="play"));
@@ -87,13 +122,17 @@ function render(){
  el("golf-playtools").hidden=mode!=="play";el("golf-buildtools").hidden=mode!=="build";
  el("golf-swing").disabled=mode!=="play"||ballAtCup(state);
  for(const button of document.querySelectorAll("[data-terrain]"))button.setAttribute("aria-pressed",String(button.dataset.terrain===state.selected));
- renderScore();renderClub();message();draw();
+ renderScore();renderClub();renderCup();message();draw();
 }
-function selectMode(next){mode=next;anim=null;render();if(next==="build")message("COURSE ARCHITECT MODE · CLICK ANY UNPROTECTED TILE TO PAINT "+state.selected.toUpperCase());else message("PLAY MODE · CLICK THE COURSE TO AIM, SET POWER AND SWING.")}
+function selectMode(next){if(next==="build"&&cupActive(cup)){message("FINISH THE GRAND STEM CUP BEFORE EDITING A COURSE.");return}mode=next;anim=null;render();if(next==="build")message("COURSE ARCHITECT MODE · CLICK ANY UNPROTECTED TILE TO PAINT "+state.selected.toUpperCase());else message("PLAY MODE · CLICK THE COURSE TO AIM, SET POWER AND SWING.")}
 function doSwing(){
  if(mode!=="play"||ballAtCup(state)||anim)return;
  const old={...state.ball},result=swing(state,angle,Number(el("golf-power").value)/100);
  state=result.state;
+ if(result.event==="HOLED"&&cup.status==="playing"){
+  const recorded=recordCupHole(cup,state);cup=recorded.cup;
+  if(recorded.recorded){state={...state,message:cup.status==="completed"?"GRAND STEM CUP COMPLETE · "+cupBadge(cup)+"!":"CUP HOLE SAVED · CONTINUE AT THE NEXT TEE."}}
+ }
  const end={...state.ball};
  const start=performance.now();
  anim={ball:old};
@@ -109,6 +148,11 @@ function doSwing(){
  renderScore();save("GOLF STROKE SAVED LOCALLY");
 }
 function nextHole(){
+ if(cup.status==="playing"){message("THIS TOUR HOLE ISN'T FINISHED. GET THAT BALL INTO THE CUP.");return}
+ if(cup.status==="between"){
+  const advancing=advanceCup(cup,state);cup=advancing.cup;state=advancing.golf;
+  aimAt(current().cup.x,current().cup.y);render();save("GRAND STEM CUP NEXT TEE SAVED LOCALLY");return;
+ }
  const ids=HOLES.map(h=>h.id).concat(["custom"]);
  const next=ids[(ids.indexOf(state.hole)+1)%ids.length];
  state=chooseHole(state,next);angle=0;aim={x:current().cup.x,y:current().cup.y};render();save("NEXT HOLE SAVED LOCALLY");
@@ -125,6 +169,7 @@ el("golf-mode-play").addEventListener("click",()=>selectMode("play"));
 el("golf-mode-build").addEventListener("click",()=>selectMode("build"));
 el("golf-club").addEventListener("change",ev=>{state=setClub(state,ev.target.value);save();render()});
 el("golf-hole").addEventListener("change",ev=>{
+ if(cupActive(cup)){render();return}
  state=chooseHole(state,ev.target.value);aimAt(current().cup.x,current().cup.y);render();save("NEW HOLE SELECTED");
 });
 el("golf-power").addEventListener("input",ev=>el("golf-power-label").textContent=ev.target.value+"%");
@@ -132,14 +177,20 @@ el("golf-swing").addEventListener("click",doSwing);
 el("golf-next").addEventListener("click",nextHole);
 for(const b of document.querySelectorAll("[data-terrain]"))b.addEventListener("click",()=>{state={...state,selected:b.dataset.terrain};render();message("TERRAIN BRUSH: "+state.selected.toUpperCase())});
 el("golf-try-custom").addEventListener("click",()=>{
+ if(cupActive(cup))return;
  state=chooseHole(state,"custom");mode="play";aimAt(current().cup.x,current().cup.y);render();save("NOW PLAYING YOUR DESIGNED CLUB COURSE");
 });
 el("golf-club-rename").addEventListener("click",()=>{
  state=renameClub(state,el("golf-club-name").value);render();save("CLUB NAME SAVED LOCALLY");
 });
+el("cup-start").addEventListener("click",()=>{
+ const result=startCup(cup,state);if(!result.started)return;
+ cup=result.cup;state=result.golf;mode="play";aimAt(current().cup.x,current().cup.y);
+ render();save("GRAND STEM CUP STARTED · ROUND 1 / 3 SAVED LOCALLY");
+});
 el("golf-reset").addEventListener("click",()=>{
- if(!window.confirm("Reset all TweedleGolf scores, course terrain, guests and club name? Your other TweedleVerse games will not be affected."))return;
- state=initialGolf();mode="play";aimAt(current().cup.x,current().cup.y);render();save("GOLF CAREER RESET LOCALLY");
+ if(!window.confirm("Reset all TweedleGolf scores, course terrain, guests, club name and Grand Stem Cup history? Your other TweedleVerse games will not be affected."))return;
+ state=initialGolf();cup=initialCup();mode="play";aimAt(current().cup.x,current().cup.y);render();save("GOLF CAREER RESET LOCALLY");
 });
 document.addEventListener("keydown",ev=>{
  if(["INPUT","TEXTAREA","SELECT","BUTTON"].includes(document.activeElement?.tagName))return;
