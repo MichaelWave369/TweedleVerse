@@ -87,6 +87,7 @@ export function canFile(progress){
 export function submitReport(progress,{suspect,explanation,evidence}={}){
  if(progress.solved)return {progress,success:false,feedback:"CASE ALREADY CLOSED. NO DOUBLE OVERTIME."};
  if(!canFile(progress))return {progress,success:false,feedback:"YOUR REPORT IS INCOMPLETE. FIND THE RECEIPT AND TAPE; INTERVIEW CHUCK AND MARTY."};
+ if(progress.scene!=="precinct")return {progress,success:false,feedback:"RETURN TO THE TVPD PRECINCT TO FILE THIS REPORT. EVEN REASONABLE RULES HAPPEN SOMETIMES."};
  const correct=suspect==="chief"&&explanation==="snack"&&evidence==="tape";
  const attempts=Math.min(99,progress.attempts+1);
  if(!correct)return {progress:{...progress,attempts},success:false,
@@ -106,6 +107,6 @@ export function objective(progress){
  if(!progress.interviews.includes("chuck"))return "Interview Chuck about the delivery.";
  if(!progress.clues.includes("tape"))return "Find the security tape at Lackluster Video.";
  if(!progress.interviews.includes("marty"))return "Interview Marty about the tape.";
- if(canFile(progress))return "Return to the precinct paperwork desk and file your report.";
+ if(canFile(progress))return "Return to the TVPD precinct and file your report at the paperwork desk.";
  return "Keep interviewing and collecting evidence. This department rarely does either.";
 }
