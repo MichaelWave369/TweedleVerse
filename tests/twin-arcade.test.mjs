@@ -31,7 +31,7 @@ test("Tunnel travel must occur at accessible doors, and buds collected once",()=
 });
 test("The vault requires enough collections and cannot unlock from other rooms",()=>{
  let p=initialTunnel();const found=BUDS.slice(0,VAULT_REQUIRED).map(b=>b.id);
- assert.strictEqual(finishVault({...p,found,x:1100}),p===null?null:finishVault({...p,found,x:1100}));
+ const elsewhere={...p,found,x:1100};assert.strictEqual(finishVault(elsewhere),elsewhere);
  p={...p,room:"vault",x:1100,found:found.slice(0,-1)};assert.equal(finishVault(p).finished,false);
  p={...p,found};const f=finishVault(p);assert.equal(f.finished,true);
  assert.deepEqual(decodeTunnel(JSON.parse(encodeTunnel(f))),{...f,vy:0,onGround:true,visits:["burrow"]});
