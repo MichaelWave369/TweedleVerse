@@ -268,7 +268,7 @@ function renderFinaleScene(){
     const next=pickFinaleEnding(state.finale,ending.id);
     if(!next)return;
     state.finale=next;
-    renderFinaleScene();renderFinaleUI();refreshPassport();renderBroadcast();
+    renderFinaleScene();renderFinaleUI();refreshPassport();renderBroadcast();renderBattleProgress();
     saveProgress("EPISODE ONE FINISHED · FEE WAIVER SAVED LOCALLY");
     say(null,ending.description);
    });
@@ -652,7 +652,7 @@ function interact(){
  state.story=ending.story;
  questUI();
  if(tapeChanged)el("resident-label").textContent="PRIZE MAIL RECOVERED. THE PACKAGE IS ADDRESSED TO YESTERDAY. TALK TO BUFFER BOB.";
- say(place,finaleAdvanced?(state.finale.stage===2?"MARTY: This video receipt is dated a week from tomorrow! I knew that tape couldn't be that overdue. Tell Reggie his billing system is drunk on calendars.":"REGGIE: YOU BROUGHT RECEIPTS? THAT'S NOT FAIR. TWEEDSIE: That's literally what a bill is, Reg."):(ending.completed?ending.message:(dialogues[place.id]||place.description)));
+ say(place,finaleAdvanced?(state.finale.stage===2?"MARTY: This video receipt is dated a week from tomorrow! I knew that tape couldn't be that overdue. Tell Reggie his billing system is drunk on calendars.":"REGGIE: YOU BROUGHT RECEIPTS? THAT'S NOT FAIR. TWEEDSIE: That's literally what a bill is, Reg."):(ending.completed?ending.message:placeReaction(snapshot(),place.id,dialogues[place.id]||place.description)));
  refreshPassport();
  saveProgress(newStamp?"PASSPORT STAMPED: "+LANDMARK_SOUVENIRS[place.id].name+" · SAVED LOCALLY":"STEMSIDE PROGRESS SAVED LOCALLY");
  if(place.id==="stems-league")openArena();
