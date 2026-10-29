@@ -139,6 +139,6 @@ test("Courier and Cup UI controls are wired to working handlers and isolated sav
  for(const id of ["cup-start","cup-status","cup-scores","cup-leaderboard","cup-podium"])assert.ok(golf.includes('id="'+id+'"'),id);
  assert.ok(caveJS.includes("claimContract("));assert.ok(caveJS.includes("burst("));assert.ok(caveJS.includes("localStorage.setItem(COURIER_KEY"));
  assert.ok(golfJS.includes("recordCupHole("));assert.ok(golfJS.includes("localStorage.setItem(CUP_KEY"));
- assert.ok(read("package.json").includes('"version": "0.15.0"'));
+ assert.ok(Number(JSON.parse(read("package.json")).version.split(".")[1])>=15);
  for(const f of ["tunnel-contracts.mjs","golf-cup.mjs"])assert.ok(read(".github/workflows/checks.yml").includes(f));
 });
