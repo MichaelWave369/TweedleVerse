@@ -1,7 +1,8 @@
 import {PASSPORT_SOURCES,readPassport} from "./passport-core.mjs";
 import {MAP_KEY,MAP_SIZE,PLACES,STREETS,TOUR_TASKS,initialWorld,decodeWorld,encodeWorld,placeOf,neighborsOf,shortestRoute,walkWorld,directionNeighbor,postcards,tourTasks,tourComplete,nodeHint} from "./world-map-core.mjs";
+import {EVENTS_KEY,EVENTS,initialEvents,decodeEvents,encodeEvents,beginEvent,answerEvent,activeEncounter,pendingLocation,eventBoard} from "./world-events-core.mjs";
 const el=id=>document.getElementById(id),canvas=el("world-canvas"),ctx=canvas.getContext("2d");
-let state=initialWorld(),selected="plaza",passport=readPassport({}),walking=false,stopRequested=false,interpolation=null;
+let state=initialWorld(),events=initialEvents(),selected="plaza",passport=readPassport({}),walking=false,stopRequested=false,interpolation=null;
 const palette={road:"#244455",edge:"#0f2c3c",land:"#4c7864",north:"#3d655c",south:"#507f5e",corporate:"#556879",sand:"#ab8b70",light:"#e7e8c2",amber:"#f3d594",mint:"#ccefa9"};
 function make(tag,text,cls){const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;return x}
 function say(text){el("world-story").textContent=text}
@@ -14,6 +15,17 @@ function restore(){
  try{const raw=localStorage.getItem(MAP_KEY);if(raw){const decoded=decodeWorld(JSON.parse(raw));if(decoded)state=decoded}}catch{/* Play with a clean map if browser storage is absent or corrupt. */}
  selected=state.current;
 }
+function restoreEvents(){
+ try{const raw=localStorage.getItem(EVENTS_KEY);if(!raw)return;const decoded=decodeEvents(JSON.parse(raw));if(decoded)events=decoded}
+ catch{/* A bad optional story save never blocks city navigation. */}
+}
+function saveEvents(){
+ try{
+  localStorage.setItem(EVENTS_KEY,encodeEvents(events));
+  el("world-events-storage").textContent="STREET CASES SAVED LOCALLY · INDEPENDENT FROM WORLD MAP AND ALL OTHER GAMES";
+ }catch{el("world-events-storage").textContent="STREET-CASE STORAGE UNAVAILABLE. THIS SESSION CAN CONTINUE UNTIL CLOSED."}
+}
+function feedbackEvent(message){el("world-event-feedback").textContent=message}
 function save(){
  try{
   localStorage.setItem(MAP_KEY,encodeWorld(state));
@@ -62,6 +74,63 @@ function renderTours(){
   root.append(art);
  }
 }
+function renderEvents(){
+ const board=el("world-events-board");board.replaceChildren();
+ el("world-events-progress").textContent=events.completed.length+" / "+EVENTS.length+
+   " CASES CLOSED · "+events.wrong+" WRONG LEADS · "+(events.completed.length===EVENTS.length?"STEMSIDE CIVIC HERO":"FINALE AFTER TWO NEIGHBORHOOD CASES");
+ for(const episode of eventBoard(events)){
+  const box=make("article",undefined,"world-case"+(episode.complete?" complete":!episode.unlocked?" locked":""));
+  box.append(make("strong",(episode.complete?"✓ ":"") + episode.title));
+  box.append(make("p",episode.summary));
+  box.append(make("small",episode.complete?"✓ AWARDED: "+episode.award:
+    !episode.unlocked?"LOCKED · CLOSE THE FIRST TWO CASES":
+    episode.active?"IN PROGRESS · RESUME YOUR INVESTIGATION":"READY · "+episode.steps+" WITNESS INTERVIEWS"));
+  const button=make("button",episode.active?"CURRENT INVESTIGATION":episode.complete?"CASE CLOSED":"OPEN INCIDENT FILE","btn secondary-btn");
+  button.type="button";button.disabled=walking||episode.complete||!episode.unlocked||Boolean(events.active&&!episode.active);
+  button.addEventListener("click",()=>{
+   if(walking)return;
+   const result=beginEvent(events,episode.id);
+   events=result.state;feedbackEvent(result.feedback);
+   if(result.started){
+    const next=pendingLocation(events);if(next)selected=next;
+    saveEvents();
+   }
+   render();
+  });
+  box.append(button);board.append(box);
+ }
+ const scene=activeEncounter(events),mission=EVENTS.find(e=>e.id===events.active?.id);
+ const panel=el("world-active-encounter");panel.hidden=!scene;
+ if(!scene||!mission)return;
+ const here=state.current===scene.place;
+ el("world-event-label").textContent=mission.label;
+ el("world-event-title").textContent=mission.title;
+ el("world-event-step").textContent="INTERVIEW "+(events.active.step+1)+" / "+mission.scenes.length;
+ el("world-event-destination").textContent="REPORT TO: "+placeOf(scene.place).name+(here?" · YOU ARE HERE":" · TRAVEL REQUIRED");
+ const routeButton=el("world-event-route");
+ routeButton.disabled=walking||here;
+ el("world-event-dialogue").hidden=!here;
+ if(!here)return;
+ el("world-event-speaker").textContent=scene.speaker;
+ el("world-event-setup").textContent=scene.setup;
+ el("world-event-question").textContent=scene.prompt;
+ const root=el("world-event-options");root.replaceChildren();
+ for(const choice of scene.options){
+  const button=make("button",choice.label);
+  button.type="button";button.disabled=walking;
+  button.addEventListener("click",()=>{
+   if(walking)return;
+   const outcome=answerEvent(events,state,choice.id);
+   events=outcome.state;feedbackEvent(outcome.feedback);
+   if(outcome.correct){
+    const next=pendingLocation(events);
+    if(next)selected=next;
+   }
+   saveEvents();render();
+  });
+  root.append(button);
+ }
+}
 function render(){
  const current=placeOf(state.current),target=placeOf(selected)||current,route=selectedRoute();
  el("world-loc-name").textContent=current.name;
@@ -77,7 +146,7 @@ function render(){
  enter.hidden=state.current!==selected;
  el("world-walk").disabled=walking||state.current===selected||!route.length;
  el("world-stop").disabled=!walking;
- renderPlaces();renderPostcards();renderTours();draw();
+ renderPlaces();renderPostcards();renderTours();renderEvents();draw();
 }
 function backdrop(){
  if(!ctx)return;
@@ -135,6 +204,15 @@ function draw(){
   ctx.fillStyle=isSelected?"#f2db92":"#e3f5d0";ctx.font="900 12px Trebuchet MS,Arial";
   ctx.fillText(place.name,place.x,place.y+56,130);
  }
+ const targetId=pendingLocation(events);
+ if(targetId){
+  const target=placeOf(targetId);
+  ctx.strokeStyle="#ffe17b";ctx.lineWidth=5;ctx.setLineDash([7,8]);
+  ctx.beginPath();ctx.arc(target.x,target.y,41,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="#152c38";ctx.fillRect(target.x-55,target.y-73,110,22);
+  ctx.fillStyle="#ffe17b";ctx.font="900 11px Trebuchet MS,Arial";ctx.textAlign="center";
+  ctx.fillText("CASE WITNESS",target.x,target.y-57);
+ }
  ctx.textAlign="center";
  ctx.fillStyle="#111f29";ctx.beginPath();ctx.ellipse(player.x+5,player.y+11,19,11,0,0,Math.PI*2);ctx.fill();
  ctx.fillStyle="#ffefa6";ctx.beginPath();ctx.arc(player.x,player.y-4,18,0,Math.PI*2);ctx.fill();
@@ -189,6 +267,19 @@ document.addEventListener("keydown",event=>{
  const direction=({"ArrowUp":"up","ArrowDown":"down","ArrowLeft":"left","ArrowRight":"right","w":"up","s":"down","a":"left","d":"right","W":"up","S":"down","A":"left","D":"right"})[event.key];
  if(direction){event.preventDefault();walkDirection(direction)}
 });
+el("world-event-route").addEventListener("click",()=>{
+ if(walking)return;
+ const id=pendingLocation(events);
+ if(!id)return;
+ selected=id;render();
+ feedbackEvent(state.current===id?"WITNESS IS HERE. CHOOSE A RESPONSE BELOW.":"ROUTE SELECTED. WALK TO "+placeOf(id).name+" AND INTERVIEW YOUR WITNESS.");
+});
+el("world-events-reset").addEventListener("click",()=>{
+ if(walking){feedbackEvent("STOP THE WALK BEFORE RESETTING A STREET INVESTIGATION.");return}
+ if(!window.confirm("Reset ONLY the World Map street encounters? Map postcards, tours, Passport and other game saves will not change."))return;
+ events=initialEvents();feedbackEvent("STREET CASES REOPENED. THE CITY TOUR AND ALL OTHER GAMES ARE UNTOUCHED.");
+ render();saveEvents();
+});
 el("world-walk").addEventListener("click",walkRoute);
 el("world-stop").addEventListener("click",()=>{stopRequested=true;say("WALK PAUSED AFTER THE CURRENT STREET. YOUR FOOTPRINTS ARE SAVED.")});
 el("world-reset").addEventListener("click",()=>{
@@ -199,4 +290,4 @@ el("world-reset").addEventListener("click",()=>{
 window.addEventListener("pagehide",save);
 window.addEventListener("pageshow",event=>{if(event.persisted){readSaves();render()}});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){readSaves();render()}});
-restore();readSaves();render();save();
+restore();restoreEvents();readSaves();render();save();
