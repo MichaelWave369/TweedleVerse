@@ -6,6 +6,7 @@ import {RESIDENTS,TAPE_STEPS,advanceTapeQuest,tapeStatus,residentPosition,neares
 import {GIG_STEPS,BEAT_COUNT,BEAT_TIMES,WIN_SCORE,MAX_SCORE,freshShow,beginShow,tickShow,hitBeat,beatProgress,gigStatus,gigReply,advanceGigQuest} from "./gig-core.mjs";
 import {NAV_MODES,resolveWaypoint,mapPosition,compass,encodePortableSave,decodePortableSave,MAX_SAVE_BYTES} from "./travel-core.mjs";
 import {initialFinale,finaleEligible,finaleStatus,nextFinaleEvent,auditEvidence,pickFinaleEnding,FINALE_ENDINGS,FINALE_EVIDENCE} from "./finale-core.mjs";
+import {consequenceFor,placeReaction,residentReaction,disputePerk,activeEnding,worldHeadline} from "./consequence-core.mjs";
 
 const el=id=>document.getElementById(id);
 const canvas=el("world"),ctx=canvas.getContext("2d");
@@ -199,6 +200,22 @@ async function importSave(file){
  }
 }
 
+
+function renderBroadcast(){
+ const consequence=consequenceFor(snapshot()),panel=el("city-broadcast");
+ panel.dataset.ending=activeEnding(snapshot())||"none";
+ el("broadcast-station").textContent=consequence?"STEMSIDE PUBLIC NEWS / "+consequence.title:"SPACEALITE™ CORPORATE ALERT / CITY NEWS";
+ el("broadcast-title").textContent=consequence?consequence.headline:"REGGIE OWNS THE NEWS. FOR NOW.";
+ el("broadcast-ticker").textContent=consequence?consequence.ticker:"YOU ARE BEING CHARGED FOR STANDING STILL.";
+ el("broadcast-perk").textContent=consequence?consequence.perk:"FINISH THE GREAT BILLING REVERSAL TO CHANGE THE NEIGHBORHOOD.";
+ const root=el("broadcast-news");root.replaceChildren();
+ for(const line of (consequence?consequence.board:[
+  "Every channel is a premium channel.",
+  "The weather forecast requires a subscription.",
+  "Tweedsie has refused to pay for being on the air."
+ ])){const item=document.createElement("li");item.textContent=line;root.append(item)}
+}
+
 function say(place,text){
  el("place-heading").textContent=place?place.name.toUpperCase():"CITY HALL ERROR";
  el("place-message").textContent=text;
@@ -251,7 +268,7 @@ function renderFinaleScene(){
     const next=pickFinaleEnding(state.finale,ending.id);
     if(!next)return;
     state.finale=next;
-    renderFinaleScene();renderFinaleUI();refreshPassport();
+    renderFinaleScene();renderFinaleUI();refreshPassport();renderBroadcast();
     saveProgress("EPISODE ONE FINISHED · FEE WAIVER SAVED LOCALLY");
     say(null,ending.description);
    });
@@ -317,8 +334,9 @@ function draw(){
  const cameraX=clamp(state.player.x-state.w/2,0,Math.max(0,WORLD.width-state.w));
  const cameraY=clamp(state.player.y-state.h/2,0,Math.max(0,WORLD.height-state.h));
  ctx.save();ctx.translate(-cameraX,-cameraY);
- ctx.fillStyle="#3b4660";ctx.fillRect(0,0,WORLD.width,560);
- ctx.fillStyle="#315646";ctx.fillRect(0,560,WORLD.width,560);
+ const after=activeEnding(state);
+ ctx.fillStyle=after==="commons"?"#365c68":after==="refund"?"#555c69":"#3b4660";ctx.fillRect(0,0,WORLD.width,560);
+ ctx.fillStyle=after==="commons"?"#286554":after==="refund"?"#4d6650":"#315646";ctx.fillRect(0,560,WORLD.width,560);
  // A simple hand-authored street network. Signposts are interactions, not invisible teleporters.
  ctx.strokeStyle="#ffffff10";ctx.lineWidth=1;
  for(let x=0;x<=WORLD.width;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,WORLD.height);ctx.stroke()}
@@ -330,7 +348,14 @@ function draw(){
  ctx.font="900 29px Trebuchet MS, Arial";ctx.textAlign="left";
  ctx.fillStyle="#e7c7b888";ctx.fillText("NORTH STEMSIDE",35,67);
  ctx.fillStyle="#bbecb788";ctx.fillText("SOUTH STEMSIDE",35,676);
- ctx.font="900 13px Trebuchet MS, Arial";ctx.fillStyle="#aaccad";ctx.fillText("NORTHSIDE CROSSING // SURCHARGE APPLIES",700,548);
+ ctx.font="900 13px Trebuchet MS, Arial";ctx.fillStyle="#aaccad";ctx.fillText(after==="refund"?"NORTHSIDE CROSSING // REFUND PERIOD":"NORTHSIDE CROSSING // "+(after==="commons"?"CHANNEL ZERO IS FREE":"SURCHARGE APPLIES"),700,548);
+ if(after){
+  ctx.fillStyle="#10232ad9";ctx.fillRect(950,648,560,44);
+  ctx.strokeStyle=after==="commons"?"#7ff0d7":"#f2c689";ctx.lineWidth=3;ctx.strokeRect(950,648,560,44);
+  ctx.fillStyle=after==="commons"?"#afffdf":"#ffe5a7";
+  ctx.font="900 19px Trebuchet MS, Arial";
+  ctx.textAlign="center";ctx.fillText(worldHeadline(state),1230,676,530);
+ }
  for(const p of state.places){
   const x=p.x/100*WORLD.width,y=p.y/100*WORLD.height;
   const isNear=p.id===state.nearId;
@@ -472,7 +497,8 @@ function openScript(){
 function renderBattleProgress(){
  el("city-rebels").textContent="DISPUTES: "+state.wins.length+" / 3";
  el("battle-status").textContent=medalText(state.wins);
- el("battle-reward").textContent=state.wins.length>=2?
+ const perks=disputePerk(snapshot());
+ el("battle-reward").textContent=perks.tweedsieAccess?"CHANNEL ZERO: TWEEDSIE LEGAL ASSISTANCE UNLOCKED IN EVERY DISPUTE":state.wins.length>=2?
   "TWEEDSIE LEGAL ASSISTANCE: AVAILABLE IN EACH NEW ENCOUNTER":
   "TWEEDSIE LEGAL ASSISTANCE: WIN "+(2-state.wins.length)+" MORE DISPUTE"+(state.wins.length===1?"":"S")+" TO UNLOCK";
 }
@@ -491,12 +517,12 @@ function renderBattle(){
  el("battle-last").textContent=b.last||"YOUR PARTY HAS FILED A FORMAL COMPLAINT.";
  el("battle-log").textContent=b.log;
  for(const button of el("battle-actions").querySelectorAll("[data-party]")){
-  button.disabled=!actionAvailable(b,button.dataset.party,state.wins);
+  button.disabled=!actionAvailable(b,button.dataset.party,state.wins,disputePerk(snapshot()));
  }
  const gopher=el("battle-tweedsie");
- gopher.disabled=!actionAvailable(b,"tweedsie",state.wins);
+ gopher.disabled=!actionAvailable(b,"tweedsie",state.wins,disputePerk(snapshot()));
  gopher.textContent=b.tweedsieUsed?"TWEEDSIE ALREADY SIGNED OFF":
-  state.wins.length<2?"TWEEDSIE: WIN 2 UNIQUE DISPUTES TO UNLOCK":
+  state.wins.length<2&&!disputePerk(snapshot()).tweedsieAccess?"TWEEDSIE: WIN 2 UNIQUE DISPUTES TO UNLOCK":
   "TWEEDSIE: CANCEL THEIR NEXT TURN";
  el("battle-retry").textContent=b.status==="active"?"RESTART ENCOUNTER":
    b.status==="won"?"PLAY AGAIN (PRACTICE)":"RETRY THE CONFRONTATION";
@@ -506,11 +532,12 @@ function startEncounter(){
  const place=nearest();
  if(!place||!Object.hasOwn(ENCOUNTERS,place.id))return;
  state.battle=startBattle(place.id);
+ state.battle.shield=disputePerk(snapshot()).startingShield;
  renderBattle();
  openModal("battle","battle-close");
 }
 function battleMove(id){
- const next=playTurn(state.battle,id,state.wins);
+ const next=playTurn(state.battle,id,state.wins,disputePerk(snapshot()));
  if(!next)return;
  state.battle=next;
  if(next.status==="won"){
@@ -524,6 +551,7 @@ function battleMove(id){
 function retryBattle(){
  if(!state.battle)return;
  state.battle=startBattle(state.battle.id);
+ state.battle.shield=disputePerk(snapshot()).startingShield;
  renderBattle();
 }
 
@@ -540,6 +568,7 @@ function talkResident(){
  state.gigQuest=advanceGigQuest(oldGig,"npc",npc.id);
  state.finale=nextFinaleEvent(state.finale,snapshot(),"npc",npc.id);
  if(state.finale.stage!==oldFinale)speech="BUFFER BOB: This entire town has been billed for viewing itself. The timestamp is dated TOMORROW. Go inspect the archive at Lackluster Video before I file Form 97-B.";
+ else if(old===state.tapeQuest&&oldGig===state.gigQuest)speech=residentReaction(snapshot(),npc.id,speech);
  state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
  say({name:npc.name},speech);
  if(old!==state.tapeQuest||oldGig!==state.gigQuest||oldFinale!==state.finale.stage){
@@ -635,7 +664,7 @@ function reset(){
  const initial=initialProgress();
  state.player={...initial.player};state.quest=0;state.visits=0;state.medal=false;state.story=initialStory();
  state.wins=[];state.visited=[];state.finale=initialFinale();state.tapeQuest=0;state.gigQuest=0;state.gigShow=freshShow();state.battle=null;state.nearId=null;state.nearResidentId=null;state.lastSavedPos=null;
- renderBattleProgress();refreshPassport();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
+ renderBattleProgress();refreshPassport();renderBroadcast();saveProgress("NEW ADVENTURE SAVED. THE PREVIOUS RUN WAS REPLACED.");
  el("medal").textContent="NO TGA MEDAL";
  say(null,"Back to work. The coffee run restarts, because corporate refuses to acknowledge personal growth.");
  questUI();
@@ -805,5 +834,5 @@ el("easy-aim").addEventListener("change",syncArena);
  }catch(e){say(null,"Couldn't load the city map. Serve this website via GitHub Pages or a local HTTP server. "+e.message)}
  for(let i=0;i<BEAT_COUNT;i++){const note=document.createElement("span");note.textContent=String(i+1);el("gig-notes").append(note)}
  el("gig-easy").checked=matchMedia("(prefers-reduced-motion: reduce)").matches;
- questUI();renderBattleProgress();refreshPassport();resize();updateNearby();updateWayfinder();requestAnimationFrame(loop);
+ questUI();renderBattleProgress();refreshPassport();renderBroadcast();resize();updateNearby();updateWayfinder();requestAnimationFrame(loop);
 })();
