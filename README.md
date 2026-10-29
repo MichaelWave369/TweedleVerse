@@ -32,6 +32,12 @@ Both link from [TweedleVerse Arcade](arcade.html) and use entirely separate vali
 
 See [Courier and Cup v0.15](docs/COURIER_CUP_V015.md) for controls, limitations and QA.
 
+## Universe Passport: shared story, independent saves (v0.16)
+
+The [**Universe Passport**](passport.html) now shows **15 save-validated achievement stamps** spanning Stemside, TweedlePD, Tweedsie's underground adventures and TweedleGolf. It uses each existing game's decoder to build a read-only stamp album, local progression rank, and original *Stemside Evening News* crossover stories when achievements from different games coincide. Visit the [Arcade](arcade.html) to see your same-browser stamp count and enter the Passport.
+
+This is **not** a cloud account or a synced/mutable universe save. All seven existing game save slots remain owned and written exclusively by their games. Passport never changes them, makes network calls, or collects personal information. Without local progress in this browser it correctly displays locked stamps. Local browser data is not cryptographically authenticated. [Passport guide and QA](docs/UNIVERSE_PASSPORT_V016.md).
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
