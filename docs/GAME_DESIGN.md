@@ -30,6 +30,10 @@ The new **Gig That Almost Wasn't** mission uses four city interactions and an ei
 
 The walkable city now has an internal mini-radar, selectable quest/objective routing, and explicit map-unit compass directions derived from canonical game coordinates. Its local-first save can be exported to a self-contained validated JSON file and imported into another browser only after explicit overwrite confirmation. There are no external map APIs or cloud sync. See [PLAYABLE_V09](PLAYABLE_V09.md).
 
+## Episode One: The Great Billing Reversal (v0.10)
+
+The first optional, authored story finale brings together existing Coffee Run and corporate encounter progress. An eligible player investigates the billing system with Buffer Bob, follows a clue to Lackluster Video, and audits three ordered evidence items at Spacealite Tower. Players select either a town refund or a public-channel victory, with different dialogue, one permanent ending, a collectible Fee Waiver and 120 XP. The system adds a dedicated quest compass target, persistent progression and v1–v3 save migration. See [PLAYABLE_V010](PLAYABLE_V010.md). The story fork currently affects authored ending content, not the broader city map.
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.
