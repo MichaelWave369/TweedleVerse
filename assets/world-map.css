@@ -1,0 +1,54 @@
+/* TweedleVerse World Map · original Canvas2D graph exploration, CSS interfaces */
+.world-body{background:radial-gradient(ellipse at 75% 5%,#355f58,#142737 57%,#0c1a26)}
+.world-main{max-width:1570px;margin:auto;padding:34px clamp(14px,3.3vw,52px) 85px}
+.world-hero{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:25px}
+.world-hero h1{font-size:clamp(49px,6.6vw,92px);margin:10px 0 16px}
+.world-hero p:not(.eyebrow){font-size:17px;color:#d0e1d5;max-width:865px}
+.world-emblem{width:185px;height:185px;min-width:185px;border-radius:50%;border:8px double #d6eca4;background:#3a5155;transform:rotate(7deg);box-shadow:8px 8px #111b26;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
+.world-emblem b{font-size:19px;color:#f0f9b4}.world-emblem span{font-size:11px;color:#ddcfa8;font-weight:900;margin-top:7px}.world-emblem small{font-size:9px;color:#c7f6e1;font-weight:900;margin-top:8px}
+.world-status-bar,.world-map-top{background:#e9d8a7;border:2px solid #fff0bb;color:#1f3838;padding:10px 15px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;font-size:12px;font-weight:1000;letter-spacing:.06em}
+.world-status-bar{margin-bottom:15px}.world-status-bar strong{font-size:16px}
+.world-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(315px,.8fr);gap:19px;align-items:start}
+.world-map-shell{background:#203944;border:3px solid #a7c4a4;border-radius:9px;overflow:hidden;box-shadow:8px 9px #0d1723}
+.world-map-top{background:#233f4f;border:none;color:#d9efd4;font-size:11px}
+#world-canvas{display:block;width:100%;height:auto;background:#294c50;aspect-ratio:1200/760;touch-action:manipulation;cursor:crosshair}
+.world-controls{display:flex;align-items:center;gap:22px;padding:17px;border-top:2px solid #97b7a3}
+.world-arrow-pad{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none}
+.world-arrow-pad>div{display:flex;gap:6px}
+.world-arrow-pad button{width:53px;height:46px;font-size:20px;background:#31555c;border:2px solid #b8dfb0;border-radius:6px;color:#ecf0da;cursor:pointer;touch-action:manipulation}
+.world-arrow-pad button:hover:not(:disabled){background:#457d6f}
+.world-map-actions{display:flex;align-items:flex-start;flex-direction:column;gap:8px}
+.world-map-actions .btn{max-width:100%;font-size:12px}
+.world-map-actions p{font-size:11px;color:#c5ded1;margin:0;line-height:1.5}
+.world-story{padding:18px;margin:0;border-top:1px solid #648b89;background:#122d3d;color:#ffdcad;font-weight:900;font-size:14px;min-height:64px}
+.world-side{display:grid;gap:17px}
+.world-card{padding:21px;background:#243f49;border:2px solid #739899;border-radius:7px;box-shadow:6px 7px #0b1922}
+.world-card h2{font-size:26px;margin:8px 0 13px}
+.world-card>p:not(.eyebrow){color:#d2e2d9;font-size:14px}
+.world-card .btn{margin:9px 0;max-width:100%}
+.world-district{color:#f7cb8e!important;font-size:12px!important;font-weight:900;letter-spacing:.1em}
+.world-route{border-left:4px solid #c9f2a2;padding:10px 12px;background:#172f37;color:#e1f6ce!important;font-size:12px!important;font-weight:900;letter-spacing:.03em}
+.world-context{color:#efd5ab!important;font-size:13px!important;line-height:1.55}
+.world-small{font-size:11px!important;color:#bdd4d0!important;line-height:1.6}
+.world-places{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.world-places button{text-align:left;padding:9px 10px;background:#2e4b53;border:2px solid #769d9c;color:#f5eedc;border-radius:5px;cursor:pointer;min-height:65px}
+.world-places button:hover{background:#486d64;border-color:#daf3be}
+.world-places button[aria-pressed="true"]{background:#d0eaa8;color:#193832;border-color:#fbffc2}
+.world-places button span{display:block;font-size:12px;font-weight:1000;line-height:1.25}
+.world-places button small{display:block;font-size:10px;letter-spacing:.06em;margin-top:4px;opacity:.83}
+.world-postcards{list-style:none;padding:0;margin:10px 0;display:grid;gap:8px}
+.world-postcards li{padding:8px 10px;background:#172f38;border:1px solid #597d7c;font-size:12px}
+.world-postcards li strong{display:block;color:#d6f7a8;font-size:12px}
+.world-tour-list{display:grid;gap:11px}
+.world-tour-list article{border:2px dashed #718f85;padding:12px;background:#183442}
+.world-tour-list article.done{border:2px solid #c4ee99;background:#315544}
+.world-tour-list h3{font-size:17px;margin:5px 0}
+.world-tour-list p{font-size:12px;color:#d0e1d7;line-height:1.5}
+.world-tour-list small{font-size:11px;color:#f2d4a0;font-weight:900}
+.world-victory{margin:15px 0;padding:15px;background:#385e3b;border:3px solid #d7f6ad}
+.world-victory strong{font-size:21px;color:#e3faaa}
+.world-victory p{font-size:13px;color:#e1efd6}
+@media(max-width:1120px){.world-layout{grid-template-columns:1fr}.world-side{grid-template-columns:repeat(2,minmax(0,1fr))}.world-side>.world-card:first-child{grid-column:span 2}}
+@media(max-width:720px){.world-emblem{display:none}.world-side{grid-template-columns:1fr}.world-side>.world-card:first-child{grid-column:auto}.world-controls{flex-wrap:wrap;justify-content:center}.world-map-actions{align-items:center;text-align:center}.world-places{grid-template-columns:repeat(2,minmax(0,1fr))}.world-hero h1{font-size:clamp(42px,8vw,66px)}}
+@media(max-width:435px){.world-status-bar{font-size:11px}.world-places{grid-template-columns:1fr}.world-map-top{font-size:9px}.world-arrow-pad button{width:55px;height:51px}.world-map-actions .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){.world-body *{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
