@@ -26,6 +26,10 @@ Four silicon residents stand or drift subtly around original Stemside locations 
 
 The new **Gig That Almost Wasn't** mission uses four city interactions and an eight-beat original, silent timing minigame to complete Lenny Smokins' gig at the Southside Stems League arena. A score of 9 or more out of 16 grants a Gold-Plated Backstage Pass and one-time 60 XP. A wider timing option is provided, and no recording, melody or licensed music is included. Save format v3 migrates versions 1 and 2. See [PLAYABLE_V08](PLAYABLE_V08.md).
 
+## RPG wayfinding & save portability (v0.9)
+
+The walkable city now has an internal mini-radar, selectable quest/objective routing, and explicit map-unit compass directions derived from canonical game coordinates. Its local-first save can be exported to a self-contained validated JSON file and imported into another browser only after explicit overwrite confirmation. There are no external map APIs or cloud sync. See [PLAYABLE_V09](PLAYABLE_V09.md).
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.
