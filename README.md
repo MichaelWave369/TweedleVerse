@@ -38,6 +38,12 @@ The [**Universe Passport**](passport.html) now shows **15 save-validated achieve
 
 This is **not** a cloud account or a synced/mutable universe save. All seven existing game save slots remain owned and written exclusively by their games. Passport never changes them, makes network calls, or collects personal information. Without local progress in this browser it correctly displays locked stamps. Local browser data is not cryptographically authenticated. [Passport guide and QA](docs/UNIVERSE_PASSPORT_V016.md).
 
+## Crossroads: Actual playable multi-game cases (v0.17)
+
+[**Play TweedleVerse Crossroads**](crossroads.html) to investigate **three original, three-scene crossover mysteries**, unlocked by achievements from two *different* game series. Chip, Tweedsie, fictional golf celebrities and Reggie finally collide in playable evidence-driven adventures, not just Passport newspaper headlines. Cases: **The Eighteenth Hole That Wasn't**, **The Grand Recount of Nothing**, and **The Underground Evidence Delivery**. Each ends with its own locally saved case badge. Bad answers are explained and safely retriable.
+
+Crossroads uses the existing Universe Passport decoders to verify source-game achievement stamps; it **never writes to any of the seven existing game saves**. Only the separate `tweedleverse.crossroads.cases.v1` slot stores its own case steps and results. The Passport stays read-only, but now shows a live `0 / 3` to `3 / 3` Crossroads completion counter. The Arcade links directly to these investigations. No login, network service, unlicensed media or new packages. More details: [Crossroads v0.17 guide](docs/CROSSROADS_V017.md).
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**

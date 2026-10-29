@@ -1,0 +1,50 @@
+/* TweedleVerse Crossroads v0.17 · Original responsive storybook */
+.crossroads-body{background:radial-gradient(ellipse at 65% 2%,#3e535d,#1b303c 52%,#101d29)}
+.crossroads-main{max-width:1470px;padding:42px clamp(16px,3.8vw,55px) 90px;margin:0 auto}
+.crossroads-hero{display:grid;grid-template-columns:1.4fr .7fr;gap:35px;align-items:center;margin-bottom:30px}
+.crossroads-hero h1{font-size:clamp(53px,7.1vw,99px);line-height:1;margin:10px 0 20px}
+.crossroads-hero p:not(.eyebrow){color:#d3e1de;max-width:780px;font-size:17px}
+.crossroads-art{height:280px;border:6px double #ebd09a;background:linear-gradient(145deg,#303c5b,#3f6660);transform:rotate(3deg);box-shadow:10px 11px #111c29;border-radius:10px;display:flex;flex-direction:column;justify-content:space-around;align-items:center;padding:17px;text-align:center}
+.crossroads-art div{font-size:21px;font-weight:1000;color:#e6f3b6}.crossroads-art div span{color:#ffcd84;font-size:45px;display:inline-block;margin:0 10px}.crossroads-art strong{font-size:45px;letter-spacing:-.07em;color:#f7d396}.crossroads-art small{font-size:11px;color:#c8edcf;letter-spacing:.1em}
+.crossroads-bar{display:flex;gap:17px;flex-wrap:wrap;align-items:center;justify-content:space-between;background:#e4d19a;color:#20313c;padding:15px 18px;font-size:12px;font-weight:1000;letter-spacing:.08em;margin-bottom:28px}
+.crossroads-bar strong{font-size:19px}.crossroads-cases{margin:45px 0 52px}.crossroads-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.crossroads-case{border:2px solid #96ae9e;border-top:7px solid #bada8a;background:#243b45;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:6px 7px #0d1720;min-height:380px}
+.crossroads-case.amber{border-top-color:#f3bd81}.crossroads-case.blue{border-top-color:#a6c0f7}.crossroads-case.locked{background:#293642}
+.crossroads-case.closed{border-color:#e3edb2;background:#314b40}
+.crossroads-case h3{font-size:clamp(23px,2.5vw,31px);margin:4px 0 6px}.crossroads-case>p:not(.eyebrow){color:#d2dfd7;font-size:14px;line-height:1.5;margin:0 0 6px}
+.crossroads-proof{display:flex;flex-direction:column;gap:8px;padding:13px 0;margin-top:auto}
+.crossroads-proof span{font-weight:900;font-size:12px;letter-spacing:.04em;border:1px solid #566f70;padding:9px}.crossroads-proof .proof-yes{color:#c5f59b;background:#244c40}.crossroads-proof .proof-no{color:#f8d2b2;background:#393b48}
+.crossroads-case .crossroads-case-state{font-size:12px!important;font-weight:900;color:#f1d6a4!important}
+.crossroads-case>.btn{width:100%;margin-top:auto}
+.crossroads-source-links{display:flex;gap:9px;flex-wrap:wrap;padding:3px 0 12px}.crossroads-source-links a{font-size:11px;font-weight:900;color:#d4eeaa}
+.crossroads-investigation{margin:50px 0 35px;padding:25px;background:#243845;border:3px solid #8bb4a2;box-shadow:8px 9px #101a24}
+.crossroads-investigation-title{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #64877b;padding-bottom:18px}
+.crossroads-investigation-title h2{font-size:clamp(26px,4vw,42px)}
+.crossroads-investigation-title p:not(.eyebrow){color:#d4e6ce;font-weight:900;font-size:12px;letter-spacing:.1em}
+.crossroads-game-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.8fr);gap:17px;padding-top:20px}
+.crossroads-game-stage{background:#132c38;border:2px solid #76929b}
+.crossroads-scene-art{position:relative;height:320px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;padding:22px;background:linear-gradient(#7e849a 0 58%,#cca987 58% 65%,#5b745b 65% 100%)}
+.crossroads-scene-art[data-case="billing"]{background:linear-gradient(#6c7189 0 58%,#af9b82 58% 65%,#556a64 65% 100%)}
+.crossroads-scene-art[data-case="ledger"]{background:linear-gradient(#456f77 0 58%,#857e74 58% 65%,#2f625e 65% 100%)}
+.crossroads-scene-art:before{content:"";position:absolute;right:8%;top:21px;background:#ffdea8;border-radius:50%;width:92px;height:92px;opacity:.75}
+#crossroads-scene-sign{z-index:2;font-size:15px;font-weight:1000;letter-spacing:.1em;background:#1d3748;color:#fff0bb;border:3px solid #f0cc9e;padding:8px 13px;text-align:center;max-width:90%;overflow-wrap:anywhere}
+.crossroads-stage-building{position:absolute;bottom:39px;left:27%;width:62%;height:192px;border:9px solid #283646;background:repeating-linear-gradient(90deg,#42616b 0 57px,#4f626e 57px 104px);box-shadow:11px 10px #172531}
+.crossroads-stage-windows{position:absolute;left:12%;right:12%;top:34px;height:45px;border:4px solid #273945;background:#a9d9cc}
+.crossroads-stage-door{position:absolute;bottom:0;left:37%;width:26%;height:85px;border:6px solid #1f3c4c;background:#38535a}
+.crossroads-stage-figure{position:absolute;bottom:27px;left:12%;display:grid;place-items:center;border-radius:39% 39% 18% 18%;width:67px;height:100px;border:7px solid #1e3845;background:#ceaa8b;color:#243541;font-weight:1000;font-size:49px;box-shadow:6px 6px #162936}
+.crossroads-place{position:absolute;bottom:9px;right:14px;font-size:12px;font-weight:900;color:#fff1bd;text-shadow:2px 3px #263a44;letter-spacing:.06em;max-width:65%;text-align:right}
+.crossroads-witness{padding:18px;border-top:3px solid #ebc795;min-height:135px}.crossroads-witness strong{font-size:12px;letter-spacing:.1em;color:#ffd398}.crossroads-witness p{font-size:15px;color:#e3ede4;line-height:1.6}
+.crossroads-decisions{border:2px solid #668a8e;background:#182e39;padding:20px}.crossroads-decisions h3{font-size:25px;color:#fff1cc;margin:17px 0 20px}
+.crossroads-options{display:grid;gap:10px}.crossroads-options button{font-size:13px;font-weight:900;text-align:left;border:2px solid #9fc9bb;border-radius:5px;background:#305456;color:#f4eed1;padding:15px;min-height:57px;cursor:pointer}
+.crossroads-options button:hover{background:#4b7560;border-color:#e7f5b9}
+.crossroads-feedback{font-size:14px;min-height:85px;padding:15px;border-left:5px solid #f0ce9e;background:#263d49;color:#e3e5d2}
+.crossroads-decisions .mini-note{font-size:11px}
+.crossroads-victory{margin:25px 0 35px;padding:30px;background:#314e3b;border:4px double #d6f1a8;text-align:center;box-shadow:7px 8px #14212b}
+.crossroads-victory h2{font-size:clamp(32px,5vw,65px)}.crossroads-victory>strong{display:block;font-size:26px;color:#e2f5a3;margin:10px 0}
+.crossroads-victory p:not(.eyebrow){font-size:15px;color:#d9edcf}
+.crossroads-privacy{border-left:6px solid #c1dba3;background:#263d44;padding:28px;margin-top:54px}
+.crossroads-privacy h2{font-size:30px}.crossroads-privacy p:not(.eyebrow){max-width:980px;color:#d4e1da}
+.crossroads-privacy .btn{margin-top:10px}
+@media(max-width:1030px){.crossroads-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.crossroads-game-layout{grid-template-columns:1fr}}
+@media(max-width:690px){.crossroads-hero{grid-template-columns:1fr}.crossroads-art{display:none}.crossroads-grid{grid-template-columns:1fr}.crossroads-scene-art{height:270px}.crossroads-case{min-height:0}.crossroads-investigation{padding:13px}.crossroads-game-layout{gap:13px}}
+@media(prefers-reduced-motion:reduce){.crossroads-body *{animation:none!important;transition:none!important}}

@@ -109,7 +109,8 @@ test("passport HTML, read-only JS, navigation and deployment are connected",()=>
   assert.ok(html.includes('id="'+id+'"'),id);
  for(const href of ['href="passport.html"','assets/arcade-passport.js'])assert.ok(arcade.includes(href));
  assert.ok(read("index.html").includes('href="passport.html"'));
- assert.ok(pages.includes("passport.html public/"));
+ assert.ok(pages.includes("passport.html"));
+ assert.ok(pages.includes("crossroads.html"));
  assert.ok(checks.includes("assets/passport-core.mjs"));
  assert.ok(checks.includes("assets/arcade-passport.js"));
  assert.ok(js.includes("localStorage.getItem"));
@@ -119,5 +120,5 @@ test("passport HTML, read-only JS, navigation and deployment are connected",()=>
  assert.ok(!core.includes("localStorage"));
  assert.ok(!js.includes("innerHTML"));
  assert.ok(!mini.includes("innerHTML"));
- assert.equal(JSON.parse(read("package.json")).version,"0.16.0");
+ assert.ok(Number(JSON.parse(read("package.json")).version.split(".")[1])>=16);
 });

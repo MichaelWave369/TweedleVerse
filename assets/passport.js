@@ -1,4 +1,5 @@
 import {PASSPORT_SOURCES,readPassport,summaryText} from "./passport-core.mjs";
+import {CROSSROADS_KEY,decodeCrossroads,CROSSROADS_CASES} from "./crossroads-core.mjs";
 const el=id=>document.getElementById(id);
 let state=null,filter="all";
 const make=(tag,text,cls)=>{
@@ -74,9 +75,16 @@ function render(passport,unavailable=false){
 function refresh(){
  const {passport,unavailable}=localSnapshot();
  render(passport,unavailable);
+ let completed=0;
+ try{
+  const raw=localStorage.getItem(CROSSROADS_KEY);
+  const valid=raw?decodeCrossroads(JSON.parse(raw),passport):null;
+  completed=valid?.completed.length||0;
+ }catch{/* The Passport stays readable if the optional ledger is unavailable. */}
+ el("passport-crossroads-count").textContent=completed+" / "+CROSSROADS_CASES.length+" CROSSOVER CASES CLOSED ON THIS BROWSER";
 }
 for(const button of document.querySelectorAll("[data-filter]")){
- button.addEventListener("click",()=>{filter=button.dataset.filter;render(state)});
+ button.addEventListener("click",()=>{filter=button.dataset.filter;refresh()});
 }
 el("passport-refresh").addEventListener("click",refresh);
 el("passport-copy").addEventListener("click",async ()=>{
