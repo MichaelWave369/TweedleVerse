@@ -47,7 +47,7 @@ export function prestige(tiles){
 }
 export const guestsFor=tiles=>CELEBS.filter(v=>prestige(tiles)>=v.threshold);
 export function initialGolf(){
- return {version:GOLF_VERSION,hole:"chucks",ball:{...HOLES[0].tee},shots:0,results:{},tiles:defaultTiles(),selected:"fairway",club:"iron",message:"WELCOME TO TWEEDLEGOLF. TEE UP, CHAMP."};
+ return {version:GOLF_VERSION,hole:"chucks",ball:{...HOLES[0].tee},shots:0,results:{},tiles:defaultTiles(),selected:"fairway",club:"iron",clubName:"THE PUBLIC LINKS",guests:[],message:"WELCOME TO TWEEDLEGOLF. TEE UP, CHAMP."};
 }
 const validHole=new Set([...HOLES.map(h=>h.id),"custom"]),validClub=new Set(CLUBS.map(c=>c.id));
 export function decodeGolf(raw){
@@ -64,12 +64,25 @@ export function decodeGolf(raw){
   if(Number.isInteger(raw.results?.[item.id])&&raw.results[item.id]>0&&raw.results[item.id]<=30)results[item.id]=raw.results[item.id];
  }
  if(Number.isInteger(raw.results?.custom)&&raw.results.custom>0&&raw.results.custom<=30)results.custom=raw.results.custom;
+ const clubName=typeof raw.clubName==="string"&&raw.clubName.trim()?raw.clubName.trim().replace(/[<>]/g,"").slice(0,38):base.clubName;
+ const eligible=new Set(guestsFor(tiles).map(x=>x.id));
+ const guests=Array.isArray(raw.guests)?[...new Set(raw.guests.filter(x=>eligible.has(x)))]:[];
  return {version:GOLF_VERSION,hole,ball,shots:Number.isInteger(raw.shots)?Math.max(0,Math.min(30,raw.shots)):0,
-  results,tiles,selected:TERRAIN.includes(raw.selected)?raw.selected:base.selected,
+  results,tiles,clubName,guests,selected:TERRAIN.includes(raw.selected)?raw.selected:base.selected,
   club:validClub.has(raw.club)?raw.club:base.club,message:typeof raw.message==="string"?raw.message.slice(0,160):base.message};
 }
 export function encodeGolf(p){const x=decodeGolf({...p,version:GOLF_VERSION});if(!x)throw Error("Invalid golf save");return JSON.stringify(x)}
 export function setClub(p,id){return validClub.has(id)?{...p,club:id}:p}
+export function renameClub(p,name){
+ if(typeof name!=="string")return p;
+ const clubName=name.trim().replace(/[<>]/g,"").slice(0,38);
+ return clubName?{...p,clubName,message:"CLUB RENAMED TO "+clubName.toUpperCase()}:p;
+}
+export function inviteGuest(p,id){
+ const guest=guestsFor(p.tiles).find(x=>x.id===id);
+ if(!guest||p.guests.includes(id))return {state:p,invited:false};
+ return {state:{...p,guests:[...p.guests,id],message:guest.quip},invited:true};
+}
 export function chooseHole(p,id){
  if(!validHole.has(id))return p;
  const h=holeById(id,p.tiles);
@@ -79,7 +92,8 @@ export function paintTile(p,index,type){
  if(!Number.isInteger(index)||index<0||index>=COLS*ROWS||!TERRAIN.includes(type))return p;
  if(index===4*COLS+1||index===4*COLS+13)return p;
  const tiles=[...p.tiles];tiles[index]=type;
- return {...p,tiles,selected:type,message:"COURSE ARCHITECT: "+type.toUpperCase()+" PLACED. REPUTATION "+prestige(tiles)+"."};
+ const eligible=new Set(guestsFor(tiles).map(v=>v.id));
+ return {...p,tiles,guests:p.guests.filter(x=>eligible.has(x)),selected:type,message:"COURSE ARCHITECT: "+type.toUpperCase()+" PLACED. REPUTATION "+prestige(tiles)+"."};
 }
 export function ballAtCup(p){
  const h=holeById(p.hole,p.tiles);
