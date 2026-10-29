@@ -48,11 +48,11 @@ test("misses and retry are real, easy mode broadens timing",()=>{
  assert.equal(narrow.score,0);assert.equal(easy.score,1);
 });
 test("older save versions 1 and 2 migrate to 3, preserving progress",()=>{
- assert.equal(SAVE_VERSION,3);
+ assert.equal(SAVE_VERSION,4);
  for(const version of [1,2]){
   const p={...initialProgress(),version,quest:3,tapeQuest:4,visited:["coffeechucks"],wins:["spacealite"],gigQuest:undefined};
   const old=decodeSave(p);
-  assert.equal(old.version,3);assert.equal(old.gigQuest,0);
+  assert.equal(old.version,4);assert.equal(old.gigQuest,0);
   assert.equal(old.quest,3);assert.equal(old.tapeQuest,4);
   assert.deepEqual(old.visited,["coffeechucks"]);
   assert.deepEqual(decodeSave(JSON.parse(encodeSave(old))),old);
