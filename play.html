@@ -14,7 +14,7 @@
 <a class="skip" href="#game-area">Skip to game</a>
 <header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
 <main id="game-area">
-<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.9</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore Stemside with a new quest compass and minimap. Follow Coffee Run errands, find Marty and Lenny, confront Spacealite, and carry your adventure in a portable local save file. All earlier RPG adventures remain playable.</p></div>
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.10</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore an original, absurdist silicon-town RPG and unlock the first real episode finale: investigate Reggie's impossible bills, sort the evidence, and rewrite the future of Stemside. Your earlier quests, battles, concerts and saves stay intact.</p></div>
 <div class="game-layout">
 <section class="game-panel" aria-label="Interactive Stemside game">
 <div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span><span id="plot-points">PLOT POINTS: 0</span><span id="city-rebels">DISPUTES: 0 / 3</span><span id="passport-rank-top">RANK: UNPAID INTERN</span></div>
@@ -25,7 +25,7 @@
 <option value="coffee">COFFEE RUN</option>
 <option value="tape">TOMORROW'S TAPE</option>
 <option value="gig">LENNY'S GIG</option>
-<option value="script">PAGE 42 REWRITE</option>
+<option value="script">PAGE 42 REWRITE</option><option value="finale">BILLING REVERSAL FINALE</option>
 <option value="battles">CORPORATE DISPUTES</option>
 <option value="passport">PASSPORT STAMPS</option>
 <option value="free">FREE EXPLORATION</option>
@@ -44,7 +44,7 @@
 <button type="button" data-dir="up" aria-label="Move up">↑</button>
 <div><button type="button" data-dir="left" aria-label="Move left">←</button><button type="button" data-dir="down" aria-label="Move down">↓</button><button type="button" data-dir="right" aria-label="Move right">→</button></div>
 </div>
-<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="talk-resident" class="btn secondary" type="button" disabled>TALK TO RESIDENT · T</button><button id="enter" class="btn secondary" type="button" disabled>ENTER SHOP</button><button id="challenge" class="btn secondary" type="button" disabled>CHALLENGE CORPORATE NONSENSE</button><button id="gig-open" class="btn secondary" type="button" disabled>PLAY LENNY'S GIG</button><button id="reset" class="btn secondary" type="button">RESET RUN + LOCAL SAVE</button></div>
+<div class="action-stack"><button id="interact" class="btn primary" type="button" disabled>INTERACT · E</button><button id="talk-resident" class="btn secondary" type="button" disabled>TALK TO RESIDENT · T</button><button id="enter" class="btn secondary" type="button" disabled>ENTER SHOP</button><button id="challenge" class="btn secondary" type="button" disabled>CHALLENGE CORPORATE NONSENSE</button><button id="gig-open" class="btn secondary" type="button" disabled>PLAY LENNY'S GIG</button><button id="finale-open" class="btn secondary" type="button" disabled>OPEN THE FINAL INVOICE</button><button id="reset" class="btn secondary" type="button">RESET RUN + LOCAL SAVE</button></div>
 </div>
 </section>
 <aside class="sidebar">
@@ -64,7 +64,19 @@
  </ol>
  <p class="state-label" id="tape-status" role="status" aria-live="polite">SIDE QUEST NOT STARTED</p>
  </div>
- <div class="card gig-card"><span class="eyebrow">LENNY SMOKINS / ORIGINAL STAGE QUEST</span><h2>THE GIG THAT ALMOST WASN'T</h2>
+ <div class="card finale-card"><span class="eyebrow">EPISODE ONE FINALE · SPACEALITE ORIGINAL COMEDY</span>
+<h2>THE GREAT BILLING REVERSAL</h2>
+<p id="finale-intro">A mysterious charge has appeared for every dimension, including the ones that haven't happened. A perfectly ordinary bill is about to ruin Reggie's day.</p>
+<ol id="finale-steps" class="tape-steps">
+<li>Get the billing complaint from Buffer Bob</li>
+<li>Find the impossible timestamp at Lackluster Video</li>
+<li>Bring the proof to Spacealite Tower</li>
+<li>Audit three evidence cards in order</li>
+<li>Choose how the town fights back</li>
+</ol>
+<p id="finale-status" class="state-label" role="status" aria-live="polite">FINISH THE COFFEE RUN AND WIN A CORPORATE DISPUTE</p>
+</div>
+<div class="card gig-card"><span class="eyebrow">LENNY SMOKINS / ORIGINAL STAGE QUEST</span><h2>THE GIG THAT ALMOST WASN'T</h2>
 <p>Reggie Bands has charged the band for every beat. Lenny misplaced the set list and the amplifier plug.</p>
 <ol id="gig-steps" class="tape-steps">
 <li>Talk to Lenny at the Southside arena</li><li>Find the set list at Lackluster Video</li>
@@ -152,6 +164,21 @@
     </div>
     <p class="battle-hint">Optional: choose an ability button or press 1–4 while the encounter is open. Three unique wins earn a civic title. Failure is harmless and retries are unlimited.</p>
   </div>
+</div>
+<div class="overlay" id="finale-overlay" role="dialog" aria-modal="true" aria-labelledby="finale-title" hidden>
+ <div class="modal finale-modal">
+  <button class="close" id="finale-close" type="button" aria-label="Close the billing reversal episode">×</button>
+  <span class="eyebrow">SPACEALITE HEADQUARTERS // CLASSIFIED INVOICE AUDIT</span>
+  <h2 id="finale-title">THE GREAT BILLING REVERSAL</h2>
+  <div class="finale-scene" role="img" aria-label="Original illustration of Reggie Bands' glowering office billing terminal surrounded by fictional invoices">
+   <div class="finale-boss"><span>R.V.B. III</span><strong>▣</strong></div>
+   <div class="finale-terminal"><b>ACCOUNT: EVERYONE</b><span>DIMENSIONAL FEES: ∞</span><small>PAST DUE SINCE TOMORROW</small></div>
+  </div>
+  <p id="finale-scene-text" class="finale-scene-text">Reggie is about to learn what happens when the workers read the paperwork.</p>
+  <div id="finale-evidence" class="choice-grid" aria-label="Choose evidence in order"></div>
+  <div id="finale-endings" class="choice-grid" aria-label="Choose the episode ending"></div>
+  <p id="finale-feedback" class="scene-note" role="status" aria-live="polite">AUDIT NOT YET STARTED.</p>
+ </div>
 </div>
 <div class="overlay" id="gig-overlay" role="dialog" aria-modal="true" aria-labelledby="gig-title" hidden>
 <div class="modal gig-modal">
