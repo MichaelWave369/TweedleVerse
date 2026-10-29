@@ -535,13 +535,16 @@ function talkResident(){
  if(!npc)return;
  const old=state.tapeQuest;
  const oldGig=state.gigQuest;
- const speech=npc.id==="lenny"?gigReply(oldGig):npcReply(npc.id,old);
+ const oldFinale=state.finale.stage;
+ let speech=npc.id==="lenny"?gigReply(oldGig):npcReply(npc.id,old);
  state.gigQuest=advanceGigQuest(oldGig,"npc",npc.id);
+ state.finale=nextFinaleEvent(state.finale,snapshot(),"npc",npc.id);
+ if(state.finale.stage!==oldFinale)speech="BUFFER BOB: This entire town has been billed for viewing itself. The timestamp is dated TOMORROW. Go inspect the archive at Lackluster Video before I file Form 97-B.";
  state.tapeQuest=advanceTapeQuest(old,"npc",npc.id);
  say({name:npc.name},speech);
- if(old!==state.tapeQuest||oldGig!==state.gigQuest){
+ if(old!==state.tapeQuest||oldGig!==state.gigQuest||oldFinale!==state.finale.stage){
    questUI();refreshPassport();
-   saveProgress(oldGig!==state.gigQuest?"LENNY CONCERT CLUE SAVED LOCALLY":state.tapeQuest===4?"MYSTERY SOLVED · FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE SAVED LOCALLY");
+   saveProgress(oldFinale!==state.finale.stage?"BILLING REVERSAL CLUE SAVED LOCALLY":oldGig!==state.gigQuest?"LENNY CONCERT CLUE SAVED LOCALLY":state.tapeQuest===4?"MYSTERY SOLVED · FILM CREDIT SAVED LOCALLY":"SIDE QUEST CLUE SAVED LOCALLY");
  }
  el("resident-label").textContent=npc.name.toUpperCase()+": "+speech;
 }
@@ -613,14 +616,18 @@ function interact(){
  state.tapeQuest=advanceTapeQuest(state.tapeQuest,"place",place.id);
  const tapeChanged=state.tapeQuest!==oldTape;
  state.gigQuest=advanceGigQuest(state.gigQuest,"place",place.id);
+ const beforeFinale=state.finale.stage;
+ state.finale=nextFinaleEvent(state.finale,snapshot(),"place",place.id);
+ const finaleAdvanced=beforeFinale!==state.finale.stage;
  const ending=resolveEpilogue(state.story,place.id);
  state.story=ending.story;
  questUI();
  if(tapeChanged)el("resident-label").textContent="PRIZE MAIL RECOVERED. THE PACKAGE IS ADDRESSED TO YESTERDAY. TALK TO BUFFER BOB.";
- say(place,ending.completed?ending.message:(dialogues[place.id]||place.description));
+ say(place,finaleAdvanced?(state.finale.stage===2?"MARTY: This video receipt is dated a week from tomorrow! I knew that tape couldn't be that overdue. Tell Reggie his billing system is drunk on calendars.":"REGGIE: YOU BROUGHT RECEIPTS? THAT'S NOT FAIR. TWEEDSIE: That's literally what a bill is, Reg."):(ending.completed?ending.message:(dialogues[place.id]||place.description)));
  refreshPassport();
  saveProgress(newStamp?"PASSPORT STAMPED: "+LANDMARK_SOUVENIRS[place.id].name+" · SAVED LOCALLY":"STEMSIDE PROGRESS SAVED LOCALLY");
  if(place.id==="stems-league")openArena();
+ else if(finaleAdvanced&&state.finale.stage===3)openFinale();
  else if(state.visits%5===0)openModal("tweedsie","tweedsie-close");
 }
 function reset(){
@@ -747,6 +754,8 @@ window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();if(st
 document.addEventListener("visibilitychange",()=>{if(document.hidden){state.last=0;state.keys.clear();state.touch.clear();saveProgress()}});
 window.addEventListener("pagehide",()=>saveProgress());
 el("interact").addEventListener("click",interact);
+el("finale-open").addEventListener("click",openFinale);
+el("finale-close").addEventListener("click",()=>closeModal("finale"));
 el("talk-resident").addEventListener("click",talkResident);
 el("gig-open").addEventListener("click",showOpen);
 el("gig-close").addEventListener("click",()=>closeModal("gig"));
