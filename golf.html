@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183c39">
+<meta name="description" content="TweedleGolf ProTour: playable top-down golf, three original courses, and a custom course architect with fictional celebrity guests.">
+<title>TweedleGolf ProTour | Build It. Play It. Bill Reggie.</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/arcade.css"><link rel="stylesheet" href="assets/twin-games.css">
+<script type="module" src="assets/golf-game.js"></script></head><body class="golf-body">
+<a class="skip-link" href="#golf-main">Skip to golf game</a><header class="arcade-header"><a class="brand" href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="Golf navigation"><a href="arcade.html">THE ARCADE</a><a href="tweedsie.html">TWEEDSIE ADVENTURE</a><a href="play.html">STEMSIDE RPG</a></nav></header>
+<main class="twin-main" id="golf-main">
+<section class="twin-hero"><div><p class="eyebrow">TWEEDLEVERSE SPORTS NETWORK · CLUB MANAGEMENT AND ARCADE GOLF</p><h1>TWEEDLE<span class="golf-green">GOLF</span><br>PROTOUR</h1><p>Play three original Stemside courses with clubs, aiming and stroke scoring. Then design your own nine-by-fifteen-tile golf hole, improve its fictional prestige, and lure ridiculous celebrities to your new club. Reggie will try to invoice the flagstick.</p></div><div class="golf-logo" aria-hidden="true"><span>⛳</span><strong>TGA</strong><small>PRO TOUR</small></div></section>
+<div class="game-status"><strong id="golf-hole-name">COFFEECHUCKS MUNICIPAL</strong><span id="golf-score">STROKE 0 · PAR 4</span></div>
+<div class="golf-layout">
+<section class="twin-stage">
+ <div class="golf-mode"><button type="button" class="btn main-btn" id="golf-mode-play" aria-pressed="true">PLAY GOLF</button><button type="button" class="btn secondary-btn" id="golf-mode-build" aria-pressed="false">COURSE ARCHITECT</button></div>
+ <canvas id="golf-canvas" width="900" height="540" tabindex="0" role="img" aria-label="Playable overhead golf course with a ball, flag, grass, sand and water hazards. Click the green to aim when playing or place terrain when editing."></canvas>
+ <div class="golf-playtools" id="golf-playtools">
+  <label>HOLE<select id="golf-hole"><option value="chucks">1 · COFFEECHUCKS MUNICIPAL</option><option value="reggie">2 · REGGIE'S PAYWALL LINKS</option><option value="mids">3 · SOUTH STEMSIDE PUBLIC LINKS</option><option value="custom">YOUR CUSTOM CLUB COURSE</option></select></label>
+  <label>CLUB<select id="golf-club"><option value="driver">BIG STICK / DRIVER</option><option value="iron">SEVEN IRON</option><option value="wedge">WEDGE</option><option value="putter">PUTTER</option></select></label>
+  <label>POWER <output id="golf-power-label">75%</output><input type="range" min="5" max="100" step="1" value="75" id="golf-power"></label>
+  <button class="btn main-btn" type="button" id="golf-swing">SWING! · SPACE</button>
+ </div>
+ <div class="golf-buildtools" id="golf-buildtools" hidden>
+  <p>Paint terrain tiles. The tee and green are protected. Each edit is saved locally. Switch to Play and select YOUR CUSTOM CLUB COURSE to test your creation.</p>
+  <div class="golf-terrains" id="golf-terrains" aria-label="Select course terrain">
+   <button type="button" data-terrain="fairway" aria-pressed="true">FAIRWAY</button>
+   <button type="button" data-terrain="rough" aria-pressed="false">ROUGH</button>
+   <button type="button" data-terrain="green" aria-pressed="false">GREEN</button>
+   <button type="button" data-terrain="sand" aria-pressed="false">SAND</button>
+   <button type="button" data-terrain="water" aria-pressed="false">WATER</button>
+  </div>
+  <button type="button" class="btn main-btn" id="golf-try-custom">PLAY YOUR COURSE</button>
+ </div>
+ <p class="tiny-help" id="golf-help">Click or tap the course to aim. Select a club and power, then Swing or press Space. Shots are simplified fictional arcade golf, not professional ball physics.</p>
+ <p class="tunnel-story" id="golf-message" role="status" aria-live="polite">WELCOME TO TWEEDLEGOLF.</p>
+</section>
+<aside class="twin-aside">
+<section class="pd-card"><p class="eyebrow">OFFICIAL SCORECARD</p><h2>THE PRO TOUR</h2><ol id="golf-card" class="case-list"></ol><p id="golf-total" class="objective">PLAY ANY HOLE TO BEGIN</p><button class="btn secondary-btn" id="golf-next" type="button">NEXT HOLE ↗</button></section>
+<section class="pd-card"><p class="eyebrow">CLUBHOUSE MANAGER · SIM GOLF STYLE</p><h2>BUILD YOUR CLUB</h2><p>Design a custom hole to increase prestige. Fake celebrities inspect your course automatically, without fees or real-world licensing.</p><p id="golf-prestige" class="objective">CLUB PRESTIGE: 0 / 100</p><ul id="golf-guests" class="case-list"></ul><p class="tiny-help">The custom design is a single editable hole in this first playable release, not a complete golf-resort economy.</p></section>
+<section class="pd-card"><p class="eyebrow">BROWSER-ONLY SAVE</p><p id="golf-save" class="tiny-help">Scores and terrain edits stored locally.</p><button type="button" class="btn secondary-btn" id="golf-reset">RESET GOLF CAREER + COURSE (CONFIRM)</button></section>
+</aside></div>
+</main><footer class="arcade-footer">© 2026 MICHAEL WAVE · TWEEDLEVERSE · ORIGINAL FICTIONAL GOLF COMEDY · REGGIE BANDS IS NOT AN OFFICIAL SPONSOR</footer></body></html>
