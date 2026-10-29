@@ -34,6 +34,10 @@ The walkable city now has an internal mini-radar, selectable quest/objective rou
 
 The first optional, authored story finale brings together existing Coffee Run and corporate encounter progress. An eligible player investigates the billing system with Buffer Bob, follows a clue to Lackluster Video, and audits three ordered evidence items at Spacealite Tower. Players select either a town refund or a public-channel victory, with different dialogue, one permanent ending, a collectible Fee Waiver and 120 XP. The system adds a dedicated quest compass target, persistent progression and v1–v3 save migration. See [PLAYABLE_V010](PLAYABLE_V010.md). The story fork currently affects authored ending content, not the broader city map.
 
+## Living aftermath of the Billing Reversal (v0.11)
+
+The two persistent v0.10 finale outcomes now affect recurring shops, four outdoor residents, district visuals, news broadcasts, and corporate battle mechanics. Refund grants an initial 12-point shield, while freeing the public signal opens a one-use Tweedsie interruption in future disputes. These changes derive entirely from the existing validated save-state ending and require no additional accounts, services, save fields or server work. See [PLAYABLE_V011](PLAYABLE_V011.md). This is authored post-credits reactivity, not autonomous simulated townsfolk.
+
 ## Elevator pitch
 
 An original single-player, optionally cooperative open-world comedy adventure where the player works at TweedCorp, explores North and South Stemside, competes on the Tweedleball circuit, watches Spacealite's terrible television, and sometimes edits the episode script to change a mission.

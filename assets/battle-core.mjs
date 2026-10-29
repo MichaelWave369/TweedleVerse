@@ -17,13 +17,13 @@ export function startBattle(id){
  if(!foe)return null;
  return {id,turn:0,composure:100,pressure:0,shield:0,tweedsieUsed:false,status:"active",last:"",log:foe.flavor};
 }
-export function actionAvailable(battle,action,wins=[]){
+export function actionAvailable(battle,action,wins=[],perks={}){
  if(!battle||battle.status!=="active")return false;
- if(action===TWEEDSIE_ACTION)return wins.length>=2&&!battle.tweedsieUsed;
+ if(action===TWEEDSIE_ACTION)return (wins.length>=2||perks.tweedsieAccess===true)&&!battle.tweedsieUsed;
  return PARTY.some(member=>member.id===action);
 }
-export function playTurn(battle,action,wins=[]){
- if(!actionAvailable(battle,action,wins))return null;
+export function playTurn(battle,action,wins=[],perks={}){
+ if(!actionAvailable(battle,action,wins,perks))return null;
  const foe=ENCOUNTERS[battle.id];
  if(!foe)return null;
  const move=PARTY.find(member=>member.id===action);
