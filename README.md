@@ -45,6 +45,10 @@ All effects, illustrations and dialogue are original. The experience is a compac
 
 [Welcome to Stemside](play.html) now includes a **live minimap**, a selectable quest compass to locate Coffee Run stops, Marty, Lenny, corporate disputes, Page 42 or missing passport stamps, and a privacy-first **Portable Save Vault**. You can download a fully validated game save as a JSON file and import it into another browser with a confirmation. Older raw v1/v2 saves still migrate through the existing decoder; invalid or oversized files are safely refused. All game and quest features from v0.8 remain available. No GPS, remote map or upload service is used. See the [v0.9 guide](docs/PLAYABLE_V09.md).
 
+### Episode One finale: v0.10
+
+[Welcome to Stemside](play.html) now has a first authored **playable episode finale, The Great Billing Reversal**. Finish the Coffee Run and win a corporate dispute to unlock an investigation with Buffer Bob, Lackluster Video and Spacealite Tower. At Reggie's office, file three pieces of evidence in order and **choose one of two endings**: refund South Stemside or free the public broadcast. One ending permanently records in the local save, adds the Interdimensional Fee Waiver and grants **120 XP** once. Existing v1–v3 saves safely migrate to the v4 game schema, and portable save export/import still works. No new dependencies or remote services. Full mechanics and QA: [docs/PLAYABLE_V010.md](docs/PLAYABLE_V010.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
