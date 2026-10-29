@@ -36,10 +36,10 @@ test("v1 save migrates to v2 without losing prior achievements",()=>{
  delete old.tapeQuest;
  old.quest=3;old.wins=["spacealite"];old.visited=["coffeechucks"];old.story={points:1,heard:["coffeechucks"],rewrite:null,finished:false};
  const migrated=decodeSave(old);
- assert.equal(SAVE_VERSION,3);assert.equal(migrated.version,3);assert.equal(migrated.tapeQuest,0);
+ assert.equal(SAVE_VERSION,4);assert.equal(migrated.version,4);assert.equal(migrated.tapeQuest,0);
  assert.equal(migrated.quest,3);assert.deepEqual(migrated.wins,["spacealite"]);
  assert.deepEqual(migrated.visited,["coffeechucks"]);
- assert.equal(decodeSave(JSON.parse(encodeSave(migrated))).version,3);
+ assert.equal(decodeSave(JSON.parse(encodeSave(migrated))).version,4);
  assert.match(SAVE_KEY,/tweedleverse/);
 });
 test("tape completion awards souvenir and XP exactly once",()=>{
