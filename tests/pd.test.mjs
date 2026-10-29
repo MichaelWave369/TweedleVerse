@@ -16,7 +16,7 @@ function investigate(){
   p=travelTo(p,scene);
   for(const [type,id] of actions)p=(type==="clue"?inspect(p,id):interview(p,id)).progress;
  }
- return p;
+ return travelTo(p,"precinct");
 }
 test("canonical game map, evidence and witness IDs remain unique",()=>{
  assert.equal(PD_SAVE_VERSION,1);
@@ -49,6 +49,7 @@ test("roookie must find receipt and tape and interview Chuck and Marty",()=>{
  assert.equal(canFile(p),true);
  assert.match(caseStatus(p),/READY TO FILE/);
  assert.match(objective(p),/report/);
+ assert.match(submitReport(p,{suspect:"chief",explanation:"snack",evidence:"tape"}).feedback,/RETURN TO THE TVPD PRECINCT/);
 });
 test("wrong reports are retriable, and cannot falsely award a badge",()=>{
  let p=investigate();
