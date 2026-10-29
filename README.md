@@ -24,6 +24,14 @@ The detective game uses its **own versioned browser-only save** and cannot overw
 
 Both link from [TweedleVerse Arcade](arcade.html) and use entirely separate validated browser save keys. They are original playable first slices, not a finished 3D golf simulator or sprawling finished Metroidvania. Full controls, QA and limitations: [Twin Arcade v0.14](docs/TWIN_ARCADE_V014.md).
 
+## More to do in the Arcade (v0.15)
+
+**Adventures of Tweedsie** now has a **three-contract underground courier board**. Collect two specified fictional curiosities and visit both required caverns for each job, then return to the Original Hole to file the delivery. Contract rewards unlock a **Burrow Burst** dash, a **Scent Compass** for navigating the cave network, and finally the **Golden Gopher Courier** badge. Existing v0.14 tunnel saves remain intact; courier claims are stored in a separate local key, and a completed older vault run may redeem eligible deliveries without replaying everything.
+
+**TweedleGolf ProTour** now has the **Grand Stem Cup**, a replayable three-hole sequential tournament with a local scorecard, a saved personal best, scripted fictional celebrity competitors, podium rankings and a champion/finisher reward. Tournament progress is stored independently of the golfer's existing local course/club data. A Cup in progress cannot skip holes or enter the terrain architect; players still have free practice mode outside a round.
+
+See [Courier and Cup v0.15](docs/COURIER_CUP_V015.md) for controls, limitations and QA.
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
