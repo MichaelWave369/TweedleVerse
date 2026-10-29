@@ -1,10 +1,11 @@
 import {TUNNEL_KEY,CAVE,ROOMS,BUDS,VAULT_REQUIRED,initialTunnel,decodeTunnel,encodeTunnel,roomOf,platformLayout,exitsOf,passageNear,traverse,moveTunnel,collectBud,finishVault,progressMessage} from "./tweedsie-core.mjs";
+import {COURIER_KEY,CONTRACTS,initialCourier,decodeCourier,encodeCourier,nextContract,courierHome,canClaim,claimContract,hasBurst,hasCompass,burst,compassHint} from "./tunnel-contracts.mjs";
 const el=id=>document.getElementById(id),canvas=el("tunnel-canvas"),ctx=canvas.getContext("2d");
-const state={save:initialTunnel(),keys:new Set(),touch:new Set(),jumpPending:false,last:0,lastSave:0,prevX:0,ready:false,padJump:false,padEnter:false};
+const state={save:initialTunnel(),keys:new Set(),touch:new Set(),jumpPending:false,last:0,lastSave:0,prevX:0,ready:false,padJump:false,padEnter:false,padBurst:false,courier:initialCourier(),facing:1,burstReadyAt:0};
 const avatar=new Image();avatar.src="assets/tweedsie.svg";
 function say(text){el("tunnel-story").textContent=text}
-function save(msg){try{localStorage.setItem(TUNNEL_KEY,encodeTunnel(state.save));el("tunnel-save").textContent=msg||"UNDERGROUND PROGRESS SAVED LOCALLY";state.prevX=state.save.x}catch{el("tunnel-save").textContent="BROWSER STORAGE UNAVAILABLE; THIS SESSION STILL WORKS."}}
-function restore(){try{const raw=localStorage.getItem(TUNNEL_KEY);if(!raw)return;const decoded=decodeTunnel(JSON.parse(raw));if(decoded)state.save=decoded;else say("OLD OR INVALID BURROW MAP IGNORED. NEW HOLE, WHO DIS?")}catch{say("LOCAL SAVE UNREADABLE. NEW HOLE, SAME DAY.")}}
+function save(msg){try{localStorage.setItem(TUNNEL_KEY,encodeTunnel(state.save));localStorage.setItem(COURIER_KEY,encodeCourier(state.courier,state.save));el("tunnel-save").textContent=msg||"UNDERGROUND PROGRESS SAVED LOCALLY";state.prevX=state.save.x}catch{el("tunnel-save").textContent="BROWSER STORAGE UNAVAILABLE; THIS SESSION STILL WORKS."}}
+function restore(){try{const raw=localStorage.getItem(TUNNEL_KEY);if(!raw)return;const decoded=decodeTunnel(JSON.parse(raw));if(decoded)state.save=decoded;else say("OLD OR INVALID BURROW MAP IGNORED. NEW HOLE, WHO DIS?");const contractRaw=localStorage.getItem(COURIER_KEY);if(contractRaw){const progress=decodeCourier(JSON.parse(contractRaw),state.save);if(progress)state.courier=progress}}catch{say("LOCAL SAVE UNREADABLE. NEW HOLE, SAME DAY.")}}
 function drawCave(){
  const p=state.save,room=roomOf(p.room),width=canvas.width,height=canvas.height,scaleY=height/CAVE.height;
  const cameraX=Math.max(0,Math.min(CAVE.width-width,p.x-width*.5));
@@ -69,6 +70,17 @@ function render(){
  const list=el("tunnel-buds");list.replaceChildren();if(!p.found.length){const li=document.createElement("li");li.textContent="No buds recovered.";list.append(li)}
  for(const id of p.found){const b=BUDS.find(x=>x.id===id);if(!b)continue;const li=document.createElement("li");li.textContent="✳ "+b.name;list.append(li)}
  el("tunnel-win").hidden=!p.finished;
+ const courier=state.courier,next=nextContract(courier);
+ el("courier-status").textContent=courier.claimed.length+" / "+CONTRACTS.length+" DELIVERIES FILED";
+ el("courier-title").textContent=next?next.title:"ALL CONTRACTS CLEARED!";
+ el("courier-description").textContent=next?next.subtitle:"Every suspicious piece of underground cargo has been delivered. Reggie is furious.";
+ el("courier-items").textContent=next?next.items.map(id=>(p.found.includes(id)?"✓ ":"○ ")+(BUDS.find(b=>b.id===id)?.name||id)).join(" · "):"GOLDEN GOPHER COURIER BADGE EARNED";
+ el("courier-claim").disabled=!canClaim(courier,p);
+ el("courier-claim").textContent=next?(canClaim(courier,p)?"FILE COMPLETED DELIVERY ✓":"DELIVER CARGO AT ORIGINAL HOLE"):"ALL THREE DELIVERIES COMPLETE";
+ el("courier-compass").textContent=hasCompass(courier)?compassHint(p,courier):"SCENT COMPASS LOCKED UNTIL THE SECOND CONTRACT.";
+ el("courier-reward").textContent=next?"NEXT REWARD: "+next.reward:"GOLDEN GOPHER COURIER BADGE AWARDED";
+ el("tunnel-burst").disabled=!hasBurst(courier)||p.finished;
+ el("tunnel-burst").textContent=hasBurst(courier)?"BURROW BURST · SHIFT":"BURROW BURST · LOCKED";
 }
 function enter(){
  const p=state.save;
@@ -79,6 +91,18 @@ function enter(){
  const exit=passageNear(p);if(!exit)return;
  state.save=traverse(p,exit.id);say("TWEEDSIE: "+roomOf(state.save.room).desc);render();save("NEW CAVERN FOUND · SAVED LOCALLY");
 }
+function fileDelivery(){
+ const result=claimContract(state.courier,state.save);
+ state.courier=result.progress;say(result.feedback);render();save("UNDERGROUND DELIVERY RECEIPT SAVED LOCALLY");
+}
+function dash(){
+ const now=performance.now();
+ if(!hasBurst(state.courier)||state.save.finished||now<state.burstReadyAt)return;
+ const result=burst(state.save,state.courier,state.facing);
+ if(!result.used)return;
+ state.save=result.tunnel;state.courier=result.courier;state.burstReadyAt=now+1250;
+ say("TWEEDSIE: BURROW BURST! REGGIE CAN TAX MY DUST CLOUD.");render();save("BURROW BURST USED · COURIER SAVED LOCALLY");
+}
 function axis(){
  let x=0;for(const key of [...state.keys,...state.touch]){if(["ArrowLeft","a","A","left"].includes(key))x--;if(["ArrowRight","d","D","right"].includes(key))x++}
  const pads=navigator.getGamepads?.();const pad=pads&&Array.from(pads).find(p=>p&&p.connected);
@@ -88,12 +112,14 @@ function axis(){
   state.padJump=!!pad.buttons[0]?.pressed;
   if(pad.buttons[1]?.pressed&&!state.padEnter)enter();
   state.padEnter=!!pad.buttons[1]?.pressed;
+  if(pad.buttons[2]?.pressed&&!state.padBurst)dash();
+  state.padBurst=!!pad.buttons[2]?.pressed;
  }
  return Math.max(-1,Math.min(1,x));
 }
 function loop(now){
  const dt=state.last?Math.min(.04,(now-state.last)/1000):0;state.last=now;
- const a=axis();const old=state.save;state.save=moveTunnel(old,a,state.jumpPending,dt);state.jumpPending=false;
+ const a=axis();if(a!==0)state.facing=Math.sign(a);const old=state.save;state.save=moveTunnel(old,a,state.jumpPending,dt);state.jumpPending=false;
  const got=collectBud(state.save);state.save=got.state;
  if(got.found){say("TWEEDSIE: "+got.found.name.toUpperCase()+"! ONE MORE FOR THE LOUD VAULT.");save("NEW BUD SAVED · "+got.found.name)}
  else if(Math.abs(state.save.x-state.prevX)>115&&now-state.lastSave>2400){save();state.lastSave=now}
@@ -102,9 +128,10 @@ function loop(now){
 }
 function jump(){state.jumpPending=true}
 document.addEventListener("keydown",ev=>{
- if(["ArrowLeft","ArrowRight","ArrowUp"," ","a","A","d","D","w","W","e","E"].includes(ev.key)){ev.preventDefault()}
+ if(["ArrowLeft","ArrowRight","ArrowUp"," ","a","A","d","D","w","W","e","E","Shift"].includes(ev.key)){ev.preventDefault()}
  if([" ","ArrowUp","w","W"].includes(ev.key)&&!ev.repeat)jump();
  if(["e","E"].includes(ev.key)&&!ev.repeat)enter();
+ if(ev.key==="Shift"&&!ev.repeat)dash();
  state.keys.add(ev.key);
 });
 document.addEventListener("keyup",ev=>state.keys.delete(ev.key));
@@ -115,9 +142,11 @@ for(const button of document.querySelectorAll("[data-control]")){
  for(const event of ["pointerup","pointercancel","lostpointercapture"])button.addEventListener(event,()=>state.touch.delete(d));
 }
 el("tunnel-enter").addEventListener("click",enter);
+el("tunnel-burst").addEventListener("click",dash);
+el("courier-claim").addEventListener("click",fileDelivery);
 el("tunnel-reset").addEventListener("click",()=>{
  if(!window.confirm("Reset only Adventures of Tweedsie? Your golf, Stemside and TweedlePD saves are unaffected."))return;
- state.save=initialTunnel();say("NEW HOLE. SAME DAY. THE NORTHSIDE FARMERS ARE GETTING NERVOUS.");render();save("TUNNEL ADVENTURE RESET");
+ state.save=initialTunnel();state.courier=initialCourier();say("NEW HOLE. SAME DAY. THE NORTHSIDE FARMERS ARE GETTING NERVOUS.");render();save("TUNNEL ADVENTURE RESET");
 });
 window.addEventListener("blur",()=>{state.keys.clear();state.touch.clear();state.last=0;save()});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){state.keys.clear();state.touch.clear();state.last=0;save()}});
