@@ -49,6 +49,10 @@ All effects, illustrations and dialogue are original. The experience is a compac
 
 [Welcome to Stemside](play.html) now has a first authored **playable episode finale, The Great Billing Reversal**. Finish the Coffee Run and win a corporate dispute to unlock an investigation with Buffer Bob, Lackluster Video and Spacealite Tower. At Reggie's office, file three pieces of evidence in order and **choose one of two endings**: refund South Stemside or free the public broadcast. One ending permanently records in the local save, adds the Interdimensional Fee Waiver and grants **120 XP** once. Existing v1–v3 saves safely migrate to the v4 game schema, and portable save export/import still works. No new dependencies or remote services. Full mechanics and QA: [docs/PLAYABLE_V010.md](docs/PLAYABLE_V010.md).
 
+### Living Finale Consequences: v0.11
+
+The playable [Stemside RPG](play.html) now **changes after Episode One**, based on your saved ending. **Refund the Whole Town** recolors local districts, gives at least eight businesses and four residents new reactions, creates a post-refund news board and grants a **12-point Receipt Shield** when starting future corporate disputes. **Free the Public Signal** gives the city a separate Channel Zero visual theme, new dialogues and a different public news feed, while unlocking **one Tweedsie intervention per new corporate encounter**. Completed v0.10 saves take effect automatically with **no new save format or reset**. See [v0.11 guide](docs/PLAYABLE_V011.md).
+
 ### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
