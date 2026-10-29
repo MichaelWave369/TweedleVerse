@@ -40,7 +40,8 @@ test("squad car motion is normalized, clamped, deterministic and cannot teleport
  const edge=moveCar({...p,car:{x:PATROL_WORLD.width-22,y:PATROL_WORLD.height-22}},1,1,100);
  assert.equal(edge.car.x,PATROL_WORLD.width-22);
  assert.equal(edge.car.y,PATROL_WORLD.height-22);
- assert.equal(moveCar({...p,resolved:PATROL_CALLS.map(c=>c.id)},1,0,1),p.resolved.length===3?p:{...p});
+ const finished={...p,resolved:PATROL_CALLS.map(c=>c.id)};
+ assert.strictEqual(moveCar(finished,1,0,1),finished);
 });
 test("dispatch requires arrival and rejects wrong choices without skipping calls",()=>{
  let p=initialPatrol();
