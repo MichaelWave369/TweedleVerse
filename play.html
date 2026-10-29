@@ -14,7 +14,7 @@
 <a class="skip" href="#game-area">Skip to game</a>
 <header class="header"><a href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedleVerse"><a href="stemside.html">CITY DIRECTORY</a><a href="index.html">HOME</a></nav></header>
 <main id="game-area">
-<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.10</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>Explore an original, absurdist silicon-town RPG and unlock the first real episode finale: investigate Reggie's impossible bills, sort the evidence, and rewrite the future of Stemside. Your earlier quests, battles, concerts and saves stay intact.</p></div>
+<div class="intro"><span class="eyebrow">STEMSIDE / PLAYABLE PROTOTYPE v0.11</span><h1>WELCOME TO <em>STEMSIDE</em></h1><p>A living silicon-town comedy RPG where your decisions finally change the streets. Expose Reggie's impossible bills and watch Stemside react to your chosen ending, with new conversations, broadcasts and repeatable battle perks.</p></div>
 <div class="game-layout">
 <section class="game-panel" aria-label="Interactive Stemside game">
 <div class="game-top"><span id="district">SOUTH STEMSIDE</span><span id="progress">THE COFFEE RUN · 0/3</span><span id="medal">NO TGA MEDAL</span><span id="plot-points">PLOT POINTS: 0</span><span id="city-rebels">DISPUTES: 0 / 3</span><span id="passport-rank-top">RANK: UNPAID INTERN</span></div>
@@ -103,7 +103,16 @@
 </details>
   <p id="save-status" class="save-status" role="status" aria-live="polite">Local-only saves: no accounts or cloud uploads. Older v0.6 and v0.7 progress migrates automatically.</p>
 </div>
-<div class="card broadcast"><span>SPACEALITE™ CORPORATE ALERT</span><strong>YOU ARE BEING CHARGED FOR STANDING STILL.</strong><p>Fees may be waived upon satisfactory completion of this sentence.</p></div>
+<section class="card broadcast broadcast-live" id="city-broadcast" data-ending="none" aria-labelledby="broadcast-title">
+  <span class="eyebrow" id="broadcast-station">SPACEALITE™ CORPORATE ALERT / CITY NEWS</span>
+  <h2 id="broadcast-title">REGGIE OWNS THE NEWS. FOR NOW.</h2>
+  <p class="broadcast-ticker" id="broadcast-ticker">YOU ARE BEING CHARGED FOR STANDING STILL.</p>
+  <p class="broadcast-perk" id="broadcast-perk">COMPLETE THE GREAT BILLING REVERSAL TO CHANGE STEMSIDE.</p>
+  <ul class="broadcast-news" id="broadcast-news" aria-label="News headlines around the city">
+    <li>Every channel is a premium channel.</li>
+    <li>The weather forecast requires a subscription.</li>
+  </ul>
+</section>
 </aside>
 </div>
 </main>
