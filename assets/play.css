@@ -147,3 +147,24 @@ background:radial-gradient(ellipse at 50% 90%,#64517e 0,#322f58 57%,#1b2340 100%
 .save-vault #save-vault-status{font-weight:900;margin-top:12px}
 @media(max-width:700px){.minimap-shell{width:171px;top:8px;right:7px;padding:5px}.mini-map{width:157px;height:110px}.mini-map-title{font-size:8px}.mini-map-legend{font-size:7px}.travel-toolbar select{min-width:135px}.travel-toolbar{gap:8px;padding:9px}}
 @media(max-width:400px){.minimap-shell{width:137px}.mini-map{width:123px;height:86px}.mini-map-legend{font-size:6px}}
+
+
+/* v0.10: Reggie Bands' original episode finale, CSS-only theatre */
+.finale-card{background:linear-gradient(150deg,#473643,#253c49);border-color:#e6b779}
+.finale-card h2{font-size:27px;color:#f5d99e}.finale-card .state-label{color:#d9f9a6!important;letter-spacing:.05em}
+.finale-modal{border:4px solid #e7b97a;background:#232d3c;width:min(820px,100%)}
+.finale-modal h2{font-size:clamp(30px,4.7vw,49px);color:#f4daa0}
+.finale-scene{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-evenly;gap:12px;height:195px;background:repeating-linear-gradient(120deg,#2f3e57 0 30px,#43516d 31px 60px);border:5px solid #a7a278;border-radius:8px;margin:18px 0}
+.finale-scene:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,#14151d44 0 2px,transparent 3px 9px);pointer-events:none}
+.finale-boss{display:grid;place-items:center;position:relative;border:6px solid #25333d;border-radius:45% 45% 20% 20%;background:#b8a5a0;width:104px;height:118px;box-shadow:9px 7px #172330}
+.finale-boss span{font-size:13px;font-weight:900;color:#172733}.finale-boss strong{font-size:50px;color:#282c3a}
+.finale-terminal{position:relative;display:flex;flex-direction:column;gap:13px;padding:15px 12px;background:#142b27;border:5px solid #7a8880;border-radius:8px;box-shadow:8px 8px #111c28;color:#c0f59e;max-width:65%;font-family:"Courier New",monospace;font-size:clamp(10px,1.8vw,16px)}
+.finale-terminal small{color:#e7bd9f;font-size:11px}
+.finale-scene-text{color:#e7e1c5!important;font-weight:900!important;font-size:15px!important}
+.finale-modal .choice{border-color:#f0bc83;background:#354246;color:#f4e6c8;font-weight:900;text-align:left;padding:12px 14px}
+.finale-modal .choice:hover{background:#526154;color:#e9ffd5}
+.finale-modal .choice:disabled{opacity:.45}
+.finale-modal .scene-note{font-size:13px!important;color:#eebd84!important}
+.finale-modal .choice-grid:empty{display:none}
+@media(max-width:670px){.finale-scene{height:155px}.finale-boss{width:80px;height:93px}.finale-boss strong{font-size:37px}.finale-terminal{gap:7px;padding:9px}.finale-card h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.finale-modal *{animation:none!important;transition:none!important}}
