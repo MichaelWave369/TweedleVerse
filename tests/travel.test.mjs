@@ -13,7 +13,7 @@ test("navigation modes unique, stable and don't invent a destination",()=>{
  assert.equal(new Set(NAV_MODES.map(x=>x.id)).size,NAV_MODES.length);
  assert.equal(resolveWaypoint(p(),"free",places),null);
  assert.deepEqual(resolveWaypoint(p(),"bogus",places),resolveWaypoint(p(),"auto",places));
- assert.equal(resolveWaypoint({...p(),quest:3,tapeQuest:4,gigQuest:5,visited:places.map(x=>x.id),wins:["whole-moods","coffeecharles","spacealite"],story:{points:1,heard:["coffeechucks","lackluster","tweedcorp"],rewrite:"coffee",finished:true}},"auto",places),null);
+ assert.equal(resolveWaypoint({...p(),quest:3,tapeQuest:4,gigQuest:5,visited:places.map(x=>x.id),wins:["whole-moods","coffeecharles","spacealite"],finale:{stage:5,evidence:3,mistakes:0,ending:"refund"},story:{points:1,heard:["coffeechucks","lackluster","tweedcorp"],rewrite:"coffee",finished:true}},"auto",places),null);
 });
 test("main quest and mission focus correctly resolve canonical stops",()=>{
  const initial=p(),start=resolveWaypoint(initial,"auto",places);
