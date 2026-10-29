@@ -48,3 +48,17 @@
 @media(max-width:1060px){.tunnel-layout,.golf-layout{grid-template-columns:1fr}.twin-aside{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.twin-main{padding-top:24px}.twin-hero-image{width:88px}.twin-hero{gap:14px}.golf-logo{width:105px;height:105px;border-width:6px}.golf-logo span{font-size:20px}.golf-logo strong{font-size:29px}.golf-logo small{font-size:8px}.twin-aside{grid-template-columns:1fr}.game-controlbar{flex-direction:column}.tunnel-buttons{width:100%;justify-content:center}.game-controlbar>.btn{width:100%}.twin-hero h1{font-size:clamp(34px,8vw,55px)}.tunnel-buttons .btn{min-width:0;padding:11px}}
 @media(prefers-reduced-motion:reduce){.twin-stage *{animation:none!important;transition:none!important}}
+
+/* Arcade v0.15 reward extensions */
+#courier-board,#golf-cup-card{border-color:#c4db98}
+#courier-board h3{color:#e9eab2;font-size:19px;margin:17px 0 9px}
+#courier-claim,#cup-start{width:100%;margin:8px 0}
+#courier-items{line-height:1.8;color:#e4f0d1}
+#courier-reward{color:#cfeab1}
+#tunnel-burst:disabled{opacity:.5}
+#cup-scores{margin:10px 0;padding-left:24px}
+#cup-scores li{margin:5px 0}
+#cup-podium{margin-top:16px}
+#cup-podium ol{padding-left:20px;color:#e9edd3}
+.golf-mode button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:850px){.game-controlbar{flex-wrap:wrap}#tunnel-burst{flex:1;min-width:150px}}
