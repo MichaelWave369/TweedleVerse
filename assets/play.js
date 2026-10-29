@@ -203,6 +203,76 @@ function say(place,text){
  el("place-heading").textContent=place?place.name.toUpperCase():"CITY HALL ERROR";
  el("place-message").textContent=text;
 }
+
+function renderFinaleUI(){
+ const finale=state.finale;
+ const progress=snapshot();
+ el("finale-status").textContent=finaleStatus(finale,progress);
+ const steps=Array.from(el("finale-steps").children);
+ for(const [i,item] of steps.entries()){
+  item.classList.toggle("done",finale.stage>i);
+  item.classList.toggle("next",finale.stage===i);
+ }
+ const place=nearest();
+ el("finale-open").disabled=!(place?.id==="spacealite"&&finale.stage>=3&&finaleEligible(progress));
+}
+function renderFinaleScene(){
+ const finale=state.finale;
+ const evidenceRoot=el("finale-evidence"),endRoot=el("finale-endings");
+ evidenceRoot.replaceChildren();endRoot.replaceChildren();
+ el("finale-feedback").textContent="AUDIT ERRORS: "+finale.mistakes+" · ERROR FEES ARE FICTIONAL";
+ if(finale.stage===3){
+  el("finale-title").textContent="THE INVOICE AUDIT";
+  el("finale-scene-text").textContent="REGGIE: YOU CAN'T QUESTION MY INVOICES! BUFFER BOB: Actually, sir, these three facts must be entered in chronological order. "+finale.evidence+" / 3 VERIFIED.";
+  for(const evidence of FINALE_EVIDENCE){
+   const button=document.createElement("button");
+   button.type="button";button.className="btn secondary choice";
+   button.textContent=evidence.label;
+   button.addEventListener("click",()=>{
+    const result=auditEvidence(state.finale,evidence.id);
+    state.finale=result.finale;
+    if(result.correct){
+     renderFinaleScene();
+     renderFinaleUI();refreshPassport();
+     saveProgress("AUDIT EVIDENCE FILED · SAVED LOCALLY");
+    }
+    el("finale-feedback").textContent=result.feedback+" · AUDIT ERRORS: "+state.finale.mistakes;
+   });
+   evidenceRoot.append(button);
+  }
+ }else if(finale.stage===4){
+  el("finale-title").textContent="WRITE THE FINAL SCENE";
+  el("finale-scene-text").textContent="TWEEDSIE: The audit passed! Now we get to choose what Reggie has to give back. That's the power of reading the damn paperwork, Reg.";
+  for(const ending of Object.values(FINALE_ENDINGS)){
+   const button=document.createElement("button");
+   button.type="button";button.className="btn secondary choice";
+   button.textContent=ending.label;
+   button.addEventListener("click",()=>{
+    const next=pickFinaleEnding(state.finale,ending.id);
+    if(!next)return;
+    state.finale=next;
+    renderFinaleScene();renderFinaleUI();refreshPassport();
+    saveProgress("EPISODE ONE FINISHED · FEE WAIVER SAVED LOCALLY");
+    say(null,ending.description);
+   });
+   endRoot.append(button);
+  }
+ }else if(finale.stage===5){
+  const ending=FINALE_ENDINGS[finale.ending];
+  el("finale-title").textContent=ending.title;
+  el("finale-scene-text").textContent=ending.description;
+  el("finale-feedback").textContent="THE END · +120 XP · INTERDIMENSIONAL FEE WAIVER ADDED TO YOUR PASSPORT. NO SECOND REWARD FOR REPLAYS.";
+ }else{
+  el("finale-title").textContent="THE AUDIT IS STILL SEALED";
+  el("finale-scene-text").textContent="Finish the investigation before confronting Reggie.";
+ }
+}
+function openFinale(){
+ if(state.overlay||!finaleEligible(snapshot())||state.finale.stage<3||nearest()?.id!=="spacealite")return;
+ renderFinaleScene();
+ openModal("finale","finale-close");
+}
+
 function renderTapeQuest(){
  el("tape-status").textContent=tapeStatus(state.tapeQuest);
  el("resident-label").textContent=state.tapeQuest===4?"MARTY HAS HIS MOVIE BACK. THE FUTURE IS SOMEHOW EVEN MORE OVERDUE.":"CURRENT LEAD: "+TAPE_STEPS[state.tapeQuest].title;
