@@ -50,6 +50,12 @@ Crossroads uses the existing Universe Passport decoders to verify source-game ac
 
 The original seven game saves and Crossroads ledger are unchanged. World Map writes **only** `tweedleverse.worldmap.local.v1`, independently and with a confirmed reset. It's original fictional cartography and a playable portal hub, not a full seamless 3D world or a real street map. Original fifteen Passport stamps remain unchanged. [Technical guide and QA](docs/WORLD_MAP_V018.md).
 
+## Street Encounters on the World Map (v0.19)
+
+[**Walk Stemside and play Street Encounters**](world.html) adds **three original location-bound investigations** to the eleven-place city atlas. *The Sidewalk Subscription* and *The Divot Diplomatic Incident* send players to witness locations across the connected streets; finishing both unlocks *The Broadcast of Absolutely Nothing*, a four-stop citywide finale. Players have to physically reach each interview location using the map, choose evidence-based responses, and can safely retry wrong leads. There are three fictional local case rewards.
+
+Cases use **only their own versioned local key** `tweedleverse.worldmap.encounters.v1`. The prior map save, postcards, World Map tours, seven original game saves, Passport and Crossroads are not overwritten. Reset Street Cases and Reset World Map are separate confirmed actions. The rewards are local to the World Map and are not added to the existing canonical fifteen Passport stamps. See [v0.19 technical guide and browser QA](docs/STREET_ENCOUNTERS_V019.md).
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**

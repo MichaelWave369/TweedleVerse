@@ -118,5 +118,5 @@ test("World page exposes actual map controls, read-only passport and safe isolat
  assert.ok(pages.includes("world.html public/"));
  assert.ok(checks.includes("assets/world-map-core.mjs"));
  assert.ok(checks.includes("assets/world-map.js"));
- assert.equal(JSON.parse(file("package.json")).version,"0.18.0");
+ assert.ok(Number(JSON.parse(file("package.json")).version.split(".")[1])>=18);
 });

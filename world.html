@@ -50,6 +50,29 @@
   <a id="world-enter" href="play.html" class="btn main-btn">ENTER STEMSIDE RPG ↗</a>
   <p class="world-small">Game entrances work only after you physically reach that landmark on this fictional map. Your existing game save is never changed here.</p>
  </section>
+ <section class="world-card world-events-card" aria-labelledby="world-events-heading">
+  <p class="eyebrow">STEMSIDE INCIDENT HOTLINE · ALL OPERATORS UNPAID</p>
+  <h2 id="world-events-heading">STREET ENCOUNTERS</h2>
+  <p>Open a local mystery, follow the witness locations, and make evidence-based decisions. Two cases unlock a bigger citywide finale.</p>
+  <p class="world-route" id="world-events-progress">0 / 3 CASES CLOSED · FINALE LOCKED</p>
+  <div id="world-events-board" class="world-events-board" aria-label="Choose an available street case"></div>
+  <div id="world-active-encounter" class="world-active-encounter" hidden>
+   <p class="eyebrow" id="world-event-label">ACTIVE INCIDENT</p>
+   <h3 id="world-event-title">CURRENT CASE</h3>
+   <p id="world-event-step" class="world-small">INTERVIEW 1 / 3</p>
+   <p class="world-route" id="world-event-destination">REPORT TO: TVPD</p>
+   <button type="button" id="world-event-route" class="btn secondary-btn">SET ROUTE TO WITNESS</button>
+   <div id="world-event-dialogue" hidden>
+    <strong id="world-event-speaker">WITNESS STATEMENT</strong>
+    <p id="world-event-setup"></p>
+    <h4 id="world-event-question">WHAT SHOULD YOU DO?</h4>
+    <div id="world-event-options" class="world-event-options"></div>
+   </div>
+  </div>
+  <p id="world-event-feedback" class="world-story" role="status" aria-live="polite">The Stemside Incident Bureau is open for business. Unfortunately.</p>
+  <p class="world-small" id="world-events-storage">This extra case ledger saves separately from your tour postcards and other games.</p>
+  <button type="button" id="world-events-reset" class="btn secondary-btn">RESET ONLY STREET CASES (CONFIRM)</button>
+ </section>
  <section class="world-card">
   <p class="eyebrow">TRAVEL BY FOOT / PUBLIC NAVIGATION</p><h2>WHERE TO, BRO?</h2>
   <div id="world-places" class="world-places" aria-label="Select a city destination"></div>
