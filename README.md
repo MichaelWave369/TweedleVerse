@@ -44,6 +44,12 @@ This is **not** a cloud account or a synced/mutable universe save. All seven exi
 
 Crossroads uses the existing Universe Passport decoders to verify source-game achievement stamps; it **never writes to any of the seven existing game saves**. Only the separate `tweedleverse.crossroads.cases.v1` slot stores its own case steps and results. The Passport stays read-only, but now shows a live `0 / 3` to `3 / 3` Crossroads completion counter. The Arcade links directly to these investigations. No login, network service, unlicensed media or new packages. More details: [Crossroads v0.17 guide](docs/CROSSROADS_V017.md).
 
+## Walkable Stemside World Map (v0.18)
+
+[**Explore the World Map**](world.html) for the first real connected top-down navigation layer across TweedleVerse. Walk a hand-authored graph of **eleven locations**, preview shortest street routes, navigate with keyboard/touch or animated path walking, collect **ten postcards**, complete **three neighborhood tours**, and enter the existing Stemside RPG, TVPD, Tweedsie, golf, Crossroads, Passport, and Arcade at their in-universe landmarks. Locations reflect actual validated Passport achievements through contextual dialogue.
+
+The original seven game saves and Crossroads ledger are unchanged. World Map writes **only** `tweedleverse.worldmap.local.v1`, independently and with a confirmed reset. It's original fictional cartography and a playable portal hub, not a full seamless 3D world or a real street map. Original fifteen Passport stamps remain unchanged. [Technical guide and QA](docs/WORLD_MAP_V018.md).
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**
