@@ -7,6 +7,12 @@ An original, absurdist silicon-comedy universe created by **Michael Wave / Backy
 **TweedleVerse** is the umbrella world. **Practical Smokers** is its flagship workplace / hidden-camera-style comedy. **Welcome to Stemside** is its proposed explorable game. **TGA Pro Tour** is the world's ridiculous obstacle-course sport, **Tweedleball**. **Spacealite™** is the predatory interdimensional cable monopoly.
 
 
+## TweedleVerse Arcade and TweedlePD (v0.12)
+
+The universe now has a central [TweedleVerse Arcade](arcade.html) connecting **two playable browser adventures** and labeling additional game concepts as future projects. The new [TweedlePD: Rookie Mistakes](tweedlepd.html) is a separate, original comedy detective game starring Practical Smokers' Chip. Explore TVPD, CoffeeChucks, Lackluster Video and TweedCorp; inspect five clues, question four witnesses, and **return to the precinct to file the correct investigative report** in Case #001: The Missing Donut Incident. False accusations can be corrected; the right conclusion awards the Unpaid Detective Badge.
+
+The detective game uses its **own versioned browser-only save** and cannot overwrite the existing Stemside RPG's local save. It introduces no third-party dependencies or server requests. The Pages workflow includes the Arcade and detective game; the main portal, city explorer, and RPG link to Arcade. See [Arcade and TweedlePD guide](docs/ARCADE_TWEEDLEPD.md) for complete mechanics, automated tests and browser QA instructions.
+
 ## Enter the portal
 
 The [Stemside portal](index.html) is a hand-built static site with an original illustrated city, working faux Spacealite channel surfing, a Wheel of Tweed, an interactive script page, and Tweedsie appearances. All code and vector art are local. **This is a playable web *experience*, not yet the open-world game.**

@@ -50,7 +50,7 @@ test("entry point and offline assets are wired",()=>{
  assert.ok(html.includes('aria-live="polite"'));
  assert.ok(homepage.includes('href="play.html"'));
  assert.ok(explorer.includes('href="play.html"'));
- assert.ok(pages.includes("cp index.html stemside.html play.html public/"));
+ assert.ok(pages.includes("cp index.html stemside.html play.html arcade.html tweedlepd.html public/"));
  for(const file of ["assets/play.js","assets/play.css","assets/game-core.mjs"])assert.ok(existsSync(resolve(root,file)));
  for(const unsafe of ['<script src="http','<link rel="stylesheet" href="http','<img src="http'])assert.equal(html.includes(unsafe),false,unsafe);
 });

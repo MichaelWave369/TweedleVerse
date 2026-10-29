@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#152437">
+<meta name="description" content="Play TweedlePD: Rookie Mistakes, an original comedy detective game starring Chip from Practical Smokers. Solve the Missing Donut Incident.">
+<title>TweedlePD: Rookie Mistakes | Case #001</title>
+<link rel="icon" href="assets/tweedsie.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/arcade.css"><script type="module" src="assets/tweedlepd.js"></script></head>
+<body class="pd-body">
+<a class="skip-link" href="#pd-main">Skip to the case</a>
+<header class="arcade-header"><a class="brand" href="index.html">✳ TWEEDLE<span>VERSE</span></a><nav aria-label="TweedlePD navigation"><a href="arcade.html">THE ARCADE</a><a href="play.html">STEMSIDE RPG</a><a href="stemside.html">CITY MAP</a></nav></header>
+<main class="pd-main" id="pd-main">
+ <div class="pd-title"><div><p class="eyebrow">TWEEDLE POLICE DEPARTMENT · ROOKIE IN TRAINING · EPISODE 001</p><h1>TWEEDLE<span>PD</span><small>ROOKIE MISTAKES</small></h1><p>Practical Smokers' Chip clicked ACCEPT on the wrong employee-training email. Congratulations, rookie. You've been promoted to investigating a crime that probably never happened.</p></div><div class="pd-seal" aria-hidden="true"><b>TVPD</b><small>TO PROTECT<br>AND TO INVOICE</small></div></div>
+ <div class="pd-masthead"><span>CASE #001: THE MISSING DONUT INCIDENT</span><span id="pd-status" role="status" aria-live="polite">LOADING CASE FILE</span></div>
+ <div class="pd-layout">
+  <section class="pd-play" aria-label="Detective adventure">
+   <div class="station-bar"><span id="scene-id">PRECINCT</span><span>OFFICER CHIP · BADGE PENDING</span></div>
+   <div id="pd-stage" class="pd-stage" data-scene="precinct" role="img" aria-label="Stylized cartoon police precinct with rookie Chip and the scene location">
+    <div class="stage-sun" aria-hidden="true"></div><div class="stage-ground" aria-hidden="true"></div>
+    <div class="stage-building" aria-hidden="true"><span id="building-crest">TVPD</span><div class="stage-door"></div><div class="stage-window w1"></div><div class="stage-window w2"></div></div>
+    <div class="stage-sprite" aria-hidden="true"><span class="sprite-hat">TVPD</span><span class="sprite-face">◉ ◉</span><span class="sprite-body">★</span><span class="sprite-shoes"></span></div>
+    <div class="stage-caption" id="stage-caption">CHIP'S FIRST DAY ON THE FORCE</div>
+   </div>
+   <div class="scene-brief"><p class="eyebrow" id="scene-sub">DEPARTMENT OF LAW AND EXTREMELY UNNECESSARY ORDER</p><h2 id="scene-title">TVPD PRECINCT</h2><p id="scene-detail">The office contains 38 wanted posters, all of the same printer.</p></div>
+   <div class="action-zone">
+    <section aria-labelledby="inspect-title"><h3 id="inspect-title">SEARCH FOR CLUES</h3><div class="action-tiles" id="clue-actions"></div></section>
+    <section aria-labelledby="interview-title"><h3 id="interview-title">QUESTION WITNESSES</h3><div class="action-tiles" id="witness-actions"></div></section>
+   </div>
+   <div class="dialogue" role="status" aria-live="polite"><span id="speaker">TVPD DISPATCH</span><p id="pd-dialogue">CHIEF McBADGE: The donuts are gone! The city is in danger! Get me a detective who knows what a donut looks like!</p></div>
+  </section>
+  <aside class="pd-panel">
+   <section class="pd-card"><p class="eyebrow">PATROL MAP / CHOOSE A LOCATION</p><h2>WHERE TO, ROOKIE?</h2><div id="pd-travel" class="travel-list"></div><p class="mini-note">Travel is instant. Reggie has not discovered how to charge for this yet.</p></section>
+   <section class="pd-card"><p class="eyebrow">OFFICIAL CASE NOTEBOOK · EVIDENCE DOES NOT REQUIRE A SUBSCRIPTION</p><h2>CASEBOOK</h2><p id="pd-objective" class="objective">Inspect the precinct for clues.</p><div class="progress-track" role="progressbar" aria-label="Case evidence discovered" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="pd-evidence-meter"><span id="pd-evidence-fill"></span></div><p id="pd-evidence-count" class="mini-note">0 / 5 CLUES · 0 / 4 WITNESS STATEMENTS</p><h3>EVIDENCE</h3><ul id="pd-clue-list" class="case-list"><li>Not even a fingerprint. Inspiring.</li></ul><h3>STATEMENTS</h3><ul id="pd-witness-list" class="case-list"><li>Nobody has spoken under oath. Or at all.</li></ul></section>
+   <section class="pd-card report-card" id="report-desk"><p class="eyebrow">REPORT 97-B · COMPETENCE OPTIONAL</p><h2>FILE YOUR FINDINGS</h2><p>Identify the responsible party, explain what actually happened, and select the decisive evidence. No arrests based on vibes.</p>
+    <form id="pd-report">
+     <label for="pd-suspect">RESPONSIBLE PARTY</label><select id="pd-suspect" required><option value="">SELECT SUSPECT</option></select>
+     <label for="pd-explanation">WHAT HAPPENED?</label><select id="pd-explanation" required><option value="">SELECT EXPLANATION</option></select>
+     <label for="pd-proof">DECISIVE EVIDENCE</label><select id="pd-proof" required><option value="">SELECT EVIDENCE</option></select>
+     <button id="pd-submit" class="btn main-btn" type="submit" disabled>SUBMIT OFFICIAL REPORT</button>
+    </form>
+    <p id="pd-report-status" role="status" aria-live="polite">COLLECT THE RECEIPT AND SECURITY TAPE; INTERVIEW CHUCK AND MARTY FIRST.</p>
+    <div id="pd-credits" class="pd-credits" hidden><strong>CASE CLOSED!</strong><p>Rookie Chip earns the UNPAID DETECTIVE BADGE. Chief McBadge has been sentenced to buying his own snacks.</p><a href="arcade.html" class="btn secondary-btn">BACK TO THE ARCADE ↗</a></div>
+   </section>
+   <section class="pd-card utility-card"><p class="eyebrow">LOCAL GAME FILE</p><p id="pd-save-message" role="status" aria-live="polite">AUTO-SAVES TO THIS BROWSER ONLY.</p><button class="btn secondary-btn" id="pd-reset" type="button">RESTART CASE (CONFIRM)</button><p class="mini-note">Separate from Stemside's RPG save. No accounts, tracking or online calls.</p></section>
+  </aside>
+ </div>
+</main>
+<footer class="arcade-footer">© 2026 MICHAEL WAVE · TWEEDLEVERSE · FICTIONAL COMEDY · THERE ARE NO REAL POLICE PROCEDURES HERE, CLEARLY.</footer>
+</body></html>
