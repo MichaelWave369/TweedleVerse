@@ -102,11 +102,11 @@ export function caseStatus(progress){
 }
 export function objective(progress){
  if(progress.solved)return "Case solved. Chief McBadge owes CoffeeChucks an apology and twelve donuts.";
+ if(canFile(progress))return "Return to the TVPD precinct and file your report at the paperwork desk.";
  if(!progress.clues.includes("crumbs"))return "Inspect the crumbs in the TVPD precinct.";
  if(!progress.clues.includes("receipt"))return "Visit CoffeeChucks and obtain the delivery receipt.";
  if(!progress.interviews.includes("chuck"))return "Interview Chuck about the delivery.";
  if(!progress.clues.includes("tape"))return "Find the security tape at Lackluster Video.";
  if(!progress.interviews.includes("marty"))return "Interview Marty about the tape.";
- if(canFile(progress))return "Return to the TVPD precinct and file your report at the paperwork desk.";
  return "Keep interviewing and collecting evidence. This department rarely does either.";
 }
