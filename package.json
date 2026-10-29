@@ -1,10 +1,10 @@
 {
   "name": "tweedleverse",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "private": true,
   "description": "Original silicon comedy universe and no-dependency static portal",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check assets/app.js && node --check assets/stemside.js && node --check assets/play.js && node --check assets/game-core.mjs && node --check assets/story-core.mjs && node --check assets/battle-core.mjs && node --check assets/progression-core.mjs && node --check assets/residents-core.mjs && node --check assets/gig-core.mjs && node --check assets/travel-core.mjs && node --check assets/finale-core.mjs && node --check assets/consequence-core.mjs && node --check assets/pd-core.mjs && node --check assets/tweedlepd.js && node --check assets/patrol-core.mjs && node --check assets/patrol.js && node --check assets/tweedsie-core.mjs && node --check assets/tweedsie-game.js && node --check assets/golf-core.mjs && node --check assets/golf-game.js && node --check assets/tunnel-contracts.mjs && node --check assets/golf-cup.mjs && npm test"
+    "check": "node --check assets/app.js && node --check assets/stemside.js && node --check assets/play.js && node --check assets/game-core.mjs && node --check assets/story-core.mjs && node --check assets/battle-core.mjs && node --check assets/progression-core.mjs && node --check assets/residents-core.mjs && node --check assets/gig-core.mjs && node --check assets/travel-core.mjs && node --check assets/finale-core.mjs && node --check assets/consequence-core.mjs && node --check assets/pd-core.mjs && node --check assets/tweedlepd.js && node --check assets/patrol-core.mjs && node --check assets/patrol.js && node --check assets/tweedsie-core.mjs && node --check assets/tweedsie-game.js && node --check assets/golf-core.mjs && node --check assets/golf-game.js && node --check assets/tunnel-contracts.mjs && node --check assets/golf-cup.mjs && node --check assets/passport-core.mjs && node --check assets/passport.js && node --check assets/arcade-passport.js && npm test"
   }
 }
