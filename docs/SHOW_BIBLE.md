@@ -64,6 +64,14 @@ The crew discovers a printed script under the couch. It predicts the next line. 
 ### B. “Reggie Bands's entrance”
 Reggie storms into a meeting with custom orchestral music. Spacealite invoices him for using the theme. He cancels the theme to save money; every subsequent entrance is accompanied by one sad kazoo note played by Tweedsie.
 
+## Sister series pitch: Tweedle 420 [DEVELOPMENT CONCEPT]
+
+**Tweedle 420: Protect. Serve. Forget Why.** is a separate proposed **TVPD mockumentary** following Chief McBadge, rookie Chip, Winnie, Merv and a department that cannot remember why it responded to a call. In a town where fictional Tweed culture includes the officers, public trespass might mean a neighbor napping on somebody's lawn; pastry misplacement means someone apologizing for eating an extra pastry. The officers escalate petty misunderstandings into solemn procedures. **Tweedsie is always somewhere in the background**, quietly strolling by with his oversized fictional spliff, sometimes meeting the documentary lens while the police miss him.
+
+This is a proposed TV series, **not** a released program or a retcon of playable TweedlePD cases. Keep cases nonviolent, character-driven, restorative, original and separate from real-world policing advice. Full format, episode slate, cameo contract, and pilot: [Tweedle 420 show bible](TWEEDLE_420.md).
+
+The hidden-background gag also creates a separate proposed discovery game: [Where's Tweedsie?](WHERES_TWEEDSIE.md).
+
 ## Style rules
 
 - Broad slapstick, wordplay, over-literal corporate language, fake advertisements, physical text and UI, surreal transitions.
