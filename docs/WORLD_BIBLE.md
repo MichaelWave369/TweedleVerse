@@ -85,6 +85,12 @@ Tweed is fictional satire, not real botanical science, medical information, or p
 7. **Running gags evolve.** Reggie grows more furious at his nickname. Coffee's price signals deepen. Corporate “improvements” make things worse.
 8. **Keep continuity light but useful.** Record who knows what, where people live, which characters have met, and which joke has already paid off.
 
+## TVPD satire and Tweedsie hidden-scene concept [LOCKED premise; execution PROPOSED]
+
+**Tweedle 420: Protect. Serve. Forget Why.** is a proposed original TVPD mockumentary. Stemside's fictional Tweed culture includes its officers; their police blotter treats harmless problems like **"Public Trespass"** (a resident asleep on a neighbor's lawn) and **"Pastry Misplacement"** (a hungry resident apologizing for taking a pastry) as serious incidents. They sometimes arrive at a scene with no recollection why. **Tweedsie passes through the background of every planned episode**, casually smoking and acknowledging the documentary camera without police noticing. See [the series pitch](TWEEDLE_420.md).
+
+**Where's Tweedsie?** is a separate proposed **original hidden-scene game** turning his perpetual background appearances into illustrated Stemside search puzzles. It can connect visually to TVPD scenes, Tweedleball events, Winnie's darkroom and optional Merv photo-portal *concepts*, but is **not playable yet** and changes none of the existing experiences. See [the game design bible](WHERES_TWEEDSIE.md).
+
 ## Cross-property narrative rule
 
 A single place, outfit, character trait, and invented brand should remain recognizable between show, game, minisodes and promotional snippets. An episode may play fast and loose with time, but reusable assets and stable character motivations make the multiverse coherent.
