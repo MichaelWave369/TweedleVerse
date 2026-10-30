@@ -107,7 +107,7 @@ The playable [Stemside RPG](play.html) now **changes after Episode One**, based 
 - [World and canon](docs/WORLD_BIBLE.md)
 - [Characters and relationships](docs/CHARACTERS.md)
 - [Winnie Kodak III and the forgotten TVPD darkroom (future lore/quest concept)](docs/WINNIE_KODAK_III.md)
-- [Merv and *The Last Exposure*: stranded camera-ship and portal-photo lore (development concept)](docs/MERV_THE_LAST_EXPOSURE.md)- [Winnie Kodak III and the forgotten TVPD darkroom (future lore/quest concept)](docs/WINNIE_KODAK_III.md)- [Characters and relationships](docs/CHARACTERS.md)
+- [Merv and *The Last Exposure*: stranded camera-ship and portal-photo lore (development concept)](docs/MERV_THE_LAST_EXPOSURE.md)
 - [Practical Smokers series, skits, and season arc](docs/SHOW_BIBLE.md)
 - [Tweedleball and the TGA tournament](docs/TWEEDLEBALL.md)
 - [Welcome to Stemside game concept](docs/GAME_DESIGN.md)
