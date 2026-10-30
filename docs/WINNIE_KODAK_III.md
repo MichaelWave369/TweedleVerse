@@ -37,6 +37,12 @@
 
 **Visual rules:** Original fictional silicon-person design, no real Kodak logo, signature product trade dress, or borrowed visual design. The *character's surname* is Kodak; the equipment and photo-lab branding must be invented for TweedleVerse.
 
+## The other occupant: Merv and *The Last Exposure*
+
+**Creator-established development concept:** Winnie shares the forgotten darkroom with **Merv**, a stranded interdimensional reconnaissance visitor. Merv's original instant-camera-shaped spacecraft is called **The Last Exposure**. He arrived on a **one-way mission**, was tasked with compressing his intelligence into a **single photo to send home**, and has **run out of blank photographs**. Some of his specialized photos are capable of opening **portals**.
+
+Their friendship reframes Winnie's negative archive without making every ordinary negative supernatural. The ship's depleted stock cannot simply be replaced with off-the-shelf photo paper. How the one required final report will be made is an **open story question**. See [Merv and The Last Exposure](MERV_THE_LAST_EXPOSURE.md) for established ideas, proposed mechanics, character comedy, and a possible longer adventure arc.
+
 ## The room nobody remembers
 
 **Working location name:** *The Forgotten Darkroom* (under/behind the TVPD precinct).
