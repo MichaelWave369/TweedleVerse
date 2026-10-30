@@ -81,6 +81,15 @@ These names were brainstormed during the concept session; maintain them as provi
 - His developing friendship with Winnie provides a sincere counterweight to the department's absurd comedy.
 - Full premise and potential arc: [Merv and The Last Exposure](MERV_THE_LAST_EXPOSURE.md).
 
+## Tweedle 420 / Where's Tweedsie? cross-media use [CREATOR-ESTABLISHED PREMISE]
+
+- **Chief Buster McBadge** is the bombastic chief in the existing TweedlePD game; a proposed *Tweedle 420* mockumentary extends his confusion, outbursts and ever-present buffet to new fictional episodes.
+- **Chip** is the rookie who occasionally notices the obvious while the rest of TVPD launches a major investigation into a lawn nap or missing pastry.
+- **Winnie** turns police scenes into photo shoots. **Merv** can remain a background mystery tied to the forgotten darkroom, not an instant solution to the entire show.
+- **Tweedsie** consistently appears in the *background* of proposed *Tweedle 420* episodes, casually smoking his established fictional spliff, sometimes looking into the documentary camera. The future **Where's Tweedsie?** visual-search game makes finding him a primary, fair, replayable objective.
+- Both are new **concepts, not released experiences**. Do not silently rewrite the existing TweedlePD mechanics, save keys, or achievements.
+- See [Tweedle 420](TWEEDLE_420.md) and [Where's Tweedsie?](WHERES_TWEEDSIE.md).
+
 ## Voice / writing guardrails
 
 Give each character a distinctive thinking rhythm rather than an impression of a famous comic. Each joke should still make sense with all borrowed references removed. Avoid repetitive “bro” lines in every character's mouth. An earned silence, look at camera, or misplaced receipt is often funnier than a long punchline.
