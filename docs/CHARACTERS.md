@@ -72,6 +72,15 @@ These names were brainstormed during the concept session; maintain them as provi
 - His humor is the collision of meticulous service and chaotic emergencies; he treats every picture like an ordinary customer order.
 - Full character sheet, original dialogue and future optional quest: [Winnie Kodak III — The Forgotten Darkroom](WINNIE_KODAK_III.md).
 
+### Merv [LOCKED concept]
+- Stranded visitor and reconnaissance operative **from another world**, connected to Winnie and the forgotten precinct darkroom.
+- Arrived in a small **instant-camera-shaped spacecraft**, **The Last Exposure**, on a **one-way mission**.
+- His mission was to send **one photograph** home containing all his gathered intelligence; he has **run out of blank photographs**.
+- Special photos can act as **portals**; ordinary precinct photos do not automatically do so.
+- Exact anatomy, homeworld, mission target, final-sheet solution, portal constraints, and return prospects remain **open design proposals**.
+- His developing friendship with Winnie provides a sincere counterweight to the department's absurd comedy.
+- Full premise and potential arc: [Merv and The Last Exposure](MERV_THE_LAST_EXPOSURE.md).
+
 ## Voice / writing guardrails
 
 Give each character a distinctive thinking rhythm rather than an impression of a famous comic. Each joke should still make sense with all borrowed references removed. Avoid repetitive “bro” lines in every character's mouth. An earned silence, look at camera, or misplaced receipt is often funnier than a long punchline.
