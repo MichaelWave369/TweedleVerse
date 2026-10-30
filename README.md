@@ -108,7 +108,6 @@ New concepts, **not yet playable or produced**: **Tweedle 420**, an original moc
 
 - [Tweedle 420: Protect. Serve. Forget Why. (proposed mockumentary show)](docs/TWEEDLE_420.md)
 - [Where's Tweedsie? (proposed hidden-scene game)](docs/WHERES_TWEEDSIE.md)
-### Development bibles
 
 - [World and canon](docs/WORLD_BIBLE.md)
 - [Characters and relationships](docs/CHARACTERS.md)
