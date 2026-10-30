@@ -62,6 +62,16 @@ These names were brainstormed during the concept session; maintain them as provi
 - **Loudmouth Larry:** premium-tier loud corporate rival.
 - **Dr. Budwick von Byte:** Tweedologist who keeps proposing absurd botanical taxonomies.
 
+## TweedlePD supporting cast
+
+### Winston "Winnie" Kodak III [LOCKED concept]
+- **Everyone at TVPD calls him Winnie.** His formal name is Winston Kodak III.
+- TVPD photographer who materializes at the least appropriate moments, photographs people mid-scene, then offers absurdly inappropriate print options.
+- The precinct contains a **secret room the department forgot about**, packed with **miles of hanging photo negatives**.
+- The committed name, nickname, role, recurring gag, and forgotten negative-filled room are creator-established. Detailed room layout, camera collection, archive mysteries, and side-quest beats are **proposals**, not shipped gameplay.
+- His humor is the collision of meticulous service and chaotic emergencies; he treats every picture like an ordinary customer order.
+- Full character sheet, original dialogue and future optional quest: [Winnie Kodak III — The Forgotten Darkroom](WINNIE_KODAK_III.md).
+
 ## Voice / writing guardrails
 
 Give each character a distinctive thinking rhythm rather than an impression of a famous comic. Each joke should still make sense with all borrowed references removed. Avoid repetitive “bro” lines in every character's mouth. An earned silence, look at camera, or misplaced receipt is often funnier than a long punchline.
