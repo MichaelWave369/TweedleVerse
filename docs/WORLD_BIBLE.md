@@ -45,6 +45,10 @@ Median Strip 42 is a tiny patch of land that the gang accidentally owns. City ha
 
 Within the Tweedle Police Department precinct is an unremembered room occupied by **Winston "Winnie" Kodak III**, TVPD's compulsively professional photographer. The department forgot the room existed; it contains **miles of small photographic negatives**. The visual joke and Winnie's recurring intrusion into police scenes are established. The room's exact entrance, map footprint, history, impossible photographs, and any interactive case are still proposals. See [Winnie Kodak III — The Forgotten Darkroom](WINNIE_KODAK_III.md) for continuity and future-game notes.
 
+### The Last Exposure: Merv's stranded camera-ship [LOCKED concept]
+
+Merv is an off-world reconnaissance visitor living in Winnie's forgotten darkroom. He came on a **one-way mission** in an **instant-camera-shaped craft** called **The Last Exposure**; he had to return **one photo** containing his findings, but he has **no blank photographs left**. Some unusual photos can open **portals**, making the photo medium more than an image. The exact method of sending the final report, available special stock, portal mechanics, and his homeworld remain undecided. Most of Winnie's extensive archive is ordinary film, not an unlimited portal supply. See [Merv and The Last Exposure](MERV_THE_LAST_EXPOSURE.md).
+
 ## Silicon people [LOCKED]
 
 The residents are fictional silicon people, **not human actors**. Different forms, looks and character designs are permitted. They eat, work, joke, compete, form friendships, collect physical media and maintain absurd corporate institutions. Technology-flavored puns are seasoning, not every punchline.
