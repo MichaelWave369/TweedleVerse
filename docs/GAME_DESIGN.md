@@ -78,6 +78,14 @@ Maintain characters and locations in readable data files; separate story from en
 
 Avoid making the game a clone of existing licensed titles. References are tonal. Don't copy music, recognizable character silhouettes, dialogue, branding or game assets. Give players clear controls and stable objectives even when the story gleefully contradicts itself.
 
+## Proposed side game: Where's Tweedsie? [NOT IMPLEMENTED]
+
+A standalone original **hidden-scene adventure** where players find Tweedsie and optional visual jokes inside detailed illustrated Stemside panoramas. A TVPD crime scene, South Stemside crowd, Grand Stem tournament, and Winnie's forgotten darkroom are candidate locations. Merv's rare dimensional photo media may support an **optional nested portal scene**, without supplying infinite blanks or retroactively solving *The Last Exposure*.
+
+Design priorities: a distinctive original visual style, accessible keyboard/touch/zoom controls, a fair hint ladder, non-flashing camera gags, offline-first progress in an isolated save, and no changes to the existing Passport and game save ledgers. No playable page or integration is claimed. Full design, proposal-only scene list and first-rung criteria: [Where's Tweedsie?](WHERES_TWEEDSIE.md).
+
+The game's recurring background-walker premise is also proposed for the separate [Tweedle 420 mockumentary](TWEEDLE_420.md).
+
 ## Roadmap
 
 **v0.1** world bible + world portal; **v0.2** one playable Tweedleball prototype; **v0.3** South Stemside explorable block; **v0.4** 15-minute scripted vertical slice; **v0.5** Spacealite channels and Tweedsie; **v0.6** North Stemside tournament extension; subsequent builds driven by tests and real feedback.
