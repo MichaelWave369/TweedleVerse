@@ -41,6 +41,10 @@ The polished, wealthier hill district. Every service is repackaged as a lifestyl
 
 Median Strip 42 is a tiny patch of land that the gang accidentally owns. City hall, a satellite uplink, defunct transit stations and sealed underground tunnels can become future districts. Keep the first playable map small enough to be hand-crafted.
 
+### TVPD's forgotten darkroom [LOCKED premise; layout PROPOSED]
+
+Within the Tweedle Police Department precinct is an unremembered room occupied by **Winston "Winnie" Kodak III**, TVPD's compulsively professional photographer. The department forgot the room existed; it contains **miles of small photographic negatives**. The visual joke and Winnie's recurring intrusion into police scenes are established. The room's exact entrance, map footprint, history, impossible photographs, and any interactive case are still proposals. See [Winnie Kodak III — The Forgotten Darkroom](WINNIE_KODAK_III.md) for continuity and future-game notes.
+
 ## Silicon people [LOCKED]
 
 The residents are fictional silicon people, **not human actors**. Different forms, looks and character designs are permitted. They eat, work, joke, compete, form friendships, collect physical media and maintain absurd corporate institutions. Technology-flavored puns are seasoning, not every punchline.
