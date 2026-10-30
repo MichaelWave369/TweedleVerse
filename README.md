@@ -104,6 +104,12 @@ The playable [Stemside RPG](play.html) now **changes after Episode One**, based 
 
 ### Development bibles
 
+New concepts, **not yet playable or produced**: **Tweedle 420**, an original mockumentary about TVPD officers treating pastry misplacement and accidental lawn naps as major investigations; and **Where's Tweedsie?**, an original hidden-scene puzzle game built around finding Tweedsie in crowded Stemside scenes. Both have dedicated concept bibles below.
+
+- [Tweedle 420: Protect. Serve. Forget Why. (proposed mockumentary show)](docs/TWEEDLE_420.md)
+- [Where's Tweedsie? (proposed hidden-scene game)](docs/WHERES_TWEEDSIE.md)
+### Development bibles
+
 - [World and canon](docs/WORLD_BIBLE.md)
 - [Characters and relationships](docs/CHARACTERS.md)
 - [Winnie Kodak III and the forgotten TVPD darkroom (future lore/quest concept)](docs/WINNIE_KODAK_III.md)
